@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprinter.core.visitor.limit;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -12,7 +12,7 @@ import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class ChildVisitCounter {
+class ChildVisitCounter {
 
 	private final Function<Path, Integer> childrenLimitFunction;
 	private final List<ChildVisitCounterRecord> records;
@@ -52,7 +52,7 @@ public class ChildVisitCounter {
 		records.removeLast();
 	}
 
-	public Set<Path> notVisitedInCurrentDirCount() {
+	public Set<Path> notVisitedInCurrentDir() {
 		return records.isEmpty() ? Set.of() : records.getLast().notVisited();
 	}
 

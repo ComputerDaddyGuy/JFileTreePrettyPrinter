@@ -1,28 +1,30 @@
-package io.github.computerdaddyguy.jfiletreeprinter.core.visitor.filename;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Set;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 @NullMarked
-public interface FileNameFormatter {
+public interface FileFormatter {
 
-	@Nullable
 	String formatDirectoryBegin(Path dir, BasicFileAttributes attrs);
 
-	@Nullable
 	String formatDirectoryException(Path dir, IOException exc);
 
-	@Nullable
 	String formatFile(Path file, BasicFileAttributes attrs);
 
-	@Nullable
 	String formatFileException(Path file, IOException exc);
 
-	static FileNameFormatter createDefault() {
-		return new DefaultFileNameFormatter();
+	String formatChildLimitReached(Set<Path> notVisited);
+
+	static FileFormatter createDefault() {
+		return new DefaultFileFormatter();
+	}
+
+	static FileFormatter wrapWithEmojis(FileFormatter decorated) {
+		return new EmojiFileFormatter(decorated);
 	}
 
 }
