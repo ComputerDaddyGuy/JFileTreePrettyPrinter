@@ -5,8 +5,8 @@
 - [x] Regroup all formatting work under single "LineFormatter"
 - [x] Builder with options (depth symbols, emoji, child limit)
 - [x] Unit tests, using @TempDir
+- [x] Better "isLastChild" detection algorithm
 - [ ] Max depth options
-- [ ] Better "isLast" detection algorithm
 - [ ] Unify dir-in-a-row into a single entry option
 
 ## Other ideas

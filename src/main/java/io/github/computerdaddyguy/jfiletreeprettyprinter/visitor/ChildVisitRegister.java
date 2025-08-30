@@ -5,21 +5,21 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-class ChildVisitCounter {
+class ChildVisitRegister {
 
 	private final Function<Path, Integer> childrenLimitFunction;
 	private final List<ChildVisitCounterRecord> records;
 
-	public ChildVisitCounter(Function<Path, Integer> childrenLimitFunction) {
+	public ChildVisitRegister(Function<Path, Integer> childrenLimitFunction) {
 		this.childrenLimitFunction = childrenLimitFunction;
-		this.records = new ArrayList<ChildVisitCounter.ChildVisitCounterRecord>();
+		this.records = new ArrayList<ChildVisitRegister.ChildVisitCounterRecord>();
 	}
 
 	public void enterNewDirectory(Path dir) {
@@ -29,8 +29,8 @@ class ChildVisitCounter {
 		records.add(newRecord);
 	}
 
-	private Set<Path> listChildren(Path dir) {
-		var children = new HashSet<Path>();
+	private LinkedHashSet<Path> listChildren(Path dir) {
+		var children = new LinkedHashSet<Path>();
 		try (var stream = Files.newDirectoryStream(dir)) {
 			for (Path child : stream) {
 				children.add(child);
@@ -46,6 +46,13 @@ class ChildVisitCounter {
 			return;
 		}
 		records.getLast().registerChildVisit(visited);
+	}
+
+	public boolean isLastChildInCurrentDir(Path path) {
+		if (records.isEmpty()) {
+			return true;
+		}
+		return records.getLast().notVisited.isEmpty() || records.getLast().notVisited.getLast().equals(path);
 	}
 
 	public void exitCurrentDirectory() {
@@ -67,13 +74,13 @@ class ChildVisitCounter {
 	private class ChildVisitCounterRecord {
 
 		private final int maxChildVisitCount;
-		private Set<Path> notVisited;
-		private Set<Path> alreadyVisited;
+		private LinkedHashSet<Path> notVisited;
+		private LinkedHashSet<Path> alreadyVisited;
 
-		ChildVisitCounterRecord(int maxChildVisitCount, Set<Path> childrenInDir) {
+		ChildVisitCounterRecord(int maxChildVisitCount, LinkedHashSet<Path> childrenInDir) {
 			this.maxChildVisitCount = maxChildVisitCount;
 			this.notVisited = childrenInDir;
-			this.alreadyVisited = new HashSet<Path>();
+			this.alreadyVisited = new LinkedHashSet<Path>();
 		}
 
 		void registerChildVisit(Path visited) {
