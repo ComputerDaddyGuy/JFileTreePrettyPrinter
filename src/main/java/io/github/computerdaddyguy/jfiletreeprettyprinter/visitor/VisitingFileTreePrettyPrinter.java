@@ -31,7 +31,7 @@ public class VisitingFileTreePrettyPrinter implements FileTreePrettyPrinter {
 
 	@Override
 	public PrettyPrintOptions getOptions() {
-		return null;
+		return options;
 	}
 
 }
