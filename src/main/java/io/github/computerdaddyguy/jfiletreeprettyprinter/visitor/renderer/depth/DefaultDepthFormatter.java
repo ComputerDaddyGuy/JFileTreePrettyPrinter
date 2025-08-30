@@ -9,7 +9,7 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 class DefaultDepthFormatter implements DepthFormatter {
 
-	static final DepthFormatter CLASSIC_ASCII = create("|--", "`--", "│  ", "   ", 0, 1);
+	static final DepthFormatter CLASSIC_ASCII = create("|--", "`--", "|  ", "   ", 0, 1);
 	static final DepthFormatter UNICODE_BOX_DRAWING = create("├─", "└─", "│ ", "  ", 0, 1);
 
 	private final Function<DepthSymbol, String> printFunction;

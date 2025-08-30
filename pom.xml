@@ -1,8 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>io.github.computerdaddyguy</groupId>
 	<artifactId>jfiletreeprettyprinter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -12,8 +12,10 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
 		<jspecify.version>1.0.0</jspecify.version>
+		<junit.version>5.13.4</junit.version>
+		<assertj.version>3.27.4</assertj.version>
 	</properties>
 
 	<dependencies>
@@ -22,6 +24,19 @@
 			<artifactId>jspecify</artifactId>
 			<version>${jspecify.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>

@@ -60,6 +60,10 @@ class ChildVisitCounter {
 		return records.isEmpty() ? false : records.getLast().exceeds();
 	}
 
+	public boolean hasSomeNotVisitedChildren() {
+		return records.isEmpty() ? false : records.getLast().notVisited().size() > 0;
+	}
+
 	private class ChildVisitCounterRecord {
 
 		private final int maxChildVisitCount;
@@ -78,7 +82,7 @@ class ChildVisitCounter {
 		}
 
 		boolean exceeds() {
-			if (maxChildVisitCount < 0) {
+			if (maxChildVisitCount <= 0) {
 				return false;
 			}
 			return alreadyVisited.size() >= maxChildVisitCount;

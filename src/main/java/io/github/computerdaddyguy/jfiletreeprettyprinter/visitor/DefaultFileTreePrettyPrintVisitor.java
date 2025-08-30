@@ -35,11 +35,16 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 
 	@Override
 	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+		// COUNTER
+		if (counter.exceedsCurrentLimit()) {
+			return FileVisitResult.SKIP_SIBLINGS;
+		}
+
 		// DEPTH
 		updateDepth(dir);
 
 		// FILE
-		appendLine(lineRenderer.renderDirectoryBegin(depth, dir, attrs));
+		appendNewLine(lineRenderer.renderDirectoryBegin(depth, dir, attrs));
 		depth = depth.append(DepthSymbol.NON_LAST_FILE); // assume not last until proven otherwise
 
 		// COUNTER
@@ -61,7 +66,7 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 		updateDepth(file);
 
 		// FILE
-		appendLine(lineRenderer.renderFile(depth, file, attrs));
+		appendNewLine(lineRenderer.renderFile(depth, file, attrs));
 
 		return FileVisitResult.CONTINUE;
 	}
@@ -73,7 +78,7 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 
 		// FILE
 		if (exc != null) {
-			appendLine(lineRenderer.renderFileException(depth, file, exc));
+			appendNewLine(lineRenderer.renderFileException(depth, file, exc));
 		}
 
 		return FileVisitResult.CONTINUE;
@@ -83,17 +88,17 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 	public FileVisitResult postVisitDirectory(Path dir, @Nullable IOException exc) throws IOException {
 
 		if (exc != null) {
-			appendLine(lineRenderer.renderDirectoryException(depth, dir, exc));
+			appendNewLine(lineRenderer.renderDirectoryException(depth, dir, exc));
 		}
 
 		// DEPTH
 		depth = depth.pop();
 
 		// COUNTER
-		var limitReached = counter.exceedsCurrentLimit();
+		var limitReached = counter.hasSomeNotVisitedChildren();
 		if (limitReached) {
 			depth = depth.append(DepthSymbol.LAST_FILE);
-			appendLine(lineRenderer.renderLimitReached(depth, counter.notVisitedInCurrentDir()));
+			appendNewLine(lineRenderer.renderLimitReached(depth, counter.notVisitedInCurrentDir()));
 			depth = depth.pop();
 		}
 		counter.exitCurrentDirectory();
@@ -120,9 +125,12 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 		return siblings != null && siblings[siblings.length - 1].toPath().equals(path);
 	}
 
-	private void appendLine(@Nullable String str) {
+	private void appendNewLine(@Nullable String str) {
 		if (str != null) {
-			buff.append(str).append('\n');
+			if (buff.length() > 0) {
+				buff.append('\n');
+			}
+			buff.append(str);
 		}
 	}
 
