@@ -3,10 +3,9 @@
 A lightweight Java library for printing directory structures in a clean, tree-like format (think Unix `tree` command).
 
 - Print folder trees like Unix `tree`
-- Choose ASCII or Unicode styles
-- Optional emoji support 🎉
+- Choose ASCII or Unicode styles for tree rendering
+- Emoji support 🎉
 - Limit displayed children statically or dynamically
-- Extensible builder API
 
 ℹ️ Was developed just for fun!
 
@@ -14,7 +13,7 @@ A lightweight Java library for printing directory structures in a clean, tree-li
 * [Usage](#usage)  
 * [Options](#options)
   * [Tree format](#tree-format)
-  * [Emojis ❤️](#emojis)
+  * [Emojis ❤️](#emojis-%EF%B8%8F)
   * [Children limit](#children-limit)
 * [Changelog](#changelog) 
 * [Roadmap](#roadmap) 
