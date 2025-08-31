@@ -6,11 +6,13 @@
 - [x] Builder with options (depth symbols, emoji, child limit)
 - [x] Unit tests, using @TempDir
 - [x] Better "isLastChild" detection algorithm
-- [ ] Add examples & README
+- [x] Pre-defined Path predicates
+- [x] Add examples & README
+- [ ] Implement emojis from file extension
 - [ ] Max depth options
-- [ ] Offers pre-defined Path predicates
 - [ ] Unify dir-in-a-row into a single entry option
 - [ ] Filtering
+- [ ] Publish on Maven Central!
 
 ## Other ideas
 - [ ] Custom tree format option
