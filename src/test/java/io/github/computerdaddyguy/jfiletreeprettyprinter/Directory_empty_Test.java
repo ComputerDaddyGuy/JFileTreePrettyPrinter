@@ -27,7 +27,7 @@ class Directory_empty_Test extends AbstractDirectoryPrettyPrintTest {
 	}
 
 	@Override
-	String withDepthFormatClassicAsciiExpected() {
+	String withTreeFormatClassicAsciiExpected() {
 		return "targetPath/";
 	}
 

@@ -33,7 +33,7 @@ class Directory_1f_Test extends AbstractDirectoryPrettyPrintTest {
 	}
 
 	@Override
-	String withDepthFormatClassicAsciiExpected() {
+	String withTreeFormatClassicAsciiExpected() {
 		return """
 			targetPath/
 			`-- file1""";
@@ -43,7 +43,7 @@ class Directory_1f_Test extends AbstractDirectoryPrettyPrintTest {
 	String withLimit0Expected() {
 		return """
 			targetPath/
-			└─ file1""";
+			└─ ... (1 file skipped)""";
 	}
 
 	@Override

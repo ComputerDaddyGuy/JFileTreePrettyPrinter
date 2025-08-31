@@ -9,18 +9,18 @@ public interface RenderingOptions {
 	 * Are emojis used (filename, etc.)?
 	 * @return
 	 */
-	boolean useEmojis();
+	boolean areEmojisUsed();
 
 	/**
-	 * The format used to render file structure depth.
+	 * The format used to render file structure tree.
 	 * @return
 	 */
-	DepthFormat depthFormat();
+	TreeFormat getTreeFormat();
 
-	enum DepthFormat {
+	enum TreeFormat {
 
 		/**
-		 * Uses characters: |--, ` and │
+		 * Uses characters: |--, `-- and │
 		 */
 		CLASSIC_ASCII,
 

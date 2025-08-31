@@ -2,7 +2,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions.DepthFormat;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions.TreeFormat;
 import java.nio.file.Path;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
@@ -57,14 +57,14 @@ abstract class AbstractDirectoryPrettyPrintTest {
 	// DEPTH FORMAT CLASSIC_ASCII
 
 	@Test
-	void withDepthFormatClassicAscii() {
+	void withTreeFormatClassicAscii() {
 		run(
-			options -> options.withDepthFormat(DepthFormat.CLASSIC_ASCII),
-			withDepthFormatClassicAsciiExpected()
+			options -> options.withTreeFormat(TreeFormat.CLASSIC_ASCII),
+			withTreeFormatClassicAsciiExpected()
 		);
 	}
 
-	abstract String withDepthFormatClassicAsciiExpected();
+	abstract String withTreeFormatClassicAsciiExpected();
 
 	// ---------------------------------------------------------------------------------
 	// LIMIT 0

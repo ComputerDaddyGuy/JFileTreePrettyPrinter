@@ -2,7 +2,6 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.VisitingOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions.DepthFormat;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.Function;
@@ -13,7 +12,7 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 
 	private Function<Path, Integer> childrenLimitFunction = p -> -1;
 
-	private DepthFormat depthFormat = DepthFormat.UNICODE_BOX_DRAWING;
+	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
 	private boolean useEmojis = false;
 
 	public PrettyPrintOptions() {
@@ -59,25 +58,25 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 	// ----------------------------------------------
 
 	@Override
-	public DepthFormat depthFormat() {
-		return depthFormat;
+	public TreeFormat getTreeFormat() {
+		return treeFormat;
 	}
 
 	/**
 	 * Sets the depth rendering format.
-	 * Default is {@link DepthFormat#UNICODE_BOX_DRAWING}.
+	 * Default is {@link TreeFormat#UNICODE_BOX_DRAWING}.
 	 * 
-	 * @param depthFormat The format to use, cannot be <code>null</code>.
+	 * @param treeFormat The format to use, cannot be <code>null</code>.
 	 */
-	public PrettyPrintOptions withDepthFormat(DepthFormat depthFormat) {
-		this.depthFormat = Objects.requireNonNull(depthFormat, "depthFormat is null");
+	public PrettyPrintOptions withTreeFormat(TreeFormat treeFormat) {
+		this.treeFormat = Objects.requireNonNull(treeFormat, "treeFormat is null");
 		return this;
 	}
 
 	// ----------------------------------------------
 
 	@Override
-	public boolean useEmojis() {
+	public boolean areEmojisUsed() {
 		return useEmojis;
 	}
 

@@ -89,7 +89,7 @@ class ChildVisitRegister {
 		}
 
 		boolean exceeds() {
-			if (maxChildVisitCount <= 0) {
+			if (maxChildVisitCount < 0) {
 				return false;
 			}
 			return alreadyVisited.size() >= maxChildVisitCount;

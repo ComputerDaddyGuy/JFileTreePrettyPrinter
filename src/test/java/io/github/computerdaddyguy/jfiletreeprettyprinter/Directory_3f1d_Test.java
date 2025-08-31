@@ -46,7 +46,7 @@ class Directory_3f1d_Test extends AbstractDirectoryPrettyPrintTest {
 	}
 
 	@Override
-	String withDepthFormatClassicAsciiExpected() {
+	String withTreeFormatClassicAsciiExpected() {
 		return """
 			targetPath/
 			|-- file1
@@ -60,11 +60,7 @@ class Directory_3f1d_Test extends AbstractDirectoryPrettyPrintTest {
 	String withLimit0Expected() {
 		return """
 			targetPath/
-			├─ file1
-			├─ file2
-			├─ file3
-			└─ folder4/
-			   └─ file4""";
+			└─ ... (3 files and 1 directory skipped)""";
 	}
 
 	@Override

@@ -2,8 +2,8 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.Depth;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.depth.DepthFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file.FileFormatter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.tree.TreeFormatter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -35,14 +35,14 @@ public interface LineRenderer {
 	 * @return
 	 */
 	static LineRenderer create(RenderingOptions options) {
-		var depthFormatter = DepthFormatter.getInstance(options.depthFormat());
+		var treeFormatter = TreeFormatter.getInstance(options.getTreeFormat());
 
 		var fileFormatter = FileFormatter.createDefault();
-		if (options.useEmojis()) {
+		if (options.areEmojisUsed()) {
 			fileFormatter = FileFormatter.wrapWithEmojis(fileFormatter);
 		}
 
-		return new DefaultLineRenderer(depthFormatter, fileFormatter);
+		return new DefaultLineRenderer(treeFormatter, fileFormatter);
 	}
 
 }

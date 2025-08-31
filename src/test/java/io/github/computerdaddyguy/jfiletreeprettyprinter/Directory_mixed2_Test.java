@@ -75,7 +75,7 @@ class Directory_mixed2_Test extends AbstractDirectoryPrettyPrintTest {
 	}
 
 	@Override
-	String withDepthFormatClassicAsciiExpected() {
+	String withTreeFormatClassicAsciiExpected() {
 		return """
 			targetPath/
 			|-- file1
@@ -98,20 +98,7 @@ class Directory_mixed2_Test extends AbstractDirectoryPrettyPrintTest {
 	String withLimit0Expected() {
 		return """
 			targetPath/
-			├─ file1
-			├─ file2
-			├─ file3
-			├─ folder4/
-			│  ├─ file41
-			│  ├─ file42
-			│  └─ file43
-			├─ mFile4
-			├─ mFolder5/
-			│  ├─ file51
-			│  ├─ file52
-			│  └─ file53
-			├─ zFile5
-			└─ zFile6""";
+			└─ ... (6 files and 2 directories skipped)""";
 	}
 
 	@Override

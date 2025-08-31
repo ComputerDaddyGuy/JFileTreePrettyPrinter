@@ -7,6 +7,30 @@
 	<artifactId>jfiletreeprettyprinter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<name>JFileTreePrettyPrinter</name>
+	<description>A lightweight Java library for printing directory structures in a clean, tree-like format.</description>
+	<url>https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter</url>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<name>Samuel SCHNEGG</name>
+			<email>samuel.schnegg@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter.git</connection>
+		<developerConnection>scm:git:ssh://github.com:ComputerDaddyGuy/JFileTreePrettyPrinter.git</developerConnection>
+		<url>https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/tree/main</url>
+	</scm>
+	
 	<properties>
 		<java.version>21</java.version>
 		<maven.compiler.source>21</maven.compiler.source>
@@ -17,12 +41,14 @@
 		<jspecify.version>1.0.0</jspecify.version>
 		<junit.version>5.13.4</junit.version>
 		<assertj.version>3.27.4</assertj.version>
-		
+
 		<!-- Plugins versions -->
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
+		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-		
+
 	</properties>
 
 	<dependencies>
@@ -48,7 +74,51 @@
 
 	<build>
 		<plugins>
-		
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>add-example-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/example/java</source>	<!-- Add example source files to compilation -->
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-example-resources</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/example/resources</directory> <!-- Add example resources to compilation -->
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>src/example/**</exclude> <!-- Exclude example files from packaged jar -->
+					</excludes>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -64,7 +134,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -95,10 +165,10 @@
 					</execution>
 				</executions>
 			</plugin>
-		
+
 		</plugins>
-	
-	
+
+
 	</build>
 
 </project>
