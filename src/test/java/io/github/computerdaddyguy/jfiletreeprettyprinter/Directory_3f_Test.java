@@ -33,9 +33,9 @@ class Directory_3f_Test extends AbstractDirectoryPrettyPrintTest {
 	String withEmojiExpected() {
 		return """
 			📂 targetPath/
-			├─ file1
-			├─ file2
-			└─ file3""";
+			├─ 📄 file1
+			├─ 📄 file2
+			└─ 📄 file3""";
 	}
 
 	@Override

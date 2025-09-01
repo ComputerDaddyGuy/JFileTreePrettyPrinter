@@ -38,11 +38,11 @@ class Directory_3f1d_Test extends AbstractDirectoryPrettyPrintTest {
 	String withEmojiExpected() {
 		return """
 			📂 targetPath/
-			├─ file1
-			├─ file2
-			├─ file3
+			├─ 📄 file1
+			├─ 📄 file2
+			├─ 📄 file3
 			└─ 📂 folder4/
-			   └─ file4""";
+			   └─ 📄 file4""";
 	}
 
 	@Override

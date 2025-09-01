@@ -31,8 +31,8 @@ class Directory_2f_Test extends AbstractDirectoryPrettyPrintTest {
 	String withEmojiExpected() {
 		return """
 			📂 targetPath/
-			├─ file1
-			└─ file2""";
+			├─ 📄 file1
+			└─ 📄 file2""";
 	}
 
 	@Override

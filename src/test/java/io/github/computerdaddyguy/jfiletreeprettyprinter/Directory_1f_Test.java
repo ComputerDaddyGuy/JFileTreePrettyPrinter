@@ -29,7 +29,7 @@ class Directory_1f_Test extends AbstractDirectoryPrettyPrintTest {
 	String withEmojiExpected() {
 		return """
 			📂 targetPath/
-			└─ file1""";
+			└─ 📄 file1""";
 	}
 
 	@Override

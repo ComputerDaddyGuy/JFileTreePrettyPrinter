@@ -48,16 +48,16 @@ class Directory_mixed1_Test extends AbstractDirectoryPrettyPrintTest {
 	String withEmojiExpected() {
 		return """
 			📂 targetPath/
-			├─ file1
-			├─ file2
-			├─ file3
+			├─ 📄 file1
+			├─ 📄 file2
+			├─ 📄 file3
 			├─ 📂 folder4/
-			│  ├─ file41
-			│  ├─ file42
-			│  └─ file43
-			├─ mFile4
-			├─ zFile5
-			└─ zFile6""";
+			│  ├─ 📄 file41
+			│  ├─ 📄 file42
+			│  └─ 📄 file43
+			├─ 📄 mFile4
+			├─ 📄 zFile5
+			└─ 📄 zFile6""";
 	}
 
 	@Override

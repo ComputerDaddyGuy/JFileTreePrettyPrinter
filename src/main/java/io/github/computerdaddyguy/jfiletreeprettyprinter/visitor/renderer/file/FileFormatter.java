@@ -24,7 +24,11 @@ public interface FileFormatter {
 	}
 
 	static FileFormatter wrapWithEmojis(FileFormatter decorated) {
-		return new EmojiFileFormatter(decorated);
+		return wrapWithEmojis(decorated, EmojiMapping.createDefault());
+	}
+
+	static FileFormatter wrapWithEmojis(FileFormatter decorated, EmojiMapping emojiMapping) {
+		return new EmojiFileFormatter(decorated, emojiMapping);
 	}
 
 }

@@ -103,7 +103,7 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     </tr>
 </table>
 
-*💡Idea for a future version: option to allow usage of custom format*
+💡 *Idea for a future version: option to allow usage of custom format*
 
 
 ## Emojis ❤️
@@ -118,41 +118,23 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 ```
 
 ```
-// TODO: support more file extensions
+// Run Emojis.java example for exhaustive list
 📂 emojis/
-├─ 📂 code/
-│  ├─ .gitignore
-│  ├─ 📂 build_tools/
-│  │  ├─ build.gradle
-│  │  ├─ gradle
-│  │  ├─ package.json
-│  │  └─ pom.xml
-│  ├─ Dockerfile
-│  ├─ file.sh
-│  ├─ Jenkinsfile
-│  ├─ readme.md
-│  └─ roadmap.md
-├─ 📂 data/
-│  ├─ file.conf
-│  ├─ file.ini
-│  └─ file.properties
-├─ 📂 doc/
-│  ├─ file.doc
-│  ├─ file.docx
-│  ├─ file.epub
-│  ├─ file.md
-│  ├─ file.odt
-│  ├─ file.pdf
-│  ├─ file.rtf
-│  └─ file.txt
-└─ 📂 media/
-   ├─ file.bmp
-   ├─ file.gif
-   ├─ file.jpeg
-   └─ file.png
+├─ 📦 file.zip
+├─ 🐳 Dockerfile
+├─ 🤵 Jenkinsfile
+├─ ☕ file.java
+├─ 📖 readme
+├─ ⚙️ file.ini
+├─ 📊 file.xlsx
+├─ 📃 file.docx
+├─ 📕 file.pdf
+├─ 🎵 file.mp3
+├─ 🖼️ file.jpeg
+└─ 🎬 file.avi
 ```
 
-*💡Idea for a future version: option to allow custom emoji mapping*
+💡 *Idea for a future version: option to allow custom emoji mapping*
 
 ## Children limit
 You can set a fixed limit to the number of children displayed for each directory.
