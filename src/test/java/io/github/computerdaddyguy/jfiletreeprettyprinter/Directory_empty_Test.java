@@ -10,8 +10,8 @@ class Directory_empty_Test extends AbstractDirectoryPrettyPrintTest {
 		// @formatter:off
 		targetPath = FileStructureCreator
 			.forTargetPath(root)
-			.end()
-			.getCurrentDir()
+			.up()
+			.getPath()
 			;
 		// @formatter:on
 	}
@@ -48,6 +48,11 @@ class Directory_empty_Test extends AbstractDirectoryPrettyPrintTest {
 
 	@Override
 	String withLimit3Expected() {
+		return "targetPath/";
+	}
+
+	@Override
+	String withCompactDirectoriesExpected() {
 		return "targetPath/";
 	}
 

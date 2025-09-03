@@ -13,8 +13,8 @@ class Directory_2f_Test extends AbstractDirectoryPrettyPrintTest {
 			.forTargetPath(root)
 				.createFile("file1")
 				.createFile("file2")
-			.end()
-			.getCurrentDir()
+			.up()
+			.getPath()
 			;
 		// @formatter:on
 	}
@@ -68,6 +68,14 @@ class Directory_2f_Test extends AbstractDirectoryPrettyPrintTest {
 
 	@Override
 	String withLimit3Expected() {
+		return """
+			targetPath/
+			├─ file1
+			└─ file2""";
+	}
+
+	@Override
+	String withCompactDirectoriesExpected() {
 		return """
 			targetPath/
 			├─ file1

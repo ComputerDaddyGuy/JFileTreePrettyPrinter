@@ -26,13 +26,31 @@ public class FileStructureCreator {
 		return new FileStructureCreator(null, newDir);
 	}
 
+	public FileStructureCreator createDirectories(String dirNamePrefix, int n) {
+		for (int i = 0; i < n; i++) {
+			createAndEnterDirectory(dirNamePrefix + (i + 1));
+		}
+		return this;
+	}
+
 	public FileStructureCreator createDirectory(String dirName) {
+		return createAndEnterDirectory(dirName).up();
+	}
+
+	public FileStructureCreator createAndEnterDirectory(String dirName) {
 		var newDir = currentDir.resolve(dirName);
 		var created = newDir.toFile().mkdir();
 		if (!created) {
 			throw new IllegalStateException("Unable to create directory: " + newDir);
 		}
 		return new FileStructureCreator(this, newDir);
+	}
+
+	public FileStructureCreator createFiles(String fileNamePrefix, int n) {
+		for (int i = 0; i < n; i++) {
+			createFile(fileNamePrefix + (i + 1));
+		}
+		return this;
 	}
 
 	public FileStructureCreator createFile(String fileName) {
@@ -48,14 +66,14 @@ public class FileStructureCreator {
 		return this;
 	}
 
-	public FileStructureCreator end() {
+	public FileStructureCreator up() {
 		if (parent == null) {
 			return this;
 		}
 		return parent;
 	}
 
-	public Path getCurrentDir() {
+	public Path getPath() {
 		return currentDir;
 	}
 

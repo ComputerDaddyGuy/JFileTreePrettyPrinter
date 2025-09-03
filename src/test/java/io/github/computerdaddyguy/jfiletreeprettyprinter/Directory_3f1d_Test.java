@@ -14,11 +14,11 @@ class Directory_3f1d_Test extends AbstractDirectoryPrettyPrintTest {
 				.createFile("file1")
 				.createFile("file2")
 				.createFile("file3")
-				.createDirectory("folder4")
+				.createAndEnterDirectory("folder4")
 					.createFile("file4")
-				.end()
-			.end()
-			.getCurrentDir()
+				.up()
+			.up()
+			.getPath()
 			;
 		// @formatter:on
 	}
@@ -88,6 +88,17 @@ class Directory_3f1d_Test extends AbstractDirectoryPrettyPrintTest {
 			├─ file2
 			├─ file3
 			└─ ... (1 directory skipped)""";
+	}
+
+	@Override
+	String withCompactDirectoriesExpected() {
+		return """
+			targetPath/
+			├─ file1
+			├─ file2
+			├─ file3
+			└─ folder4/
+			   └─ file4""";
 	}
 
 }

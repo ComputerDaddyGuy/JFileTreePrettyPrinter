@@ -14,6 +14,7 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 
 	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
 	private boolean useEmojis = false;
+	private boolean compactDirectories = false;
 
 	public PrettyPrintOptions() {
 		super();
@@ -88,6 +89,24 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 	 */
 	public PrettyPrintOptions withEmojis(boolean useEmojis) {
 		this.useEmojis = useEmojis;
+		return this;
+	}
+
+	// ----------------------------------------------
+
+	@Override
+	public boolean areCompactDirectoriesUsed() {
+		return compactDirectories;
+	}
+
+	/**
+	 * Whether or not compact directories chain into a single entry in the rendered tree.
+	 * Default is {@code false}.
+	 * 
+	 * @param compact	{@code true} to compact, {@code false} otherwise.
+	 */
+	public PrettyPrintOptions withCompactDirectories(boolean compact) {
+		this.compactDirectories = compact;
 		return this;
 	}
 

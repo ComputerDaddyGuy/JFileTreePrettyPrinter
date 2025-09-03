@@ -7,6 +7,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.tree.T
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.Set;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -15,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 public interface LineRenderer {
 
 	@Nullable
-	String renderDirectoryBegin(Depth depth, Path dir, BasicFileAttributes attrs);
+	String renderDirectoryBegin(Depth depth, List<Path> dirs, BasicFileAttributes attrs);
 
 	@Nullable
 	String renderDirectoryException(Depth depth, Path dir, IOException exc);

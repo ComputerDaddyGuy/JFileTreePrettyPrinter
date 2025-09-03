@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -18,6 +20,9 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 	private Depth depth;
 	private ChildVisitRegister register;
 
+	private boolean useCompactDirectories;
+	private List<Path> directoryChain = new ArrayList<>();
+
 	public DefaultFileTreePrettyPrintVisitor(PrettyPrintOptions options, LineRenderer lineRenderer) {
 		super();
 		this.lineRenderer = lineRenderer;
@@ -25,6 +30,7 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 		this.buff = new StringBuilder();
 		this.depth = new Depth();
 		this.register = new ChildVisitRegister(options.getChildrenLimitFunction());
+		this.useCompactDirectories = options.areCompactDirectoriesUsed();
 	}
 
 	@Override
@@ -34,37 +40,42 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 
 	@Override
 	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-		// COUNTER
+
 		if (register.exceedsCurrentLimit()) {
 			return FileVisitResult.SKIP_SIBLINGS;
 		}
 
-		// DEPTH
 		updateDepth(dir);
 
-		// FILE
-		appendNewLine(lineRenderer.renderDirectoryBegin(depth, dir, attrs));
-		depth = depth.append(DepthSymbol.NON_LAST_FILE); // assume not last until proven otherwise
-
-		// COUNTER
 		register.registerChildVisitInCurrentDir(dir);
 		register.enterNewDirectory(dir);
+
+		directoryChain.add(dir); // Continue chain
+
+		var doRenderDir = true;
+		if (useCompactDirectories) {
+			doRenderDir = !register.hasSingleDirectoryChild(); // Is this folder parent of a single folder?
+		}
+
+		if (doRenderDir) {
+			appendNewLine(lineRenderer.renderDirectoryBegin(depth, directoryChain, attrs));
+			depth = depth.append(DepthSymbol.NON_LAST_FILE); // assume not last until proven otherwise
+			directoryChain.clear();
+		}
 
 		return FileVisitResult.CONTINUE;
 	}
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-		// COUNTER
+
 		if (register.exceedsCurrentLimit()) {
 			return FileVisitResult.SKIP_SIBLINGS;
 		}
 		register.registerChildVisitInCurrentDir(file);
 
-		// DEPTH
 		updateDepth(file);
 
-		// FILE
 		appendNewLine(lineRenderer.renderFile(depth, file, attrs));
 
 		return FileVisitResult.CONTINUE;

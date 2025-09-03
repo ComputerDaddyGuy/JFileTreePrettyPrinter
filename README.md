@@ -1,45 +1,16 @@
 # JFileTreePrettyPrint
 
-A lightweight Java library for printing directory structures in a clean, tree-like format (think Unix `tree` command).
+A lightweight Java library for printing directory structures in a clean, tree-like format.
 
 - Print folder trees like Unix `tree`
-- Choose ASCII or Unicode styles for tree rendering
-- Emoji support 🎉
-- Limit displayed children statically or dynamically
+- Customizable:
+  - ASCII or Unicode styles for tree rendering
+  - Emoji support 🎉
+  - Limit displayed children statically or dynamically
+  - Compact directory chains
 
-ℹ️ Was developed just for fun!
+**ℹ️ Was developed just for fun, has not been thoroughly tested! May not be suitable for production code 😊**
 
-* [Import dependency](#import-dependency)
-* [Usage](#usage)  
-* [Options](#options)
-  * [Tree format](#tree-format)
-  * [Emojis ❤️](#emojis-%EF%B8%8F)
-  * [Children limit](#children-limit)
-* [Changelog](#changelog) 
-* [Roadmap](#roadmap) 
-* [License](#license) 
-* [Contributing & Contact](#contributing--contact) 
-
-
-# Import dependency
-For Maven, import this dependency to your `pom.xml`:
-
-```xml
-<!-- Maven -->
-<dependency>
-  <groupId>com.github.computerdaddyguy</groupId>
-  <artifactId>jfiletreeprettyprinter</artifactId>
-  <version>0.1.0</version>
-</dependency>
-```
-
-For Gradle:
-```
-// Gradle
-implementation "com.github.computerdaddyguy:jfiletreeprettyprinter:0.1.0"
-```
-
-# Usage
 ```java
 // Example: BasicUsage.java
 var printer = FileTreePrettyPrinter.createDefault();
@@ -65,8 +36,42 @@ base/
    └─ landscape.jpeg
 ```
 
+
+* [Usage](#usage)  
+* [Import dependency](#import-dependency)
+* [Options](#options)
+* [Changelog](#changelog) 
+* [Roadmap](#roadmap) 
+* [License](#license) 
+* [Contributing & Contact](#contributing--contact) 
+
+
+# Import dependency
+For Maven, import this dependency to your `pom.xml`:
+
+```xml
+<!-- Maven -->
+<dependency>
+  <groupId>com.github.computerdaddyguy</groupId>
+  <artifactId>jfiletreeprettyprinter</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
+For Gradle:
+```
+// Gradle
+implementation "com.github.computerdaddyguy:jfiletreeprettyprinter:0.1.0"
+```
+
+
 # Options
 
+* [Tree format](#tree-format)
+* [Emojis ❤️](#emojis-%EF%B8%8F)
+* [Children limit](#children-limit)
+* [Compact directories](#compact-directories)
+  
 ## Tree format
 Choose between different tree formats.
 The default is `UNICODE_BOX_DRAWING`, supported by all terminals, but you can also switch to use `CLASSIC_ASCII`.
@@ -163,7 +168,8 @@ static_children_limit/
 
 ```
 
-Or you can also set a limitation function, to dynamically choose the number of children displayed in each directory (for, say, avoid cluttering the whole console with known large folders like `node_modules` but continue to pretty print normally other folders).
+Or you can also set a limitation function, to dynamically choose the number of children displayed in each directory.
+It avoids cluttering the whole console with known large folders (e.g. `node_modules`) but continue to pretty print normally other folders.
 
 The `PathPredicates` class contains several ready-to-use predicates to help you.
 
@@ -185,6 +191,27 @@ children_limit_dynamic/
 │  └─ file_1_5
 └─ node_modules/
    └─ ... (9 files skipped)
+```
+
+💡 *Idea for a future version: helper for custom basic functions (by name, prefix, regex, etc.)*
+
+## Compact directories
+Directories chain with single directory child are fully expanded by default, but you can compact them into a single tree entry.
+
+```java
+// Example: CompactDirectories.java
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.withCompactDirectories(true))
+    .build();
+```
+```
+single_directory_child/
+├─ file1
+├─ file2
+└─ this/is/single/directory/child/
+   ├─ file1
+   ├─ file2
+   └─ file3
 ```
 
 # Changelog

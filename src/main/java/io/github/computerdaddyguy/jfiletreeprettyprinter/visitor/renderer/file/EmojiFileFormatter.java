@@ -3,6 +3,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.NullMarked;
@@ -36,8 +37,8 @@ class EmojiFileFormatter implements FileFormatter {
 	}
 
 	@Override
-	public String formatDirectoryBegin(Path dir, BasicFileAttributes attrs) {
-		return getFileEmojiPrefix(dir, attrs) + decorated.formatDirectoryBegin(dir, attrs);
+	public String formatDirectoryBegin(List<Path> dirs, BasicFileAttributes attrs) {
+		return getFileEmojiPrefix(dirs.getLast(), attrs) + decorated.formatDirectoryBegin(dirs, attrs);
 	}
 
 	@Override

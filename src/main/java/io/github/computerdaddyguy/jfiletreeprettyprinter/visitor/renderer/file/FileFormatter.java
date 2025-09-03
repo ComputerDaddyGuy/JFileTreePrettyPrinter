@@ -3,13 +3,14 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.Set;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public interface FileFormatter {
 
-	String formatDirectoryBegin(Path dir, BasicFileAttributes attrs);
+	String formatDirectoryBegin(List<Path> dirs, BasicFileAttributes attrs);
 
 	String formatDirectoryException(Path dir, IOException exc);
 

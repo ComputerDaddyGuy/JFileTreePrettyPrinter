@@ -12,8 +12,8 @@ class Directory_1f_Test extends AbstractDirectoryPrettyPrintTest {
 		targetPath = FileStructureCreator
 			.forTargetPath(root)
 				.createFile("file1")
-			.end()
-			.getCurrentDir()
+			.up()
+			.getPath()
 			;
 		// @formatter:on
 	}
@@ -62,6 +62,13 @@ class Directory_1f_Test extends AbstractDirectoryPrettyPrintTest {
 
 	@Override
 	String withLimit3Expected() {
+		return """
+			targetPath/
+			└─ file1""";
+	}
+
+	@Override
+	String withCompactDirectoriesExpected() {
 		return """
 			targetPath/
 			└─ file1""";

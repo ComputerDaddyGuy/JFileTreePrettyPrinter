@@ -12,6 +12,12 @@ public interface RenderingOptions {
 	boolean areEmojisUsed();
 
 	/**
+	 * Are directories compacted into one entry?
+	 * @return
+	 */
+	boolean areCompactDirectoriesUsed();
+
+	/**
 	 * The format used to render file structure tree.
 	 * @return
 	 */

@@ -3,15 +3,19 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 class DefaultFileFormatter implements FileFormatter {
 
 	@Override
-	public String formatDirectoryBegin(Path dir, BasicFileAttributes attrs) {
-		return dir.getFileName().toString() + "/";
+	public String formatDirectoryBegin(List<Path> dirs, BasicFileAttributes attrs) {
+		return dirs.stream()
+			.map(dir -> dir.getFileName().toString() + "/")
+			.collect(Collectors.joining());
 	}
 
 	@Override

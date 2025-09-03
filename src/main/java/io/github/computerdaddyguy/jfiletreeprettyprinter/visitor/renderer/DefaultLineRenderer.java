@@ -6,6 +6,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.tree.T
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.NullMarked;
@@ -23,8 +24,8 @@ class DefaultLineRenderer implements LineRenderer {
 	}
 
 	@Override
-	public String renderDirectoryBegin(Depth depth, Path dir, BasicFileAttributes attrs) {
-		return treeFormatter.format(depth) + fileFormatter.formatDirectoryBegin(dir, attrs);
+	public String renderDirectoryBegin(Depth depth, List<Path> dirs, BasicFileAttributes attrs) {
+		return treeFormatter.format(depth) + fileFormatter.formatDirectoryBegin(dirs, attrs);
 	}
 
 	@Override

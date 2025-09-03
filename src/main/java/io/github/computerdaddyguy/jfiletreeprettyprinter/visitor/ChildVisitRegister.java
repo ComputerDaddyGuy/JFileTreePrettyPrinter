@@ -71,14 +71,20 @@ class ChildVisitRegister {
 		return records.isEmpty() ? false : records.getLast().notVisited().size() > 0;
 	}
 
+	public boolean hasSingleDirectoryChild() {
+		return records.isEmpty() ? false : records.getLast().hasSingleDirectoryChild();
+	}
+
 	private class ChildVisitCounterRecord {
 
 		private final int maxChildVisitCount;
+		private LinkedHashSet<Path> allChildren;
 		private LinkedHashSet<Path> notVisited;
 		private LinkedHashSet<Path> alreadyVisited;
 
 		ChildVisitCounterRecord(int maxChildVisitCount, LinkedHashSet<Path> childrenInDir) {
 			this.maxChildVisitCount = maxChildVisitCount;
+			this.allChildren = childrenInDir;
 			this.notVisited = childrenInDir;
 			this.alreadyVisited = new LinkedHashSet<Path>();
 		}
@@ -97,6 +103,10 @@ class ChildVisitRegister {
 
 		Set<Path> notVisited() {
 			return notVisited;
+		}
+
+		boolean hasSingleDirectoryChild() {
+			return allChildren.size() == 1 && allChildren.getFirst().toFile().isDirectory();
 		}
 
 	}

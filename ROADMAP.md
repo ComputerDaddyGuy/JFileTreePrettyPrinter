@@ -9,8 +9,9 @@
 - [x] Pre-defined Path predicates
 - [x] Add examples & README
 - [x] Implement emojis for files
+- [x] Unify dir-in-a-row into a single entry option
 - [ ] Max depth options
-- [ ] Unify dir-in-a-row into a single entry option
+- [ ] Refactor unit tests (custom assert?)
 - [ ] Publish on Maven Central!
 
 ## Other ideas

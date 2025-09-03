@@ -15,21 +15,21 @@ class Directory_mixed2_Test extends AbstractDirectoryPrettyPrintTest {
 				.createFile("file1")
 				.createFile("file2")
 				.createFile("file3")
-				.createDirectory("folder4")
+				.createAndEnterDirectory("folder4")
 					.createFile("file41")
 					.createFile("file42")
 					.createFile("file43")
-				.end()
+				.up()
 				.createFile("mFile4")
-				.createDirectory("mFolder5")
+				.createAndEnterDirectory("mFolder5")
 					.createFile("file51")
 					.createFile("file52")
 					.createFile("file53")
-				.end()
+				.up()
 				.createFile("zFile5")
 				.createFile("zFile6")
-			.end()
-			.getCurrentDir()
+			.up()
+			.getPath()
 			;
 		// @formatter:on
 	}
@@ -126,6 +126,26 @@ class Directory_mixed2_Test extends AbstractDirectoryPrettyPrintTest {
 			├─ file2
 			├─ file3
 			└─ ... (3 files and 2 directories skipped)""";
+	}
+
+	@Override
+	String withCompactDirectoriesExpected() {
+		return """
+			targetPath/
+			├─ file1
+			├─ file2
+			├─ file3
+			├─ folder4/
+			│  ├─ file41
+			│  ├─ file42
+			│  └─ file43
+			├─ mFile4
+			├─ mFolder5/
+			│  ├─ file51
+			│  ├─ file52
+			│  └─ file53
+			├─ zFile5
+			└─ zFile6""";
 	}
 
 }

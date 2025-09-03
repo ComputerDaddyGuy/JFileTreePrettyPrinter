@@ -119,5 +119,16 @@ abstract class AbstractDirectoryPrettyPrintTest {
 	abstract String withLimit3Expected();
 
 	// ---------------------------------------------------------------------------------
+	// COMPACT DIRECTORIES
+
+	@Test
+	void withCompactDirectories() {
+		run(
+			options -> options.withCompactDirectories(true),
+			withCompactDirectoriesExpected()
+		);
+	}
+
+	abstract String withCompactDirectoriesExpected();
 
 }
