@@ -7,6 +7,8 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public interface VisitingOptions {
 
+	int getMaxDepth();
+
 	Function<Path, Integer> getChildrenLimitFunction();
 
 }

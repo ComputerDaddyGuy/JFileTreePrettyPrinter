@@ -20,6 +20,8 @@ public interface FileFormatter {
 
 	String formatChildLimitReached(Set<Path> notVisited);
 
+	String formatMaxDepthReached(Set<Path> notVisited);
+
 	static FileFormatter createDefault() {
 		return new DefaultFileFormatter();
 	}

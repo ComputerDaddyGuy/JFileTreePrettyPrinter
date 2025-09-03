@@ -70,6 +70,7 @@ implementation "com.github.computerdaddyguy:jfiletreeprettyprinter:0.1.0"
 * [Emojis ❤️](#emojis-%EF%B8%8F)
 * [Children limit](#children-limit)
 * [Compact directories](#compact-directories)
+* [Max depth](#max-depth)
   
 ## Tree format
 Choose between different tree formats.
@@ -211,6 +212,27 @@ single_directory_child/
    ├─ file1
    ├─ file2
    └─ file3
+```
+
+## Max depth
+You can customize the default max depth (default is 20).
+
+```java
+// Example: MaxDepth.java
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.withMaxDepth(3))
+    .build();
+```
+```
+max_depth/
+└─ level1/
+   ├─ file1#1
+   ├─ file1#2
+   └─ level2/
+      ├─ file2#1
+      ├─ file2#2
+      └─ level3/
+         └─ ... (max depth reached)
 ```
 
 # Changelog

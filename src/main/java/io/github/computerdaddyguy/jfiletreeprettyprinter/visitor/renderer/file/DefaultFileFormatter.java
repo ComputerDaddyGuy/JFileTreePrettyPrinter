@@ -41,6 +41,15 @@ class DefaultFileFormatter implements FileFormatter {
 
 	@Override
 	public String formatChildLimitReached(Set<Path> notVisited) {
+		return "... (" + childrenAsString(notVisited) + " skipped)";
+	}
+
+	@Override
+	public String formatMaxDepthReached(Set<Path> notVisited) {
+		return "... (max depth reached)";
+	}
+
+	private String childrenAsString(Set<Path> notVisited) {
 
 		var dirCount = countDirs(notVisited);
 		var fileCount = countFiles(notVisited, dirCount);
@@ -48,7 +57,7 @@ class DefaultFileFormatter implements FileFormatter {
 		var dirText = dirText(dirCount);
 		var fileText = fileText(fileCount);
 
-		return "... (" + fileText + (!fileText.isEmpty() && !dirText.isEmpty() ? " and " : "") + dirText + " skipped)";
+		return fileText + (!fileText.isEmpty() && !dirText.isEmpty() ? " and " : "") + dirText;
 	}
 
 	private long countDirs(Set<Path> notVisited) {

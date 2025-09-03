@@ -13,8 +13,9 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 	private Function<Path, Integer> childrenLimitFunction = p -> -1;
 
 	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
-	private boolean useEmojis = false;
+	private boolean emojis = false;
 	private boolean compactDirectories = false;
+	private int maxDepth = 20;
 
 	public PrettyPrintOptions() {
 		super();
@@ -78,7 +79,7 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 
 	@Override
 	public boolean areEmojisUsed() {
-		return useEmojis;
+		return emojis;
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 	 * @param useEmojis	{@code true} to use emojis, {@code false} otherwise.
 	 */
 	public PrettyPrintOptions withEmojis(boolean useEmojis) {
-		this.useEmojis = useEmojis;
+		this.emojis = useEmojis;
 		return this;
 	}
 
@@ -107,6 +108,24 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 	 */
 	public PrettyPrintOptions withCompactDirectories(boolean compact) {
 		this.compactDirectories = compact;
+		return this;
+	}
+
+	// ----------------------------------------------
+
+	@Override
+	public int getMaxDepth() {
+		return maxDepth;
+	}
+
+	/**
+	 * Set the max directory depth from the root.
+	 * Default is {@code 20}.
+	 * 
+	 * @param compact	The max depth, negative value for unlimited depth.
+	 */
+	public PrettyPrintOptions withMaxDepth(int maxDepth) {
+		this.maxDepth = maxDepth;
 		return this;
 	}
 

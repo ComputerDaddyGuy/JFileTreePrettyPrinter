@@ -10,7 +10,8 @@
 - [x] Add examples & README
 - [x] Implement emojis for files
 - [x] Unify dir-in-a-row into a single entry option
-- [ ] Max depth options
+- [x] Max depth options
+- [ ] Cleaner code
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Publish on Maven Central!
 

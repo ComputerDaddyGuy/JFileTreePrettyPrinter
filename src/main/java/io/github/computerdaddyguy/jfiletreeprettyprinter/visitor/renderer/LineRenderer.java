@@ -28,7 +28,7 @@ public interface LineRenderer {
 	String renderFileException(Depth depth, Path file, IOException exc);
 
 	@Nullable
-	String renderLimitReached(Depth depth, Set<Path> notVisited);
+	String renderDirectoryInterrupted(Depth depth, Path dir, Set<Path> notVisited, DirectoryInterruptionCause cause);
 
 	/**
 	 * Create a new line renderer, using given options

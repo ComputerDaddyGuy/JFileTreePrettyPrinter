@@ -44,8 +44,12 @@ class DefaultLineRenderer implements LineRenderer {
 	}
 
 	@Override
-	public @Nullable String renderLimitReached(Depth depth, Set<Path> notVisited) {
-		return treeFormatter.format(depth) + fileFormatter.formatChildLimitReached(notVisited);
+	public @Nullable String renderDirectoryInterrupted(Depth depth, Path dir, Set<Path> notVisited, DirectoryInterruptionCause cause) {
+		return treeFormatter.format(depth) + switch (cause) {
+			case CHILDREN_LIMIT -> fileFormatter.formatChildLimitReached(notVisited);
+			case MAX_DEPTH -> fileFormatter.formatMaxDepthReached(notVisited);
+		};
+
 	}
 
 }

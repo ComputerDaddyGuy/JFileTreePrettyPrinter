@@ -61,4 +61,9 @@ class EmojiFileFormatter implements FileFormatter {
 		return decorated.formatChildLimitReached(notVisited);
 	}
 
+	@Override
+	public String formatMaxDepthReached(Set<Path> notVisited) {
+		return decorated.formatMaxDepthReached(notVisited);
+	}
+
 }

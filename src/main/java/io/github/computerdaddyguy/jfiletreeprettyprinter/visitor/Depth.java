@@ -22,6 +22,10 @@ public class Depth {
 		return symbols.isEmpty();
 	}
 
+	public int getSize() {
+		return symbols.size();
+	}
+
 	public Depth append(DepthSymbol symbol) {
 		var newList = new ArrayList<DepthSymbol>(symbols);
 		newList.add(symbol);
@@ -39,6 +43,11 @@ public class Depth {
 
 	public List<DepthSymbol> getSymbols() {
 		return symbols;
+	}
+
+	@Override
+	public String toString() {
+		return symbols.toString();
 	}
 
 }
