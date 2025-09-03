@@ -9,8 +9,17 @@ A lightweight Java library for printing directory structures in a clean, tree-li
   - Limit displayed children statically or dynamically
   - Compact directory chains
 
-**ℹ️ Was developed just for fun, has not been thoroughly tested! May not be suitable for production code 😊**
+> **ℹ️ Was developed just for fun, has not been thoroughly tested! May not be suitable for production code 😊**
 
+* [Usage](#usage)  
+* [Import dependency](#import-dependency)
+* [Options](#options)
+* [Changelog](#changelog) 
+* [Roadmap](#roadmap) 
+* [License](#license) 
+* [Contributing & Contact](#contributing--contact) 
+
+# Usage
 ```java
 // Example: BasicUsage.java
 var printer = FileTreePrettyPrinter.createDefault();
@@ -35,16 +44,6 @@ base/
    │  └─ meAtTheZoo.jpeg
    └─ landscape.jpeg
 ```
-
-
-* [Usage](#usage)  
-* [Import dependency](#import-dependency)
-* [Options](#options)
-* [Changelog](#changelog) 
-* [Roadmap](#roadmap) 
-* [License](#license) 
-* [Contributing & Contact](#contributing--contact) 
-
 
 # Import dependency
 For Maven, import this dependency to your `pom.xml`:
