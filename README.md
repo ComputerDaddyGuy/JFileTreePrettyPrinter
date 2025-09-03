@@ -6,8 +6,9 @@ A lightweight Java library for printing directory structures in a clean, tree-li
 - Customizable:
   - ASCII or Unicode styles for tree rendering
   - Emoji support 🎉
-  - Limit displayed children statically or dynamically
+  - Limit displayed children (fixed value or dynamically)
   - Compact directory chains
+  - Maximum depth
 
 > **ℹ️ Was developed just for fun, has not been thoroughly tested! May not be suitable for production code 😊**
 
