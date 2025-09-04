@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
 import java.util.HashMap;
 import java.util.Map;

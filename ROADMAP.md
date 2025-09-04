@@ -11,6 +11,7 @@
 - [x] Implement emojis for files
 - [x] Unify dir-in-a-row into a single entry option
 - [x] Max depth options
+- [x] Alternative implementation option, just for fun (using DirectoryStream instead of Files.walkFileTree's Visitor)
 - [ ] Cleaner code
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Publish on Maven Central!
@@ -23,4 +24,3 @@
 - [ ] Follow symlink option
 - [ ] Print optional legend for symlink/other file types symbols (at the end of the tree)
 - [ ] File attributes LineRenderer (size, author, createAt, etc.)
-- [ ] Alternative implementation option, just for fun (using DirectoryStream instead of Files.walkFileTree)

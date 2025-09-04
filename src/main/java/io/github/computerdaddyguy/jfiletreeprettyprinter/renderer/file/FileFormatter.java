@@ -1,16 +1,17 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public interface FileFormatter {
 
-	String formatDirectoryBegin(List<Path> dirs, BasicFileAttributes attrs);
+	String formatDirectoryBegin(List<Path> dirs);
 
 	String formatDirectoryException(Path dir, IOException exc);
 
@@ -18,9 +19,9 @@ public interface FileFormatter {
 
 	String formatFileException(Path file, IOException exc);
 
-	String formatChildLimitReached(Set<Path> notVisited);
+	String formatChildLimitReached(Collection<Path> notVisited);
 
-	String formatMaxDepthReached(Set<Path> notVisited);
+	String formatMaxDepthReached(Depth depth);
 
 	static FileFormatter createDefault() {
 		return new DefaultFileFormatter();

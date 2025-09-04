@@ -1,10 +1,11 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.impl.visitor;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +60,7 @@ class ChildVisitRegister {
 		records.removeLast();
 	}
 
-	public Set<Path> notVisitedInCurrentDir() {
+	public Collection<Path> notVisitedInCurrentDir() {
 		return records.isEmpty() ? Set.of() : records.getLast().notVisited();
 	}
 

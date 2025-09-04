@@ -1,14 +1,14 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file.FileFormatter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.tree.TreeFormatter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.RenderingOptions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file.FileFormatter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.tree.TreeFormatter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 public interface LineRenderer {
 
 	@Nullable
-	String renderDirectoryBegin(Depth depth, List<Path> dirs, BasicFileAttributes attrs);
+	String renderDirectoryBegin(Depth depth, List<Path> dirs);
 
 	@Nullable
 	String renderDirectoryException(Depth depth, Path dir, IOException exc);
@@ -28,7 +28,10 @@ public interface LineRenderer {
 	String renderFileException(Depth depth, Path file, IOException exc);
 
 	@Nullable
-	String renderDirectoryInterrupted(Depth depth, Path dir, Set<Path> notVisited, DirectoryInterruptionCause cause);
+	String renderChildrenLimitReached(Depth depth, Collection<Path> notVisited);
+
+	@Nullable
+	String renderMaxDepthReached(Depth depth);
 
 	/**
 	 * Create a new line renderer, using given options

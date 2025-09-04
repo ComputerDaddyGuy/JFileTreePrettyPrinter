@@ -1,8 +1,7 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Map;
 import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
@@ -29,11 +28,11 @@ class DefaultEmojiMapping implements EmojiMapping {
 	}
 
 	@Override
-	public @Nullable String getFileEmoji(Path file, BasicFileAttributes attrs) {
-		if (attrs.isDirectory()) {
+	public @Nullable String getFileEmoji(Path path) {
+		if (path.toFile().isDirectory()) {
 			return directoryEmoji;
 		}
-		var fileName = file.getFileName().toString().toLowerCase();
+		var fileName = path.getFileName().toString().toLowerCase();
 		var emoji = exactFileNamesEmojis.get(fileName);
 		if (emoji == null) {
 			String extension = extractExtension(fileName);

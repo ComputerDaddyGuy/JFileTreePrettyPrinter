@@ -1,8 +1,7 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -13,7 +12,7 @@ public interface EmojiMapping {
 	 * Get the emoji to display for the given file (i.e. the file type icon).
 	 */
 	@Nullable
-	String getFileEmoji(Path file, BasicFileAttributes attrs);
+	String getFileEmoji(Path file);
 
 	/**
 	 * Get the emoji to display for the given file, in case of error.

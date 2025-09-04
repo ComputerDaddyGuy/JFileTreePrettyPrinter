@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.depth;
 
 import org.jspecify.annotations.NullMarked;
 

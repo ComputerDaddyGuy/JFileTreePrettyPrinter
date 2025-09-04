@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.depth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ public class Depth {
 
 	private final List<DepthSymbol> symbols;
 
-	public Depth() {
-		this(List.of());
+	public static Depth createNewEmpty() {
+		return new Depth(List.of());
 	}
 
 	protected Depth(List<DepthSymbol> symbols) {

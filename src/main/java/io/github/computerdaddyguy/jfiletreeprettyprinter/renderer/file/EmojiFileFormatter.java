@@ -1,11 +1,12 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -19,8 +20,8 @@ class EmojiFileFormatter implements FileFormatter {
 		this.emojiMapping = Objects.requireNonNull(emojiMapping, "emoji mapping is null");
 	}
 
-	private String getFileEmojiPrefix(Path p, BasicFileAttributes attrs) {
-		var emoji = emojiMapping.getFileEmoji(p, attrs);
+	private String getFileEmojiPrefix(Path p) {
+		var emoji = emojiMapping.getFileEmoji(p);
 		return getEmojiPrefix(emoji);
 	}
 
@@ -37,8 +38,8 @@ class EmojiFileFormatter implements FileFormatter {
 	}
 
 	@Override
-	public String formatDirectoryBegin(List<Path> dirs, BasicFileAttributes attrs) {
-		return getFileEmojiPrefix(dirs.getLast(), attrs) + decorated.formatDirectoryBegin(dirs, attrs);
+	public String formatDirectoryBegin(List<Path> dirs) {
+		return getFileEmojiPrefix(dirs.getLast()) + decorated.formatDirectoryBegin(dirs);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ class EmojiFileFormatter implements FileFormatter {
 
 	@Override
 	public String formatFile(Path file, BasicFileAttributes attrs) {
-		return getFileEmojiPrefix(file, attrs) + decorated.formatFile(file, attrs);
+		return getFileEmojiPrefix(file) + decorated.formatFile(file, attrs);
 	}
 
 	@Override
@@ -57,13 +58,13 @@ class EmojiFileFormatter implements FileFormatter {
 	}
 
 	@Override
-	public String formatChildLimitReached(Set<Path> notVisited) {
+	public String formatChildLimitReached(Collection<Path> notVisited) {
 		return decorated.formatChildLimitReached(notVisited);
 	}
 
 	@Override
-	public String formatMaxDepthReached(Set<Path> notVisited) {
-		return decorated.formatMaxDepthReached(notVisited);
+	public String formatMaxDepthReached(Depth depth) {
+		return decorated.formatMaxDepthReached(depth);
 	}
 
 }

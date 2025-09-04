@@ -1,16 +1,20 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.VisitingOptions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.ImplementationOptions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.RenderingOptions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.VisitingOptions;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
+public class PrettyPrintOptions implements VisitingOptions, RenderingOptions, ImplementationOptions {
 
 	private Function<Path, Integer> childrenLimitFunction = p -> -1;
+
+	private Implementation impl = Implementation.RECURSIVE;
+//	private Implementation impl = Implementation.VISITOR;
 
 	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
 	private boolean emojis = false;
@@ -26,6 +30,23 @@ public class PrettyPrintOptions implements VisitingOptions, RenderingOptions {
 	 */
 	public static PrettyPrintOptions createDefault() {
 		return new PrettyPrintOptions();
+	}
+
+	// ----------------------------------------------
+
+	public enum Implementation {
+		VISITOR,
+		RECURSIVE;
+	}
+
+	@Override
+	public Implementation getImplementation() {
+		return impl;
+	}
+
+	public PrettyPrintOptions withImplementation(Implementation impl) {
+		this.impl = Objects.requireNonNull(impl, "implementation is null");
+		return this;
 	}
 
 	// ----------------------------------------------

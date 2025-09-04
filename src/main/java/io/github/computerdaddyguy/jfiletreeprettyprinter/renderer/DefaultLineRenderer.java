@@ -1,14 +1,14 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file.FileFormatter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.tree.TreeFormatter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file.FileFormatter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.tree.TreeFormatter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -24,8 +24,8 @@ class DefaultLineRenderer implements LineRenderer {
 	}
 
 	@Override
-	public String renderDirectoryBegin(Depth depth, List<Path> dirs, BasicFileAttributes attrs) {
-		return treeFormatter.format(depth) + fileFormatter.formatDirectoryBegin(dirs, attrs);
+	public String renderDirectoryBegin(Depth depth, List<Path> dirs) {
+		return treeFormatter.format(depth) + fileFormatter.formatDirectoryBegin(dirs);
 	}
 
 	@Override
@@ -44,12 +44,13 @@ class DefaultLineRenderer implements LineRenderer {
 	}
 
 	@Override
-	public @Nullable String renderDirectoryInterrupted(Depth depth, Path dir, Set<Path> notVisited, DirectoryInterruptionCause cause) {
-		return treeFormatter.format(depth) + switch (cause) {
-			case CHILDREN_LIMIT -> fileFormatter.formatChildLimitReached(notVisited);
-			case MAX_DEPTH -> fileFormatter.formatMaxDepthReached(notVisited);
-		};
+	public @Nullable String renderChildrenLimitReached(Depth depth, Collection<Path> notVisited) {
+		return treeFormatter.format(depth) + fileFormatter.formatChildLimitReached(notVisited);
+	}
 
+	@Override
+	public @Nullable String renderMaxDepthReached(Depth depth) {
+		return treeFormatter.format(depth) + fileFormatter.formatMaxDepthReached(depth);
 	}
 
 }

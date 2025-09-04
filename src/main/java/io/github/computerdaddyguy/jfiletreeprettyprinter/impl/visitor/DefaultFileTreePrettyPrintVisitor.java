@@ -1,8 +1,9 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.impl.visitor;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.DirectoryInterruptionCause;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.LineRenderer;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.DepthSymbol;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.LineRenderer;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
@@ -31,7 +32,7 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 		this.lineRenderer = Objects.requireNonNull(lineRenderer, "lineRenderer is null");
 
 		this.buff = new StringBuilder();
-		this.depth = new Depth();
+		this.depth = Depth.createNewEmpty();
 		this.register = new ChildVisitRegister(options.getChildrenLimitFunction());
 	}
 
@@ -64,7 +65,7 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 		}
 
 		if (doRenderDir) {
-			appendNewLine(lineRenderer.renderDirectoryBegin(depth, directoryChain, attrs));
+			appendNewLine(lineRenderer.renderDirectoryBegin(depth, directoryChain));
 			directoryChain.clear();
 			depth = depth.append(DepthSymbol.NON_LAST_FILE); // assume not last until proven otherwise
 		}
@@ -124,9 +125,9 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 	}
 
 	private void handleMaxDepth(Path dir, BasicFileAttributes attrs) {
-		appendNewLine(lineRenderer.renderDirectoryBegin(depth, directoryChain, attrs));
+		appendNewLine(lineRenderer.renderDirectoryBegin(depth, directoryChain));
 		depth = depth.append(DepthSymbol.LAST_FILE);
-		appendNewLine(lineRenderer.renderDirectoryInterrupted(depth, dir, register.notVisitedInCurrentDir(), DirectoryInterruptionCause.MAX_DEPTH));
+		appendNewLine(lineRenderer.renderMaxDepthReached(depth));
 		depth = depth.pop();
 		directoryChain.clear();
 	}
@@ -135,7 +136,7 @@ class DefaultFileTreePrettyPrintVisitor implements FileTreePrettyPrintVisitor {
 		var limitReached = register.hasSomeNotVisitedChildren();
 		if (limitReached) {
 			depth = depth.append(DepthSymbol.LAST_FILE);
-			appendNewLine(lineRenderer.renderDirectoryInterrupted(depth, dir, register.notVisitedInCurrentDir(), DirectoryInterruptionCause.CHILDREN_LIMIT));
+			appendNewLine(lineRenderer.renderChildrenLimitReached(depth, register.notVisitedInCurrentDir()));
 			depth = depth.pop();
 			return FileVisitResult.SKIP_SIBLINGS;
 		}

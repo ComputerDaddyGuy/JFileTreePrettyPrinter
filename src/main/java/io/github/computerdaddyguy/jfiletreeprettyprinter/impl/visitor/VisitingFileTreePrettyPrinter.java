@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.impl.visitor;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions;

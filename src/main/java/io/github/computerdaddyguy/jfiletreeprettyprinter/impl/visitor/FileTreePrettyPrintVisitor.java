@@ -1,7 +1,7 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.impl.visitor;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.LineRenderer;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.LineRenderer;
 import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import org.jspecify.annotations.NullMarked;

@@ -1,10 +1,11 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.file;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.jspecify.annotations.NullMarked;
 
@@ -12,7 +13,7 @@ import org.jspecify.annotations.NullMarked;
 class DefaultFileFormatter implements FileFormatter {
 
 	@Override
-	public String formatDirectoryBegin(List<Path> dirs, BasicFileAttributes attrs) {
+	public String formatDirectoryBegin(List<Path> dirs) {
 		return dirs.stream()
 			.map(dir -> dir.getFileName().toString() + "/")
 			.collect(Collectors.joining());
@@ -40,16 +41,16 @@ class DefaultFileFormatter implements FileFormatter {
 	}
 
 	@Override
-	public String formatChildLimitReached(Set<Path> notVisited) {
+	public String formatChildLimitReached(Collection<Path> notVisited) {
 		return "... (" + childrenAsString(notVisited) + " skipped)";
 	}
 
 	@Override
-	public String formatMaxDepthReached(Set<Path> notVisited) {
+	public String formatMaxDepthReached(Depth depth) {
 		return "... (max depth reached)";
 	}
 
-	private String childrenAsString(Set<Path> notVisited) {
+	private String childrenAsString(Collection<Path> notVisited) {
 
 		var dirCount = countDirs(notVisited);
 		var fileCount = countFiles(notVisited, dirCount);
@@ -60,7 +61,7 @@ class DefaultFileFormatter implements FileFormatter {
 		return fileText + (!fileText.isEmpty() && !dirText.isEmpty() ? " and " : "") + dirText;
 	}
 
-	private long countDirs(Set<Path> notVisited) {
+	private long countDirs(Collection<Path> notVisited) {
 		return notVisited.stream().filter(path -> path.toFile().isDirectory()).count();
 	}
 
@@ -74,7 +75,7 @@ class DefaultFileFormatter implements FileFormatter {
 		return dirCount + " directories";
 	}
 
-	private long countFiles(Set<Path> notVisited, long dirCount) {
+	private long countFiles(Collection<Path> notVisited, long dirCount) {
 		return notVisited.size() - dirCount;
 	}
 

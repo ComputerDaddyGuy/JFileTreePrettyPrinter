@@ -1,7 +1,7 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.renderer.tree;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.tree;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.visitor.RenderingOptions.TreeFormat;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.RenderingOptions.TreeFormat;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
