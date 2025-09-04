@@ -50,7 +50,6 @@ base/
 For Maven, import this dependency to your `pom.xml`:
 
 ```xml
-<!-- Maven -->
 <dependency>
   <groupId>com.github.computerdaddyguy</groupId>
   <artifactId>jfiletreeprettyprinter</artifactId>
@@ -60,7 +59,6 @@ For Maven, import this dependency to your `pom.xml`:
 
 For Gradle:
 ```
-// Gradle
 implementation "com.github.computerdaddyguy:jfiletreeprettyprinter:0.1.0"
 ```
 
@@ -84,30 +82,14 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     .build();
 ```
 
-<table>
-    <tr>
-        <td>Unicode box drawing</td>
-        <td>Classic ASCII</td>
-    </tr>
-    <tr>
-        <td>
-            <code>tree_format/
-├─ file_1
-├─ file_2
-└─ subFolder/
-   ├─ subFile_1
-   └─ subFile_2</code>
-        </td>
-        <td>
-            <code>tree_format/
+```
+tree_format/
 |-- file_1
 |-- file_2
 `-- subFolder/
     |-- subFile_1
-    `-- subFile_2</code>
-        </td>
-    </tr>
-</table>
+    `-- subFile_2
+```
 
 💡 *Idea for a future version: option to allow usage of custom format*
 
