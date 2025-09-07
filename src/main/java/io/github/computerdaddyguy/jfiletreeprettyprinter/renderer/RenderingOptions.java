@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
 import org.jspecify.annotations.NullMarked;
 

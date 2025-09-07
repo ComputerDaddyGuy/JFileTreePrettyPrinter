@@ -2,7 +2,9 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 class DefaultEmojiMappingBuilder {
 
 	private String directoryEmoji = "📂";

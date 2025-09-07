@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,21 +26,74 @@ public sealed interface TreeEntry {
 			return "DirectoryEntry[dir: " + dir.getFileName() + ", entries: " + entries + "]";
 		}
 
-	}
-
-	final class DirectoryReadingAttributesExceptionEntry implements TreeEntry {
-
-		final Path dir;
-		final IOException exception;
-
-		public DirectoryReadingAttributesExceptionEntry(Path dir, IOException exception) {
-			this.dir = Objects.requireNonNull(dir, "dir is null");
-			this.exception = Objects.requireNonNull(exception, "exception is null");
+		public Path getDir() {
+			return dir;
 		}
 
-		@Override
-		public String toString() {
-			return "DirectoryReadingAttributesExceptionEntry[dir: " + dir.getFileName() + ", exception: " + exception + "]";
+		public List<TreeEntry> getEntries() {
+			return entries;
+		}
+
+	}
+
+	public sealed interface DirectoryExceptionTreeEntry extends TreeEntry {
+
+		Path getDir();
+
+		IOException getException();
+
+		final class DirectoryReadingAttributesExceptionEntry implements DirectoryExceptionTreeEntry {
+
+			final Path dir;
+			final IOException exception;
+
+			public DirectoryReadingAttributesExceptionEntry(Path dir, IOException exception) {
+				this.dir = Objects.requireNonNull(dir, "dir is null");
+				this.exception = Objects.requireNonNull(exception, "exception is null");
+			}
+
+			@Override
+			public String toString() {
+				return "DirectoryReadingAttributesExceptionEntry[dir: " + dir.getFileName() + ", exception: " + exception + "]";
+			}
+
+			@Override
+			public Path getDir() {
+				return dir;
+			}
+
+			@Override
+			public IOException getException() {
+				return exception;
+			}
+
+		}
+
+		final class DirectoryListingExceptionEntry implements DirectoryExceptionTreeEntry {
+
+			final Path dir;
+			final IOException exception;
+
+			public DirectoryListingExceptionEntry(Path dir, IOException exception) {
+				this.dir = Objects.requireNonNull(dir, "dir is null");
+				this.exception = Objects.requireNonNull(exception, "exception is null");
+			}
+
+			@Override
+			public String toString() {
+				return "DirectoryListingExceptionEntry[exception: " + exception + "]";
+			}
+
+			@Override
+			public Path getDir() {
+				return dir;
+			}
+
+			@Override
+			public IOException getException() {
+				return exception;
+			}
+
 		}
 
 	}
@@ -60,6 +113,14 @@ public sealed interface TreeEntry {
 			return "FileEntry[file: " + file.getFileName() + "]";
 		}
 
+		public Path getFile() {
+			return file;
+		}
+
+		public BasicFileAttributes getAttrs() {
+			return attrs;
+		}
+
 	}
 
 	final class FileReadingAttributesExceptionEntry implements TreeEntry {
@@ -77,6 +138,14 @@ public sealed interface TreeEntry {
 			return "FileReadingAttributesExceptionEntry[file: " + file.getFileName() + ", exception: " + exception + "]";
 		}
 
+		public Path getFile() {
+			return file;
+		}
+
+		public IOException getException() {
+			return exception;
+		}
+
 	}
 
 	final class SkippedChildrenEntry implements TreeEntry {
@@ -92,21 +161,8 @@ public sealed interface TreeEntry {
 			return "SkippedChildrenEntry[skippedChildren: " + skippedChildren.stream().map(Path::getFileName).toList() + "]";
 		}
 
-	}
-
-	final class DirectoryListingExceptionEntry implements TreeEntry {
-
-		final Path dir;
-		final IOException exception;
-
-		public DirectoryListingExceptionEntry(Path dir, IOException exception) {
-			this.dir = Objects.requireNonNull(dir, "dir is null");
-			this.exception = Objects.requireNonNull(exception, "exception is null");
-		}
-
-		@Override
-		public String toString() {
-			return "DirectoryListingExceptionEntry[exception: " + exception + "]";
+		public Collection<Path> getSkippedChildren() {
+			return skippedChildren;
 		}
 
 	}
@@ -125,6 +181,10 @@ public sealed interface TreeEntry {
 		@Override
 		public String toString() {
 			return "MaxDepthReachEntry[depth: " + depth + "]";
+		}
+
+		public int getDepth() {
+			return depth;
 		}
 
 	}

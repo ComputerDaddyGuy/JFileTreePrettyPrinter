@@ -1,7 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.RecursiveFileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.visitor.VisitingFileTreePrettyPrinter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.TreeEntryRenderer;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.PathToTreeScanner;
 import java.util.Objects;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
@@ -12,10 +12,9 @@ public class FileTreePrettyPrinterBuilder {
 	private PrettyPrintOptions options = PrettyPrintOptions.createDefault();
 
 	public FileTreePrettyPrinter build() {
-		return switch (options.getImplementation()) {
-			case VISITOR -> new VisitingFileTreePrettyPrinter(options);
-			case RECURSIVE -> new RecursiveFileTreePrettyPrinter(options);
-		};
+		var scanner = PathToTreeScanner.create(options);
+		var renderer = TreeEntryRenderer.create(options);
+		return new DefaultFileTreePrettyPrinter(scanner, renderer);
 	}
 
 	public FileTreePrettyPrinterBuilder withOptions(PrettyPrintOptions options) {

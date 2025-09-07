@@ -1,9 +1,12 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
-import java.io.IOException;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,40 +16,41 @@ import org.jspecify.annotations.NullMarked;
 class DefaultFileFormatter implements FileFormatter {
 
 	@Override
-	public String formatDirectoryBegin(List<Path> dirs) {
+	public String formatDirectoryBegin(DirectoryEntry dirEntry, List<Path> dirs) {
 		return dirs.stream()
 			.map(dir -> dir.getFileName().toString() + "/")
 			.collect(Collectors.joining());
 	}
 
 	@Override
-	public String formatDirectoryException(Path dir, IOException exc) {
-		return dir.getFileName().toString() + "/: " + exc.getMessage();
+	public String formatDirectoryException(DirectoryExceptionTreeEntry dirExceptionEntry) {
+		return dirExceptionEntry.getDir().getFileName().toString() + "/: "
+			+ dirExceptionEntry.getException().getMessage();
 	}
 
 	@Override
-	public String formatFile(Path file, BasicFileAttributes attrs) {
-		var fileNameFormatted = file.getFileName().toString();
-		if (attrs.isSymbolicLink()) {
+	public String formatFile(FileEntry fileEntry) {
+		var fileNameFormatted = fileEntry.getFile().getFileName().toString();
+		if (fileEntry.getAttrs().isSymbolicLink()) {
 			fileNameFormatted += "*";
-		} else if (attrs.isOther()) {
+		} else if (fileEntry.getAttrs().isOther()) {
 			fileNameFormatted += "?";
 		}
 		return fileNameFormatted;
 	}
 
 	@Override
-	public String formatFileException(Path file, IOException exc) {
-		return file.getFileName().toString() + ": " + exc.getMessage();
+	public String formatFileException(FileReadingAttributesExceptionEntry fileReadingAttrsException) {
+		return fileReadingAttrsException.getFile().getFileName().toString() + ": " + fileReadingAttrsException.getException().getMessage();
 	}
 
 	@Override
-	public String formatChildLimitReached(Collection<Path> notVisited) {
-		return "... (" + childrenAsString(notVisited) + " skipped)";
+	public String formatChildLimitReached(SkippedChildrenEntry skippedChildrenEntry) {
+		return "... (" + childrenAsString(skippedChildrenEntry.getSkippedChildren()) + " skipped)";
 	}
 
 	@Override
-	public String formatMaxDepthReached(Depth depth) {
+	public String formatMaxDepthReached(MaxDepthReachEntry maxDepthReachEntry) {
 		return "... (max depth reached)";
 	}
 

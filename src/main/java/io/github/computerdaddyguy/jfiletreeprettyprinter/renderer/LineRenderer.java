@@ -1,37 +1,39 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.options.RenderingOptions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file.FileFormatter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.tree.TreeFormatter;
-import java.io.IOException;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collection;
 import java.util.List;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 @NullMarked
-public interface LineRenderer {
+interface LineRenderer {
 
 	@Nullable
-	String renderDirectoryBegin(Depth depth, List<Path> dirs);
+	String renderDirectoryBegin(Depth depth, DirectoryEntry dirEntry, List<Path> dirs);
 
 	@Nullable
-	String renderDirectoryException(Depth depth, Path dir, IOException exc);
+	String renderDirectoryException(Depth depth, DirectoryExceptionTreeEntry dirExceptionEntry);
 
 	@Nullable
-	String renderFile(Depth depth, Path file, BasicFileAttributes attrs);
+	String renderFile(Depth depth, FileEntry fileEntry);
 
 	@Nullable
-	String renderFileException(Depth depth, Path file, IOException exc);
+	String renderFileException(Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsException);
 
 	@Nullable
-	String renderChildrenLimitReached(Depth depth, Collection<Path> notVisited);
+	String renderChildrenLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry);
 
 	@Nullable
-	String renderMaxDepthReached(Depth depth);
+	String renderMaxDepthReached(Depth depth, MaxDepthReachEntry maxDepthReachEntry);
 
 	/**
 	 * Create a new line renderer, using given options
@@ -39,7 +41,7 @@ public interface LineRenderer {
 	 * @return
 	 */
 	static LineRenderer create(RenderingOptions options) {
-		var treeFormatter = TreeFormatter.getInstance(options.getTreeFormat());
+		var treeFormatter = DepthFormatter.getInstance(options.getTreeFormat());
 
 		var fileFormatter = FileFormatter.createDefault();
 		if (options.areEmojisUsed()) {

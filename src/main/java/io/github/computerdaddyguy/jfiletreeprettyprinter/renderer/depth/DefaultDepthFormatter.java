@@ -1,29 +1,27 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.tree;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.DepthSymbol;
 import java.util.Objects;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-class DefaultTreeFormatter implements TreeFormatter {
+class DefaultDepthFormatter implements DepthFormatter {
 
-	static final TreeFormatter CLASSIC_ASCII = create("|--", "`--", "|  ", "   ", 0, 1);
-	static final TreeFormatter UNICODE_BOX_DRAWING = create("├─", "└─", "│ ", "  ", 0, 1);
+	static final DepthFormatter CLASSIC_ASCII = create("|--", "`--", "|  ", "   ", 0, 1);
+	static final DepthFormatter UNICODE_BOX_DRAWING = create("├─", "└─", "│ ", "  ", 0, 1);
 
 	private final Function<DepthSymbol, String> printFunction;
 	private final String preIndent;
 	private final String postIndent;
 
-	public DefaultTreeFormatter(Function<DepthSymbol, String> printFunction, int spaceBefore, int spaceAfter) {
+	public DefaultDepthFormatter(Function<DepthSymbol, String> printFunction, int spaceBefore, int spaceAfter) {
 		this.printFunction = Objects.requireNonNull(printFunction, "printFunction is null");
 		this.preIndent = " ".repeat(spaceBefore);
 		this.postIndent = " ".repeat(spaceAfter);
 	}
 
-	static TreeFormatter create(String nonLastFile, String lastFile, String skip, String none, int spaceBefore, int spaceAfter) {
-		return new DefaultTreeFormatter(symbol -> switch (symbol) {
+	static DepthFormatter create(String nonLastFile, String lastFile, String skip, String none, int spaceBefore, int spaceAfter) {
+		return new DefaultDepthFormatter(symbol -> switch (symbol) {
 			case NON_LAST_FILE -> nonLastFile;
 			case LAST_FILE -> lastFile;
 			case SKIP -> skip;

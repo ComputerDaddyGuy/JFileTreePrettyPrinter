@@ -2,7 +2,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.options.RenderingOptions.TreeFormat;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.RenderingOptions.TreeFormat;
 import java.nio.file.Path;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;

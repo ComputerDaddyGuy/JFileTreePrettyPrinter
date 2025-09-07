@@ -1,10 +1,13 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
@@ -38,33 +41,35 @@ class EmojiFileFormatter implements FileFormatter {
 	}
 
 	@Override
-	public String formatDirectoryBegin(List<Path> dirs) {
-		return getFileEmojiPrefix(dirs.getLast()) + decorated.formatDirectoryBegin(dirs);
+	public String formatDirectoryBegin(DirectoryEntry dirEntry, List<Path> dirs) {
+		return getFileEmojiPrefix(dirEntry.getDir()) + decorated.formatDirectoryBegin(dirEntry, dirs);
 	}
 
 	@Override
-	public String formatDirectoryException(Path dir, IOException exc) {
-		return getErrorEmojiPrefix(dir, exc) + decorated.formatDirectoryException(dir, exc);
+	public String formatDirectoryException(DirectoryExceptionTreeEntry dirExceptionEntry) {
+		return getErrorEmojiPrefix(dirExceptionEntry.getDir(), dirExceptionEntry.getException())
+			+ decorated.formatDirectoryException(dirExceptionEntry);
 	}
 
 	@Override
-	public String formatFile(Path file, BasicFileAttributes attrs) {
-		return getFileEmojiPrefix(file) + decorated.formatFile(file, attrs);
+	public String formatFile(FileEntry fileEntry) {
+		return getFileEmojiPrefix(fileEntry.getFile()) + decorated.formatFile(fileEntry);
 	}
 
 	@Override
-	public String formatFileException(Path file, IOException exc) {
-		return getErrorEmojiPrefix(file, exc) + decorated.formatFileException(file, exc);
+	public String formatFileException(FileReadingAttributesExceptionEntry fileReadingAttrsException) {
+		return getErrorEmojiPrefix(fileReadingAttrsException.getFile(), fileReadingAttrsException.getException())
+			+ decorated.formatFileException(fileReadingAttrsException);
 	}
 
 	@Override
-	public String formatChildLimitReached(Collection<Path> notVisited) {
-		return decorated.formatChildLimitReached(notVisited);
+	public String formatChildLimitReached(SkippedChildrenEntry skippedChildrenEntry) {
+		return decorated.formatChildLimitReached(skippedChildrenEntry);
 	}
 
 	@Override
-	public String formatMaxDepthReached(Depth depth) {
-		return decorated.formatMaxDepthReached(depth);
+	public String formatMaxDepthReached(MaxDepthReachEntry maxDepthReachEntry) {
+		return decorated.formatMaxDepthReached(maxDepthReachEntry);
 	}
 
 }

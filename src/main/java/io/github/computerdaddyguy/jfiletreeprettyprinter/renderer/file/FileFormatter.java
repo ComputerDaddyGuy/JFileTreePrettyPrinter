@@ -1,27 +1,29 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.depth.Depth;
-import java.io.IOException;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collection;
 import java.util.List;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public interface FileFormatter {
 
-	String formatDirectoryBegin(List<Path> dirs);
+	String formatDirectoryBegin(DirectoryEntry dirEntry, List<Path> dirs);
 
-	String formatDirectoryException(Path dir, IOException exc);
+	String formatDirectoryException(DirectoryExceptionTreeEntry dirExceptionEntry);
 
-	String formatFile(Path file, BasicFileAttributes attrs);
+	String formatFile(FileEntry fileEntry);
 
-	String formatFileException(Path file, IOException exc);
+	String formatFileException(FileReadingAttributesExceptionEntry fileReadingAttrsException);
 
-	String formatChildLimitReached(Collection<Path> notVisited);
+	String formatChildLimitReached(SkippedChildrenEntry skippedChildrenEntry);
 
-	String formatMaxDepthReached(Depth depth);
+	String formatMaxDepthReached(MaxDepthReachEntry maxDepthReachEntry);
 
 	static FileFormatter createDefault() {
 		return new DefaultFileFormatter();

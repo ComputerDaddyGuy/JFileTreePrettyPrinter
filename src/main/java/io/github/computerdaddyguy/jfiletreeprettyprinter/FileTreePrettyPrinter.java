@@ -28,11 +28,6 @@ public interface FileTreePrettyPrinter {
 	}
 
 	/**
-	 * Get the options of this pretty printer.
-	 */
-	PrettyPrintOptions getOptions();
-
-	/**
 	 * Create a pretty printer with default options.
 	 * 
 	 * @see PrettyPrintOptions#createDefault()

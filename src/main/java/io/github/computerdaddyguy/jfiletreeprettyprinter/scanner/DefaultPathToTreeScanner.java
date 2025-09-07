@@ -1,13 +1,11 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.handler;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.TreeEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.TreeEntry.DirectoryListingExceptionEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.TreeEntry.FileReadingAttributesExceptionEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.TreeEntry.MaxDepthReachEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.impl.recursive.TreeEntry.SkippedChildrenEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry.DirectoryListingExceptionEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,16 +16,20 @@ import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-class DefaultPathToTreeMapper implements PathToTreeMapper {
+class DefaultPathToTreeScanner implements PathToTreeScanner {
 
-	private final PrettyPrintOptions options;
+	private final ScanningOptions options;
 
-	public DefaultPathToTreeMapper(PrettyPrintOptions options) {
+	public DefaultPathToTreeScanner(ScanningOptions options) {
 		this.options = Objects.requireNonNull(options, "options is null");
 	}
 
 	@Override
-	public TreeEntry handle(int depth, Path fileOrDir) {
+	public TreeEntry scan(Path fileOrDir) {
+		return handle(0, fileOrDir);
+	}
+
+	private TreeEntry handle(int depth, Path fileOrDir) {
 		return fileOrDir.toFile().isDirectory()
 			? handleDirectory(depth, fileOrDir)
 			: handleFile(fileOrDir);

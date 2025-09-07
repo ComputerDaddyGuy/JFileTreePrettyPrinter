@@ -10,7 +10,8 @@ A lightweight Java library for printing directory structures in a clean, tree-li
   - Compact directory chains
   - Maximum depth
 
-> **ℹ️ Was developed just for fun, has not been thoroughly tested! May not be suitable for production code 😊**
+> [!CAUTION]
+> This lib was developed just for fun, and has not been thoroughly tested! May not be suitable for production code 😊
 
 * [Usage](#usage)  
 * [Import dependency](#import-dependency)
@@ -53,7 +54,7 @@ For Maven, import this dependency to your `pom.xml`:
 <dependency>
   <groupId>com.github.computerdaddyguy</groupId>
   <artifactId>jfiletreeprettyprinter</artifactId>
-  <version>0.1.0</version>
+  <version>0.0.1</version>
 </dependency>
 ```
 
@@ -91,7 +92,8 @@ tree_format/
     `-- subFile_2
 ```
 
-💡 *Idea for a future version: option to allow usage of custom format*
+> [!TIP]
+> *Idea for a future version: option to allow usage of custom format*
 
 
 ## Emojis ❤️
@@ -122,7 +124,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 └─ 🎬 file.avi
 ```
 
-💡 *Idea for a future version: option to allow custom emoji mapping*
+> [!TIP]
+> *Idea for a future version: option to allow custom emoji mapping*
 
 ## Children limit
 You can set a fixed limit to the number of children displayed for each directory.
@@ -176,7 +179,8 @@ children_limit_dynamic/
    └─ ... (9 files skipped)
 ```
 
-💡 *Idea for a future version: helper for custom basic functions (by name, prefix, regex, etc.)*
+> [!TIP]
+> *Idea for a future version: helper for custom basic functions (by name, prefix, regex, etc.)*
 
 ## Compact directories
 Directories chain with single directory child are fully expanded by default, but you can compact them into a single tree entry.

@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.depth;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth;
 
 import java.util.ArrayList;
 import java.util.List;

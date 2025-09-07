@@ -3,7 +3,9 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 import java.nio.file.Path;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public final class PathPredicates {
 
 	private PathPredicates() {
