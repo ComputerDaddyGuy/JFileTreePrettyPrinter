@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.RenderingOptions.TreeFormat;
 import java.nio.file.Path;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -15,13 +15,13 @@ abstract class AbstractDirectoryPrettyPrintTest {
 
 	protected static Path targetPath;
 
-	protected FileTreePrettyPrinter customize(Function<PrettyPrintOptions, PrettyPrintOptions> customizer) {
+	protected FileTreePrettyPrinter customize(UnaryOperator<PrettyPrintOptions> customizer) {
 		var builder = FileTreePrettyPrinter.builder();
 		builder.customizeOptions(customizer);
 		return builder.build();
 	}
 
-	protected void run(Function<PrettyPrintOptions, PrettyPrintOptions> customizer, String expected) {
+	protected void run(UnaryOperator<PrettyPrintOptions> customizer, String expected) {
 		var printer = customize(customizer);
 		var actual = printer.prettyPrint(targetPath);
 		assertThat(actual).isEqualTo(expected);

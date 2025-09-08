@@ -4,13 +4,13 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.RenderingOptio
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.ScanningOptions;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
-	private Function<Path, Integer> childrenLimitFunction = p -> -1;
+	private ToIntFunction<Path> childrenLimitFunction = p -> -1;
 
 	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
 	private boolean emojis = false;
@@ -31,7 +31,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	// ----------------------------------------------
 
 	@Override
-	public Function<Path, Integer> getChildrenLimitFunction() {
+	public ToIntFunction<Path> getChildrenLimitFunction() {
 		return childrenLimitFunction;
 	}
 
@@ -52,7 +52,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * 
 	 * @param childrenLimitFunction	The dynamic limitation function, cannot be <code>null</code>. A negative computed value means no limit.
 	 */
-	public PrettyPrintOptions withChildrenLimitFunction(Function<Path, Integer> childrenLimitFunction) {
+	public PrettyPrintOptions withChildrenLimitFunction(ToIntFunction<Path> childrenLimitFunction) {
 		this.childrenLimitFunction = Objects.requireNonNull(childrenLimitFunction, "childrenLimitFunction is null");
 		return this;
 	}

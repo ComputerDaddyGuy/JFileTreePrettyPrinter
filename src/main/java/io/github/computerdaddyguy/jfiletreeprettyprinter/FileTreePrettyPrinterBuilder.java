@@ -3,7 +3,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.TreeEntryRenderer;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.PathToTreeScanner;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -22,7 +22,7 @@ public class FileTreePrettyPrinterBuilder {
 		return this;
 	}
 
-	public FileTreePrettyPrinterBuilder customizeOptions(Function<PrettyPrintOptions, PrettyPrintOptions> optionsCustomizer) {
+	public FileTreePrettyPrinterBuilder customizeOptions(UnaryOperator<PrettyPrintOptions> optionsCustomizer) {
 		Objects.requireNonNull(optionsCustomizer, "optionsCustomizer is null");
 		var newOptions = optionsCustomizer.apply(this.options);
 		this.options = Objects.requireNonNull(newOptions, "new options after customization is null");

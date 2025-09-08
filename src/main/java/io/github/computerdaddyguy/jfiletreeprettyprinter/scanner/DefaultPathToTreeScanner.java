@@ -43,7 +43,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		}
 
 		var childrenEntries = new ArrayList<TreeEntry>();
-		int maxChildrenEntries = options.getChildrenLimitFunction().apply(dir);
+		int maxChildrenEntries = options.getChildrenLimitFunction().applyAsInt(dir);
 
 		try (var childrenStream = Files.newDirectoryStream(dir)) {
 			var it = childrenStream.iterator();

@@ -1,13 +1,12 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructureCreator;
-import java.io.IOException;
 import org.junit.jupiter.api.BeforeAll;
 
 class Directory_mixed1_Test extends AbstractDirectoryPrettyPrintTest {
 
 	@BeforeAll
-	static void setup() throws IOException {
+	static void setup() {
 		// @formatter:off
 		targetPath = FileStructureCreator
 			.forTargetPath(root)

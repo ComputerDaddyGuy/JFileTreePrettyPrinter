@@ -47,13 +47,13 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 
 	private void renderDirectory(StringBuilder buff, Depth depth, DirectoryEntry dirEntry, List<Path> compactPaths) {
 
-		if (options.areCompactDirectoriesUsed()) {
-			if (dirEntry.getEntries().size() == 1 && dirEntry.getEntries().get(0) instanceof DirectoryEntry childDirEntry) {
-				var newCompactPaths = new ArrayList<>(compactPaths);
-				newCompactPaths.add(childDirEntry.getDir());
-				renderDirectory(buff, depth, childDirEntry, newCompactPaths);
-				return;
-			}
+		if (options.areCompactDirectoriesUsed()
+			&& dirEntry.getEntries().size() == 1
+			&& dirEntry.getEntries().get(0) instanceof DirectoryEntry childDirEntry) {
+			var newCompactPaths = new ArrayList<>(compactPaths);
+			newCompactPaths.add(childDirEntry.getDir());
+			renderDirectory(buff, depth, childDirEntry, newCompactPaths);
+			return;
 		}
 
 		buff.append(lineRenderer.renderDirectoryBegin(depth, dirEntry, compactPaths));

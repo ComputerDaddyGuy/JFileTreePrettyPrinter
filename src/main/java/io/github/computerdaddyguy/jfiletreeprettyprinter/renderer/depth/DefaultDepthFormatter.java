@@ -36,14 +36,10 @@ class DefaultDepthFormatter implements DepthFormatter {
 		var it = depth.getSymbols().iterator();
 		while (it.hasNext()) {
 			var symbol = it.next();
-			if (symbol == DepthSymbol.LAST_FILE) {
-				if (it.hasNext()) {
-					symbol = DepthSymbol.NONE;
-				}
-			} else if (symbol == DepthSymbol.NON_LAST_FILE) {
-				if (it.hasNext()) {
-					symbol = DepthSymbol.SKIP;
-				}
+			if (symbol == DepthSymbol.LAST_FILE && it.hasNext()) {
+				symbol = DepthSymbol.NONE;
+			} else if (symbol == DepthSymbol.NON_LAST_FILE && it.hasNext()) {
+				symbol = DepthSymbol.SKIP;
 			}
 			buff.append(format(symbol));
 		}

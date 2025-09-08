@@ -13,10 +13,6 @@ public class FileStructureCreator {
 		this.currentDir = currentDir;
 	}
 
-//	public static FileStructureCreator forRoot(Path root) {
-//		return new FileStructureCreator(null, root);
-//	}
-
 	public static FileStructureCreator forTargetPath(Path root) {
 		var newDir = root.resolve("targetPath");
 		var created = newDir.toFile().mkdir();
