@@ -11,10 +11,12 @@ A lightweight Java library for printing directory structures in a clean, tree-li
   - Maximum depth
 
 > [!CAUTION]
-> This lib was developed just for fun, and has not been thoroughly tested!
+> This lib was developed just for fun, and has not been thoroughly tested!  
 > May not be suitable for production code 😊
 
-![JFileTreePrettyPrint basic usage](./assets/basic_usage.jpg)
+<p align="center">
+	![JFileTreePrettyPrint basic usage](./assets/basic_usage.jpg)
+</p>
 
 * [Usage](#usage)  
 * [Import dependency](#import-dependency)
