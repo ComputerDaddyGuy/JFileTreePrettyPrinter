@@ -15,7 +15,7 @@ A lightweight Java library for printing directory structures in a clean, tree-li
 > May not be suitable for production code 😊
 
 <p align="center">
-	![JFileTreePrettyPrint basic usage](./assets/basic_usage.jpg)
+![JFileTreePrettyPrint basic usage](./assets/basic_usage.jpg)
 </p>
 
 * [Usage](#usage)  
