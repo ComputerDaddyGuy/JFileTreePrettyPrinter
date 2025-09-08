@@ -1,21 +1,18 @@
 # JFileTreePrettyPrint
 
 A lightweight Java library for printing directory structures in a clean, tree-like format.
-
-- Print folder trees like Unix `tree`
-- Customizable:
-  - ASCII or Unicode styles for tree rendering
-  - Emoji support 🎉
-  - Limit displayed children (fixed value or dynamically)
-  - Compact directory chains
-  - Maximum depth
+- Various styles for tree rendering
+- Emoji support 🎉
+- Limit displayed children (fixed value or dynamically)
+- Compact directory chains
+- Maximum depth
 
 > [!CAUTION]
 > This lib was developed just for fun, and has not been thoroughly tested!  
 > May not be suitable for production code 😊
 
 <p align="center">
-![JFileTreePrettyPrint basic usage](./assets/basic_usage.jpg)
+	<img src="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/assets/basic_usage.jpg?raw=true" alt="JFileTreePrettyPrint basic usage"/>
 </p>
 
 * [Usage](#usage)  
@@ -84,7 +81,7 @@ The default is `UNICODE_BOX_DRAWING`, supported by all terminals, but you can al
 ```java
 // Example: FileTreeFormat.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withTreeFormat(TreeFormat.CLASSIC_ASCII)) // UNICODE_BOX_DRAWING (default) or CLASSIC_ASCII
+    .customizeOptions(options -> options.withTreeFormat(TreeFormat.CLASSIC_ASCII))
     .build();
 ```
 
@@ -143,7 +140,7 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 ```
 
 ```
-static_children_limit/
+children_limit_static/
 ├─ file_0_1
 ├─ folder_1/
 │  ├─ file_1_1
