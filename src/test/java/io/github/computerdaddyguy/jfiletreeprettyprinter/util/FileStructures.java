@@ -12,40 +12,27 @@ public final class FileStructures {
 		// @formatter:off
 		return FileStructureCreator
 			.forTargetPath(root)
-			.up()
 			.getPath()
 			;
 		// @formatter:on
 	}
 
-	public static Path oneFileDirectory(Path root) {
+	public static Path simpleDirectoryWithFiles(Path root, int fileCount) {
 		// @formatter:off
 		return FileStructureCreator
 			.forTargetPath(root)
-				.createFiles("file", 1)
-			.up()
+				.createFiles("file", fileCount)
 			.getPath()
 			;
 		// @formatter:on
 	}
 
-	public static Path twoFileDirectory(Path root) {
+	public static Path simpleDirectoryWithFilesAndFolders(Path root, int fileCount, int dirCount) {
 		// @formatter:off
 		return FileStructureCreator
 			.forTargetPath(root)
-				.createFiles("file", 2)
-			.up()
-			.getPath()
-			;
-		// @formatter:on
-	}
-
-	public static Path treeFileDirectory(Path root) {
-		// @formatter:off
-		return FileStructureCreator
-			.forTargetPath(root)
-				.createFiles("file", 3)
-			.up()
+				.createFiles("file", fileCount)
+				.createDirectories("folder", dirCount)
 			.getPath()
 			;
 		// @formatter:on

@@ -50,4 +50,17 @@ public class Depth {
 		return symbols.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(symbols);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Depth other) {
+			return Objects.equals(symbols, other.symbols);
+		}
+		return false;
+	}
+
 }

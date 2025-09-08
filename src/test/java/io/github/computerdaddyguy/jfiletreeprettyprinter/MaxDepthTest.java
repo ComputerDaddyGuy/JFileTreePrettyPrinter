@@ -27,7 +27,7 @@ class MaxDepthTest {
 
 	@Test
 	void dirWithFilesOnly() {
-		var path = FileStructures.treeFileDirectory(root);
+		var path = FileStructures.simpleDirectoryWithFiles(root, 3);
 		var result = printer.prettyPrint(path);
 		var expected = """
 			targetPath/

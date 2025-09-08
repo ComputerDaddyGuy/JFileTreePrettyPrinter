@@ -8,13 +8,12 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-class CompactDirectoriesTest {
+class BasicUsageTest {
 
 	@TempDir
 	private Path root;
 
 	private FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-		.customizeOptions(options -> options.withCompactDirectories(true))
 		.build();
 
 	@Test
@@ -44,37 +43,40 @@ class CompactDirectoriesTest {
 			.getPath();
 		var result = printer.prettyPrint(path);
 		var expected = """
-			targetPath/dir1/""";
-		assertThat(result).isEqualTo(expected);
-	}
-
-	@Test
-	void dirWithOneDirAndOneFile() {
-		var path = FileStructureCreator.forTargetPath(root)
-			.createDirectory("dir1")
-			.createFile("file1")
-			.getPath();
-		var result = printer.prettyPrint(path);
-		var expected = """
 			targetPath/
-			├─ dir1/
-			└─ file1""";
+			└─ dir1/""";
 		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
-	void dirWithTwoDirs() {
+	void complex1() {
+		// @formatter:off
 		var path = FileStructureCreator
 			.forTargetPath(root)
-			.createDirectory("dir1")
-			.createDirectory("dir2")
-			.up()
-			.getPath();
+				.createAndEnterDirectory("level_1")
+					.createAndEnterDirectory("level_1_1")
+						.createFiles("file", 2)
+					.up()
+				.up()
+				.createAndEnterDirectory("level_2")
+					.createAndEnterDirectory("level_2_1")
+						.createFiles("file", 2)
+					.up()
+				.up()
+			.getPath()
+			;
+		// @formatter:on
 		var result = printer.prettyPrint(path);
 		var expected = """
 			targetPath/
-			├─ dir1/
-			└─ dir2/""";
+			├─ level_1/
+			│  └─ level_1_1/
+			│     ├─ file1
+			│     └─ file2
+			└─ level_2/
+			   └─ level_2_1/
+			      ├─ file1
+			      └─ file2""";
 		assertThat(result).isEqualTo(expected);
 	}
 
