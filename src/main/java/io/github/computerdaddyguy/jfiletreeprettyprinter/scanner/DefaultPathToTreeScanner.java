@@ -13,6 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -46,7 +47,9 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		int maxChildrenEntries = options.getChildrenLimitFunction().applyAsInt(dir);
 
 		try (var childrenStream = Files.newDirectoryStream(dir)) {
-			var it = childrenStream.iterator();
+			var it = StreamSupport.stream(childrenStream.spliterator(), false)
+				.sorted(options.fileComparator())
+				.iterator();
 			var childCount = 0;
 			while (it.hasNext()) {
 				childCount++;
