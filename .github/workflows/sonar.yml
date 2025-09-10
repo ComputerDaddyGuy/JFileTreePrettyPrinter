@@ -1,0 +1,26 @@
+name: SonarQube Analysis
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run SonarQube
+        run: mvn clean verify sonar:sonar -Dsonar.projectKey=ComputerDaddyGuy_JFileTreePrettyPrinter 
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
