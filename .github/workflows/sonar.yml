@@ -2,9 +2,11 @@ name: SonarQube Analysis
 
 on:
   pull_request:
+    branches: [ main, develop ]
   push:
     branches:
       - main
+      - develop
 
 jobs:
   sonar:
@@ -13,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+	    with:
+	      fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -20,7 +24,15 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+	  - name: Cache Maven packages
+	    uses: actions/cache@v4
+	    with:
+	      path: ~/.m2
+	      key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+	      restore-keys: ${{ runner.os }}-m2
+			  
       - name: Run SonarQube
-        run: mvn clean verify sonar:sonar -Dsonar.projectKey=ComputerDaddyGuy_JFileTreePrettyPrinter 
+        run: mvn -B clean verify sonar:sonar -Dsonar.projectKey=ComputerDaddyGuy_JFileTreePrettyPrinter -Dsonar.organization=computerdaddyguy
         env:
+		  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
