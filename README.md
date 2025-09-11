@@ -51,21 +51,8 @@ base/
 ```
 
 # Import dependency
-For Maven, import this dependency to your `pom.xml`:
-
-```xml
-<dependency>
-  <groupId>com.github.computerdaddyguy</groupId>
-  <artifactId>jfiletreeprettyprinter</artifactId>
-  <version>0.0.1</version>
-</dependency>
-```
-
-For Gradle:
-```
-implementation "com.github.computerdaddyguy:jfiletreeprettyprinter:0.1.0"
-```
-
+> [!IMPORTANT]
+> Soon 😉
 
 # Options
 
