@@ -16,13 +16,17 @@ A lightweight Java library for printing directory structures in a clean, tree-li
 	<img src="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/assets/basic_usage.jpg?raw=true" alt="JFileTreePrettyPrint basic usage"/>
 </p>
 
-* [Usage](#usage)  
 * [Import dependency](#import-dependency)
+* [Usage](#usage)  
 * [Options](#options)
 * [Changelog](#changelog) 
 * [Roadmap](#roadmap) 
 * [License](#license) 
 * [Contributing & Contact](#contributing--contact) 
+
+# Import dependency
+> [!IMPORTANT]
+> Soon 😉
 
 # Usage
 ```java
@@ -49,10 +53,6 @@ base/
    │  └─ meAtTheZoo.jpeg
    └─ landscape.jpeg
 ```
-
-# Import dependency
-> [!IMPORTANT]
-> Soon 😉
 
 # Options
 
