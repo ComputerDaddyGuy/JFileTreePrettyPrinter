@@ -57,7 +57,7 @@ jobs:
         run: |
           mvn versions:set -DnewVersion=${{ env.RELEASE_VERSION }} -B -q
           git commit -am "Set version to ${{ env.RELEASE_VERSION }}" || echo "No changes"
-          git push origin HEAD
+          git push origin "HEAD:${GITHUB_REF_NAME}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
