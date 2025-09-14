@@ -56,11 +56,6 @@
 		<maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
 
-		<!-- Other properties -->
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectKey>ComputerDaddyGuy_JFileTreePrettyPrinter</sonar.projectKey>
-		<sonar.organization>computerdaddyguy</sonar.organization>
-		
 	</properties>
 
 	<dependencies>
@@ -221,11 +216,6 @@
 						</reports>
 					</reportSet>
 				</reportSets>
-			</plugin>
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>${sonar-maven-plugin.version}</version>
 			</plugin>
 		</plugins>
 	</reporting>
