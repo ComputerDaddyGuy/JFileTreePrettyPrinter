@@ -1,27 +1,30 @@
 # Roadmap
 
 ## Initial version
-- [x] Use JSpecify annotations
-- [x] Regroup all formatting work under single "LineFormatter"
-- [x] Builder with options (depth symbols, emoji, child limit)
-- [x] Unit tests, using @TempDir
-- [x] Pre-defined Path predicates
+
+- [x] Option: tree format Unicode box drawing / classic ASCII
+- [x] Option: use emojis
+- [x] Option: children limit (static & dynamic)
+- [x] Option: compact directories display
+- [x] Option: max directory depth
 - [x] Add examples & README
-- [x] Implement emojis for files
-- [x] Unify dir-in-a-row into a single entry option
-- [x] Max depth options
-- [x] Alternative implementation option, just for fun (using DirectoryStream instead of Files.walkFileTree's Visitor)
-- [x] Cleaner code
-- [ ] Publish on Maven Central!
+- [x] Use JSpecify annotations
+- [x] Unit tests, using @TempDir
+- [x] Mutation testing
+- [x] Pre-defined Path predicates
+- [x] Publish on Maven Central!
+
+## Next version
+- [ ] Directory children limitation function helper
+- [ ] More default emojis
+- [ ] Filtering
+- [ ] Ordering
 
 ## Other ideas
-- [ ] Directory children limitation function helper
 - [ ] Custom tree format option
 - [ ] Custom emojis option
 - [ ] Color option
-- [ ] Filtering
 - [ ] Follow symlink option
 - [ ] Print optional legend for symlink/other file types symbols (at the end of the tree)
 - [ ] File attributes LineRenderer (size, author, createAt, etc.)
 - [ ] Refactor unit tests (custom assert?)
-- [ ] Mutation testing
