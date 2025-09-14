@@ -25,8 +25,20 @@ A lightweight Java library for printing directory structures in a clean, tree-li
 * [Contributing & Contact](#contributing--contact) 
 
 # Import dependency
-> [!IMPORTANT]
-> Soon 😉
+For Maven, import this dependency to your `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>io.github.computerdaddyguy</groupId>
+  <artifactId>jfiletreeprettyprinter</artifactId>
+  <version>0.0.1</version>
+</dependency>
+```
+
+For Gradle:
+```
+implementation "io.github.computerdaddyguy:jfiletreeprettyprinter:0.0.1"
+```
 
 # Usage
 ```java
