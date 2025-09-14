@@ -21,3 +21,6 @@
   - Few minutes later, artifact is available on Maven Central 🎉
 
 - **Merge `main` back into `develop` branch**
+
+- **In `develop` branch:**
+  - Update `pom.xml` to increment version and add `-SNAPSHOT` agin
