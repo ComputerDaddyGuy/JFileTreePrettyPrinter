@@ -35,7 +35,7 @@ jobs:
           echo "Git tag: $RELEASE_VERSION"
           echo "Pom version: $POM_VERSION"
 
-          if [ "${RELEASE_VERSION}-SNAPSHOT" != "$POM_VERSION" ]; then
+          if [ "$RELEASE_VERSION" != "$POM_VERSION" ]; then
             echo "Error: Git tag ($RELEASE_VERSION) does not match pom.xml version ($POM_VERSION)"
             exit 1
           fi
@@ -52,14 +52,6 @@ jobs:
           VERSION=${TAG_NAME#v}
           echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
         shell: bash
-
-      - name: Update pom.xml to release version
-        run: |
-          mvn versions:set -DnewVersion=${{ env.RELEASE_VERSION }} -B -q
-          git commit -am "Set version to ${{ env.RELEASE_VERSION }}" || echo "No changes"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
         run: mvn clean verify -B
