@@ -39,6 +39,8 @@ jobs:
             echo "Error: Git tag ($RELEASE_VERSION) does not match pom.xml version ($POM_VERSION)"
             exit 1
           fi
+		  
+          echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
         shell: bash
 
       - name: Set up Git
@@ -48,18 +50,11 @@ jobs:
 
       - name: Update pom.xml to release version
         run: |
-          mvn versions:set -DnewVersion=${RELEASE_VERSION} -B -q
-          git commit -am "Set version to ${RELEASE_VERSION}" || echo "No changes"
+          mvn versions:set -DnewVersion=${{ env.RELEASE_VERSION }} -B -q
+          git commit -am "Set version to ${{ env.RELEASE_VERSION }}" || echo "No changes"
           git push origin HEAD:main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract release version
-        run: |
-          TAG_NAME=${GITHUB_REF_NAME}
-          VERSION=${TAG_NAME#v}
-          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
-        shell: bash
 
       - name: Run tests
         run: mvn clean verify -B
@@ -73,7 +68,7 @@ jobs:
 
       - name: Bump to next patch snapshot
         run: |
-          CURRENT=${RELEASE_VERSION}
+          CURRENT=${{ env.RELEASE_VERSION }}
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
           NEXT_PATCH=$((PATCH+1))
           NEXT_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-SNAPSHOT"
