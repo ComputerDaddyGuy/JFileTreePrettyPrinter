@@ -5,9 +5,9 @@
   - Ensure `develop` branch is [Sonar-ready](https://sonarcloud.io/summary/new_code?id=ComputerDaddyGuy_JFileTreePrettyPrinter&branch=develop)
 
 - **Merge `develop` into `main` branch**
+  - Note: `pom.xml` must have `X.Y.Z-SNAPSHOT` version
 
 - **In `main` branch:**
-  - Update `pom.xml` to remove `-SNAPSHOT` version (keep only `X.Y.Z`)
   - Update `README.md` (with new `X.Y.Z` dependency version)
   - Update `CHANGELOG.md` with changes
   - Update `ROADMAP.md` if necessary
@@ -16,11 +16,9 @@
   - Push code & tags
 
 - **In Github:**
-  - Create new release based on tag: copy content of `CHANGELOG.md` for this version
+  - Create new release based on `vX.Y.Z` tag: copy content of `CHANGELOG.md` for this version
   - Github `release` workflow will run automatically
   - Few minutes later, artifact is available on Maven Central 🎉
 
 - **Merge `main` back into `develop` branch**
-
-- **In `develop` branch:**
-  - Update `pom.xml` to increment version and add `-SNAPSHOT` agin
+  - Note: `pom.xml` now has `X.Y.(Z+1)-SNAPSHOT` version
