@@ -16,7 +16,7 @@
 
 ## Next version
 - [ ] Directory children limitation function helper
-- [ ] More default emojis
+- [x] More default emojis
 - [ ] Filtering
 - [x] Ordering
 
