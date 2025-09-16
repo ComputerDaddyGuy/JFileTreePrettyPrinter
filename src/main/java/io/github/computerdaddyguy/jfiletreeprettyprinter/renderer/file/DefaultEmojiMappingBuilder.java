@@ -94,7 +94,6 @@ class DefaultEmojiMappingBuilder {
 		map.put("js", "🟨");
 		map.put("ts", "🔷");
 		map.put("c", "💠");
-		map.put("c", "💠");
 		map.put("cpp", "💠");
 		map.put("cs", "💠");
 		map.put("css", "🎨");
