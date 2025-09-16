@@ -7,6 +7,7 @@ A lightweight Java library for printing directory structures in a clean, tree-li
 - Limit displayed children (fixed value or dynamically)
 - Compact directory chains
 - Maximum depth
+- File sort
 
 > [!CAUTION]
 > This lib was developed just for fun, and has not been thoroughly tested!  
@@ -73,6 +74,7 @@ base/
 * [Children limit](#children-limit)
 * [Compact directories](#compact-directories)
 * [Max depth](#max-depth)
+* [Sorting](#sorting)
   
 ## Tree format
 Choose between different tree formats.
@@ -222,6 +224,31 @@ max_depth/
       ├─ file2#2
       └─ level3/
          └─ ... (max depth reached)
+```
+
+## Sorting
+Files and directories can be sorted using a custom comparator (default is alphabetical order). Class `PrettyPrintOptions.Sorts` helps you by providing some basic comparators.
+
+```java
+// Example: Sorting.java
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.ALPHABETICAL_ORDER.reversed()))
+    .build();
+```
+```
+file_sort/
+├─ dir_C/
+│  ├─ file_C_3
+│  ├─ file_C_2
+│  └─ file_C_1
+├─ dir_B/
+│  ├─ file_B_3
+│  ├─ file_B_2
+│  └─ file_B_1
+└─ dir_A/
+   ├─ file_A_3
+   ├─ file_A_2
+   └─ file_A_1
 ```
 
 # Changelog

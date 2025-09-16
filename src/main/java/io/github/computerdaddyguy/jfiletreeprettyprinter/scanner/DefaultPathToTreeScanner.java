@@ -7,10 +7,12 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileR
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
@@ -47,9 +49,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		int maxChildrenEntries = options.getChildrenLimitFunction().applyAsInt(dir);
 
 		try (var childrenStream = Files.newDirectoryStream(dir)) {
-			var it = StreamSupport.stream(childrenStream.spliterator(), false)
-				.sorted(options.fileComparator())
-				.iterator();
+			var it = directoryStreamToIterator(childrenStream);
 			var childCount = 0;
 			while (it.hasNext()) {
 				childCount++;
@@ -75,6 +75,16 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		return new DirectoryEntry(dir, childrenEntries);
 
+	}
+
+	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream) {
+		var comparator = options.pathComparator();
+		if (comparator != null) {
+			return StreamSupport.stream(childrenStream.spliterator(), false)
+				.sorted(comparator)
+				.iterator();
+		}
+		return childrenStream.iterator();
 	}
 
 	private TreeEntry handleFile(Path file) {

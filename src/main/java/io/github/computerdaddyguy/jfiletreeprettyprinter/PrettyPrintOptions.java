@@ -7,16 +7,10 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.ToIntFunction;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
-
-	private ToIntFunction<Path> childrenLimitFunction = p -> -1;
-
-	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
-	private boolean emojis = false;
-	private boolean compactDirectories = false;
-	private int maxDepth = 20;
 
 	public PrettyPrintOptions() {
 		super();
@@ -29,7 +23,9 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 		return new PrettyPrintOptions();
 	}
 
-	// ----------------------------------------------
+	// ---------- Children limit function ----------
+
+	private ToIntFunction<Path> childrenLimitFunction = p -> -1;
 
 	@Override
 	public ToIntFunction<Path> getChildrenLimitFunction() {
@@ -58,7 +54,9 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 		return this;
 	}
 
-	// ----------------------------------------------
+	// ---------- Tree format ----------
+
+	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
 
 	@Override
 	public TreeFormat getTreeFormat() {
@@ -76,7 +74,9 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 		return this;
 	}
 
-	// ----------------------------------------------
+	// ---------- Emojis ----------
+
+	private boolean emojis = false;
 
 	@Override
 	public boolean areEmojisUsed() {
@@ -94,7 +94,9 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 		return this;
 	}
 
-	// ----------------------------------------------
+	// ---------- Compact directories ----------
+
+	private boolean compactDirectories = false;
 
 	@Override
 	public boolean areCompactDirectoriesUsed() {
@@ -112,7 +114,9 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 		return this;
 	}
 
-	// ----------------------------------------------
+	// ---------- Max depth ----------
+
+	private int maxDepth = 20;
 
 	@Override
 	public int getMaxDepth() {
@@ -130,11 +134,50 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 		return this;
 	}
 
-	// ----------------------------------------------
+	// ---------- File sort ----------
+
+	public static final class Sorts {
+
+		private Sorts() {
+			// Helper class 
+		}
+
+		/**
+		 * Path comparator to sort file alphabetically.
+		 */
+		public static final Comparator<Path> ALPHABETICAL_ORDER = Comparator.comparing(Path::toString);
+
+		/**
+		 * Path comparator to sort file against file size, ascending.
+		 */
+		public static final Comparator<Path> FILE_SIZE = Comparator.comparing((Path path) -> path.toFile().length());
+
+	}
+
+	@Nullable
+	private Comparator<Path> pathComparator = Sorts.ALPHABETICAL_ORDER;
 
 	@Override
-	public Comparator<Path> fileComparator() {
-		return Comparator.comparing(Path::toString);
+	@Nullable
+	public Comparator<Path> pathComparator() {
+		return pathComparator;
+	}
+
+	/**
+	 * Disable file sorting in directories (i.e. use OS/system defaults).
+	 */
+	public PrettyPrintOptions disableFileSort() {
+		return withFileSort(null);
+	}
+
+	/**
+	 * Use a custom path comparator to sort files in directories. Default is {@link Sorts#ALPHABETICAL_ORDER}.
+	 * 
+	 * @param pathComparator The comparator, <code>null</code> disables the sort and use OS/system defaults.
+	 */
+	public PrettyPrintOptions withFileSort(@Nullable Comparator<Path> pathComparator) {
+		this.pathComparator = pathComparator;
+		return this;
 	}
 
 }

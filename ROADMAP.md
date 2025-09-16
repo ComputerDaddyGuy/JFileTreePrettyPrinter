@@ -18,7 +18,7 @@
 - [ ] Directory children limitation function helper
 - [ ] More default emojis
 - [ ] Filtering
-- [ ] Ordering
+- [x] Ordering
 
 ## Other ideas
 - [ ] Custom tree format option
