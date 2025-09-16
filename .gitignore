@@ -61,4 +61,4 @@ target/failsafe-reports/
 .github/workflows/cache/
 
 # Specific
-!/src/example/resources/emojis/code/lang/*
+!/src/example/resources/emojis/**
