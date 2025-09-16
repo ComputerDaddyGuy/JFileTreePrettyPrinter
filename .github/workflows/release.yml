@@ -48,8 +48,8 @@ jobs:
 
       - name: Update pom.xml to release version
         run: |
-          mvn versions:set -DnewVersion=${{ env.RELEASE_VERSION }} -B -q
-          git commit -am "Set version to ${{ env.RELEASE_VERSION }}" || echo "No changes"
+          mvn versions:set -DnewVersion=${RELEASE_VERSION} -B -q
+          git commit -am "Set version to ${RELEASE_VERSION}" || echo "No changes"
           git push origin HEAD:main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +73,7 @@ jobs:
 
       - name: Bump to next patch snapshot
         run: |
-          CURRENT=${{ env.RELEASE_VERSION }}
+          CURRENT=${RELEASE_VERSION}
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
           NEXT_PATCH=$((PATCH+1))
           NEXT_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-SNAPSHOT"
