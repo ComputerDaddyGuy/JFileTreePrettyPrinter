@@ -7,9 +7,9 @@ public class Sorting {
 
 	public static void main(String[] args) {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.ALPHABETICAL_ORDER.reversed()))
+			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.BY_FILE_SIZE))
 			.build();
-		var tree = prettyPrinter.prettyPrint("src/example/resources/file_sort");
+		var tree = prettyPrinter.prettyPrint("src/example/resources/sorting");
 		System.out.println(tree);
 	}
 

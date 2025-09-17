@@ -7,7 +7,7 @@ A lightweight Java library for printing directory structures in a clean, tree-li
 - Limit displayed children (fixed value or dynamically)
 - Compact directory chains
 - Maximum depth
-- File sort
+- Sorting
 
 > [!CAUTION]
 > This lib was developed just for fun, and has not been thoroughly tested!  
@@ -227,28 +227,29 @@ max_depth/
 ```
 
 ## Sorting
-Files and directories can be sorted using a custom comparator (default is alphabetical order). Class `PrettyPrintOptions.Sorts` helps you by providing some basic comparators.
+Files and directories can be sorted using a custom comparator (default is alphabetical order).
+If the provided comparator considers two paths equal (i.e., returns `0`), an alphabetical comparator is applied as a tie-breaker to ensure consistent results across all systems.  
+
+The `PrettyPrintOptions.Sorts` class provides a set of basic, ready-to-use comparators.
 
 ```java
 // Example: Sorting.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.ALPHABETICAL_ORDER.reversed()))
+    .customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
     .build();
 ```
 ```
-file_sort/
-├─ dir_C/
-│  ├─ file_C_3
-│  ├─ file_C_2
-│  └─ file_C_1
-├─ dir_B/
-│  ├─ file_B_3
-│  ├─ file_B_2
-│  └─ file_B_1
-└─ dir_A/
-   ├─ file_A_3
-   ├─ file_A_2
-   └─ file_A_1
+sorting/
+├─ c_dir/
+│  └─ c_file
+├─ d_dir/
+│  ├─ d_b_dir/
+│  │  └─ d_b_file
+│  └─ d_a_file
+├─ a_file
+├─ b_file
+├─ x_file
+└─ y_file
 ```
 
 # Changelog
