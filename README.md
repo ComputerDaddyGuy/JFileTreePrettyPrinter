@@ -235,7 +235,7 @@ The `PrettyPrintOptions.Sorts` class provides a set of basic, ready-to-use compa
 ```java
 // Example: Sorting.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
+    .customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
     .build();
 ```
 ```

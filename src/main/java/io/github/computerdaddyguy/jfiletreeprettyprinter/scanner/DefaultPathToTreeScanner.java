@@ -78,13 +78,9 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 	}
 
 	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream) {
-		var comparator = options.pathComparator();
-		if (comparator != null) {
-			return StreamSupport.stream(childrenStream.spliterator(), false)
-				.sorted(comparator)
-				.iterator();
-		}
-		return childrenStream.iterator();
+		return StreamSupport.stream(childrenStream.spliterator(), false)
+			.sorted(options.pathComparator())
+			.iterator();
 	}
 
 	private TreeEntry handleFile(Path file) {

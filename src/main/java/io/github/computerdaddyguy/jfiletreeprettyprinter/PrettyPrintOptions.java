@@ -273,7 +273,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * 
 	 * @param pathComparator The custom comparator
 	 */
-	public PrettyPrintOptions withFileSort(Comparator<Path> pathComparator) {
+	public PrettyPrintOptions sort(Comparator<Path> pathComparator) {
 		this.pathComparator = Objects.requireNonNull(pathComparator, "pathComparator is null").thenComparing(Sorts.BY_NAME);
 		return this;
 	}

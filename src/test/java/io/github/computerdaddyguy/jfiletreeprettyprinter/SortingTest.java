@@ -16,7 +16,7 @@ class SortingTest {
 	void example() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
+			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
 			.build();
 
 		var result = printer.prettyPrint(Path.of("src/example/resources/sorting"));
@@ -80,7 +80,7 @@ class SortingTest {
 	void alphabetical_reversed() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.BY_NAME.reversed()))
+			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.BY_NAME.reversed()))
 			.build();
 
 		var result = printer.prettyPrint(buildDefaultPath());
@@ -107,7 +107,7 @@ class SortingTest {
 	void fileSize() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.BY_FILE_SIZE))
+			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.BY_FILE_SIZE))
 			.build();
 
 		var result = printer.prettyPrint(Path.of("src/example/resources/sorting"));
@@ -151,7 +151,7 @@ class SortingTest {
 	void directoriesFirst() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
+			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
 			.build();
 
 		var result = printer.prettyPrint(build_directoryFirstOrLast_paths());
@@ -174,7 +174,7 @@ class SortingTest {
 	void directoriesLast() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.DIRECTORY_LAST))
+			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_LAST))
 			.build();
 
 		var result = printer.prettyPrint(build_directoryFirstOrLast_paths());
@@ -217,7 +217,7 @@ class SortingTest {
 	void byExtension() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withFileSort(PrettyPrintOptions.Sorts.BY_EXTENSION))
+			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.BY_EXTENSION))
 			.build();
 
 		var result = printer.prettyPrint(build_extension_paths());
