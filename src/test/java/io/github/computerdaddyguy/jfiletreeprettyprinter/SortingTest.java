@@ -19,7 +19,7 @@ class SortingTest {
 			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
 			.build();
 
-		var result = printer.prettyPrint(Path.of("src/example/resources/sorting"));
+		var result = printer.prettyPrint("src/example/resources/sorting");
 		var expected = """
 			sorting/
 			├─ c_dir/
@@ -110,7 +110,7 @@ class SortingTest {
 			.customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.BY_FILE_SIZE))
 			.build();
 
-		var result = printer.prettyPrint(Path.of("src/example/resources/sorting"));
+		var result = printer.prettyPrint("src/example/resources/sorting");
 		var expected = """
 			sorting/
 			├─ c_dir/

@@ -2,12 +2,12 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ComputerDaddyGuy_JFileTreePrettyPrinter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ComputerDaddyGuy_JFileTreePrettyPrinter)
 
 A lightweight Java library for printing directory structures in a clean, tree-like format.
-- Various styles for tree rendering
+- Sorting & filtering
 - Emoji support 🎉
 - Limit displayed children (fixed value or dynamically)
 - Compact directory chains
 - Maximum depth
-- Sorting
+- Various styles for tree rendering
 
 > [!CAUTION]
 > This lib was developed just for fun, and has not been thoroughly tested!  
@@ -75,6 +75,7 @@ base/
 * [Compact directories](#compact-directories)
 * [Max depth](#max-depth)
 * [Sorting](#sorting)
+* [Filtering](#filtering)
   
 ## Tree format
 Choose between different tree formats.
@@ -250,6 +251,32 @@ sorting/
 ├─ b_file
 ├─ x_file
 └─ y_file
+```
+
+## Filtering
+Files and directories can be selectively included or excluded using a custom `Predicate<Path>`.
+
+Filtering is **recursive by default**: directory's contents will always be traversed.
+However, if a directory does not match and none of its children match, the directory itself will not be displayed.
+
+The `PathPredicates` class provides several ready-to-use `Predicate<Path>` implementations for common cases, as well as a builder for creating more advanced predicates.
+
+```java
+// Example: Filtering.java
+var filter = PathPredicates.hasExtension("java");
+var tree = FileTreePrettyPrinter.createDefault()
+	.prettyPrint("src/example/resources/filtering", filter);
+```
+```
+filtering/
+├─ dir_with_java_files/
+│  ├─ file_B.java
+│  └─ file_E.java
+├─ dir_with_nested_java_files/
+│  └─ nested_dir_with_java_files/
+│     ├─ file_G.java
+│     └─ file_J.java
+└─ file_A.java
 ```
 
 # Changelog

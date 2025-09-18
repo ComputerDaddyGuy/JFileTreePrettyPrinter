@@ -1,14 +1,14 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PathUtils;
 import java.nio.file.Path;
 import java.util.function.ToIntFunction;
 
 public class ChildrenLimitDynamic {
 
 	public static void main(String[] args) {
-		ToIntFunction<Path> pathLimitFunction = path -> PathPredicates.hasName(path, "node_modules") ? 0 : -1; // Negative value means "no limit"
+		ToIntFunction<Path> pathLimitFunction = path -> PathUtils.hasName(path, "node_modules") ? 0 : -1; // Negative value means "no limit"
 		var prettyPrinter = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildrenLimitFunction(pathLimitFunction))
 			.build();

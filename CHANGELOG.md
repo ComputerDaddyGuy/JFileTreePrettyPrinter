@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.3] - Unreleased
 
+### Added
+- Filtering
+
 ### Changed
 - Sorting: option method `withFileSort` renamed in `sort`
+- `PathPredicates` help class now returns instances of `PathPredicate` to make predicate recursive
 
 
 ## [0.0.2] - 2025-09-16

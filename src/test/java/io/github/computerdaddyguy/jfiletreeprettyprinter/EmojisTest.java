@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class EmojisTest {
+class EmojisTest {
 
 	@TempDir
 	private Path root;
@@ -29,7 +29,7 @@ public class EmojisTest {
 	@Test
 	void emojis() {
 
-		var result = printer.prettyPrint(Path.of("src/example/resources/emojis"));
+		var result = printer.prettyPrint("src/example/resources/emojis");
 		var expected = """
 			📂 emojis/
 			├─ 📂 applications/
