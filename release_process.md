@@ -8,6 +8,7 @@
   - Note: `pom.xml` must have `X.Y.Z-SNAPSHOT` version
 
 - **In `main` branch:**
+  - Set project version in `pom.xml` to `X.Y.Z` (remove the `-SNAPSHOT`)
   - Update `README.md` (with new `X.Y.Z` dependency version)
   - Update `CHANGELOG.md` with changes
   - Update `ROADMAP.md` if necessary
