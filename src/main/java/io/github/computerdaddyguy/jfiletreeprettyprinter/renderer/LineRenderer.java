@@ -27,10 +27,10 @@ interface LineRenderer {
 	String renderFile(Depth depth, FileEntry fileEntry);
 
 	@Nullable
-	String renderFileException(Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsException);
+	String renderFileException(Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsExceptionEntry);
 
 	@Nullable
-	String renderChildrenLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry);
+	String renderChildLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry);
 
 	@Nullable
 	String renderMaxDepthReached(Depth depth, MaxDepthReachEntry maxDepthReachEntry);

@@ -8,18 +8,20 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-class ChildrenLimitDynamicTest {
+class ChildLimitDynamicTest {
 
 	@TempDir
 	private Path root;
 
 	private FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 		.customizeOptions(
-			options -> options.withChildrenLimitFunction(
-				p -> p.getFileName().toString().equals("limit_1") ? 1
-					: p.getFileName().toString().equals("limit_3") ? 3
-						: -1
+		// @formatter:off
+			options -> options.withChildLimit(
+				p -> PathUtils.hasName(p, "limit_1") ? 1 : 
+					 PathUtils.hasName(p, "limit_3") ? 3 :
+				     -1
 			)
+			// @formatter:on
 		)
 		.build();
 
@@ -32,10 +34,16 @@ class ChildrenLimitDynamicTest {
 	}
 
 	@Test
-	void not_limited_dir() {
+	void nominal() {
 		// @formatter:off
 		var path = FileStructureCreator
 			.forTargetPath(root)
+				.createAndEnterDirectory("limit_1")
+					.createFiles("file", 5)
+				.up()
+				.createAndEnterDirectory("limit_3")
+					.createFiles("file", 5)
+				.up()
 				.createAndEnterDirectory("simpleDir")
 					.createFiles("file", 5)
 				.up()
@@ -46,6 +54,14 @@ class ChildrenLimitDynamicTest {
 		var result = printer.prettyPrint(path);
 		var expected = """
 			targetPath/
+			├─ limit_1/
+			│  ├─ file1
+			│  └─ ... (4 files skipped)
+			├─ limit_3/
+			│  ├─ file1
+			│  ├─ file2
+			│  ├─ file3
+			│  └─ ... (2 files skipped)
 			└─ simpleDir/
 			   ├─ file1
 			   ├─ file2

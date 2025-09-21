@@ -1,5 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry.DirectoryListingExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
@@ -15,8 +16,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class DefaultPathToTreeScanner implements PathToTreeScanner {
@@ -28,75 +31,116 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 	}
 
 	@Override
-	public TreeEntry scan(Path fileOrDir) {
-		return handle(0, fileOrDir);
+	public TreeEntry scan(Path fileOrDir, @Nullable Predicate<Path> filter) {
+		return handle(0, fileOrDir, filter);
 	}
 
-	private TreeEntry handle(int depth, Path fileOrDir) {
+	@Nullable
+	private TreeEntry handle(int depth, Path fileOrDir, @Nullable Predicate<Path> filter) {
 		return fileOrDir.toFile().isDirectory()
-			? handleDirectory(depth, fileOrDir)
+			? handleDirectory(depth, fileOrDir, filter)
 			: handleFile(fileOrDir);
 	}
 
-	private TreeEntry handleDirectory(int depth, Path dir) {
+	@Nullable
+	private TreeEntry handleDirectory(int depth, Path dir, @Nullable Predicate<Path> filter) {
 
 		if (depth >= options.getMaxDepth()) {
 			var maxDepthEntry = new MaxDepthReachEntry(depth);
 			return new DirectoryEntry(dir, List.of(maxDepthEntry));
 		}
 
-		var childrenEntries = new ArrayList<TreeEntry>();
-		int maxChildrenEntries = options.getChildrenLimitFunction().applyAsInt(dir);
+		List<TreeEntry> childEntries;
 
 		try (var childrenStream = Files.newDirectoryStream(dir)) {
-			var it = directoryStreamToIterator(childrenStream);
-			var childCount = 0;
-			while (it.hasNext()) {
-				childCount++;
-				if (maxChildrenEntries >= 0 && childCount > maxChildrenEntries) {
-					break;
-				}
-				var child = it.next();
-				var childEntry = handle(depth + 1, child);
-				childrenEntries.add(childEntry);
-			}
-
-			if (it.hasNext()) { // Loop has early exit?
-				var skippedChildren = new ArrayList<Path>();
-				it.forEachRemaining(skippedChildren::add);
-				var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
-				childrenEntries.add(childrenSkippedEntry);
-			}
-
+			var it = directoryStreamToIterator(childrenStream, filter);
+			childEntries = handleDirectoryChildren(depth, dir, filter, it);
 		} catch (IOException e) {
-			var exceptionEntry = new DirectoryListingExceptionEntry(dir, e);
-			childrenEntries.add(exceptionEntry);
+			childEntries = List.of(new DirectoryListingExceptionEntry(dir, e));
 		}
 
-		return new DirectoryEntry(dir, childrenEntries);
-
-	}
-
-	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream) {
-		var comparator = options.pathComparator();
-		if (comparator != null) {
-			return StreamSupport.stream(childrenStream.spliterator(), false)
-				.sorted(comparator)
-				.iterator();
+		// Filter is active and no children match
+		if (depth > 0 && filter != null && childEntries.isEmpty() && !filter.test(dir)) {
+			return null; // Do no show this directory at all
 		}
-		return childrenStream.iterator();
+
+		return new DirectoryEntry(dir, childEntries);
 	}
 
+	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Predicate<Path> filter, Iterator<Path> pathIterator) {
+
+		var childEntries = new ArrayList<TreeEntry>();
+		int maxChildEntries = options.getChildLimit().applyAsInt(dir);
+		var hasChildLimitation = maxChildEntries >= 0;
+
+		var childCount = 0;
+		while (pathIterator.hasNext()) {
+			childCount++;
+			if (hasChildLimitation && childCount > maxChildEntries) {
+				break;
+			}
+			var child = pathIterator.next();
+			var childEntry = handle(depth + 1, child, filter);
+			if (childEntry == null) {
+				childCount--; // The child did not pass the filter, so it doesn't count
+			} else {
+				childEntries.add(childEntry);
+			}
+		}
+
+		// Loop has early exit?
+		if (pathIterator.hasNext()) {
+			childEntries.addAll(handleLeftOverChildren(depth, filter, pathIterator));
+		}
+
+		return childEntries;
+	}
+
+	private List<TreeEntry> handleLeftOverChildren(int depth, Predicate<Path> filter, Iterator<Path> pathIterator) {
+		var childEntries = new ArrayList<TreeEntry>();
+
+		if (filter == null) {
+			var skippedChildren = new ArrayList<Path>();
+			pathIterator.forEachRemaining(skippedChildren::add);
+			var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
+			childEntries.add(childrenSkippedEntry);
+		} else {
+			var skippedChildren = new ArrayList<Path>();
+			while (pathIterator.hasNext()) {
+				var child = pathIterator.next();
+				var childEntry = handle(depth + 1, child, filter);
+				if (childEntry != null) { // Is null if no children file is retained by filter
+					skippedChildren.add(child);
+				}
+			}
+			if (!skippedChildren.isEmpty()) {
+				var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
+				childEntries.add(childrenSkippedEntry);
+			}
+		}
+
+		return childEntries;
+	}
+
+	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream, @Nullable Predicate<Path> filter) {
+		var stream = StreamSupport.stream(childrenStream.spliterator(), false);
+		if (filter != null) {
+			var recursiveFilter = PathPredicates.isDirectory().or(filter);
+			stream = stream.filter(recursiveFilter);
+		}
+		return stream
+			.sorted(options.pathComparator())
+			.iterator();
+	}
+
+	@Nullable
 	private TreeEntry handleFile(Path file) {
-
-		BasicFileAttributes attrs;
 		try {
-			attrs = Files.readAttributes(file, BasicFileAttributes.class);
+			var attrs = Files.readAttributes(file, BasicFileAttributes.class);
+			return new FileEntry(file, attrs);
 		} catch (IOException e) {
 			return new FileReadingAttributesExceptionEntry(file, e);
 		}
-
-		return new FileEntry(file, attrs);
 	}
 
 }

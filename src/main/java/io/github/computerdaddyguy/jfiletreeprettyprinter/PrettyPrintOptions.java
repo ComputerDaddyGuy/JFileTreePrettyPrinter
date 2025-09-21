@@ -22,23 +22,23 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 		return new PrettyPrintOptions();
 	}
 
-	// ---------- Children limit function ----------
+	// ---------- Child limit function ----------
 
-	private ToIntFunction<Path> childrenLimitFunction = p -> -1;
+	private ToIntFunction<Path> childLimit = p -> -1;
 
 	@Override
-	public ToIntFunction<Path> getChildrenLimitFunction() {
-		return childrenLimitFunction;
+	public ToIntFunction<Path> getChildLimit() {
+		return childLimit;
 	}
 
 	/**
 	 * Set a fixed limit to the number of visited children, per directory.
 	 * Default is no limit.
 	 * 
-	 * @param childrenLimit	Limit of visited children per directory, negative value means no limit.
+	 * @param childLimit	Limit of visited children per directory, negative value means no limit.
 	 */
-	public PrettyPrintOptions withChildrenLimit(int childrenLimit) {
-		return withChildrenLimitFunction(p -> childrenLimit);
+	public PrettyPrintOptions withChildLimit(int childLimit) {
+		return withChildLimit(p -> childLimit);
 	}
 
 	/**
@@ -46,10 +46,10 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * Useful to avoid listing known-ahead huge directories (e.g. node's {@code node_modules}).
 	 * Default is no limit.
 	 * 
-	 * @param childrenLimitFunction	The dynamic limitation function, cannot be <code>null</code>. A negative computed value means no limit.
+	 * @param childLimitFunction	The dynamic limitation function, cannot be <code>null</code>. A negative computed value means no limit.
 	 */
-	public PrettyPrintOptions withChildrenLimitFunction(ToIntFunction<Path> childrenLimitFunction) {
-		this.childrenLimitFunction = Objects.requireNonNull(childrenLimitFunction, "childrenLimitFunction is null");
+	public PrettyPrintOptions withChildLimit(ToIntFunction<Path> childLimitFunction) {
+		this.childLimit = Objects.requireNonNull(childLimitFunction, "childLimitFunction is null");
 		return this;
 	}
 
@@ -273,7 +273,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * 
 	 * @param pathComparator The custom comparator
 	 */
-	public PrettyPrintOptions withFileSort(Comparator<Path> pathComparator) {
+	public PrettyPrintOptions sort(Comparator<Path> pathComparator) {
 		this.pathComparator = Objects.requireNonNull(pathComparator, "pathComparator is null").thenComparing(Sorts.BY_NAME);
 		return this;
 	}

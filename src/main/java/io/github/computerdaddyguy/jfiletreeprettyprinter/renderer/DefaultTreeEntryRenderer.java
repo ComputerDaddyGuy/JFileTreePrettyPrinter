@@ -79,7 +79,7 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 	}
 
 	private void renderSkippedChildrenEntry(StringBuilder buff, Depth depth, SkippedChildrenEntry skippedChildrenEntry) {
-		buff.append(lineRenderer.renderChildrenLimitReached(depth, skippedChildrenEntry));
+		buff.append(lineRenderer.renderChildLimitReached(depth, skippedChildrenEntry));
 	}
 
 	private void renderMaxDepthReachEntry(StringBuilder buff, Depth depth, MaxDepthReachEntry maxDepthReachEntry) {

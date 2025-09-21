@@ -7,13 +7,13 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-class ChildrenLimitStaticTest {
+class ChildLimitStaticTest {
 
 	@TempDir
 	private Path root;
 
 	private FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-		.customizeOptions(options -> options.withChildrenLimit(3))
+		.customizeOptions(options -> options.withChildLimit(3))
 		.build();
 
 	@Test

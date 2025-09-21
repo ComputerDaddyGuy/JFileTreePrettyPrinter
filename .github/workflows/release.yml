@@ -35,7 +35,7 @@ jobs:
           echo "Git tag: $RELEASE_VERSION"
           echo "Pom version: $POM_VERSION"
 
-          if [ "${RELEASE_VERSION}-SNAPSHOT" != "$POM_VERSION" ]; then
+          if [ "$RELEASE_VERSION" != "$POM_VERSION" ]; then
             echo "Error: Git tag ($RELEASE_VERSION) does not match pom.xml version ($POM_VERSION)"
             exit 1
           fi

@@ -42,12 +42,12 @@ class DefaultLineRenderer implements LineRenderer {
 	}
 
 	@Override
-	public String renderFileException(Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsException) {
-		return treeFormatter.format(depth) + fileFormatter.formatFileException(fileReadingAttrsException);
+	public String renderFileException(Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsExceptionEntry) {
+		return treeFormatter.format(depth) + fileFormatter.formatFileException(fileReadingAttrsExceptionEntry);
 	}
 
 	@Override
-	public @Nullable String renderChildrenLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry) {
+	public @Nullable String renderChildLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry) {
 		return treeFormatter.format(depth) + fileFormatter.formatChildLimitReached(skippedChildrenEntry);
 	}
 
