@@ -90,24 +90,32 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		// Loop has early exit?
 		if (pathIterator.hasNext()) {
-			if (filter == null) {
-				var skippedChildren = new ArrayList<Path>();
-				pathIterator.forEachRemaining(skippedChildren::add);
+			childEntries.addAll(handleLeftOverChildren(depth, filter, pathIterator));
+		}
+
+		return childEntries;
+	}
+
+	private List<TreeEntry> handleLeftOverChildren(int depth, Predicate<Path> filter, Iterator<Path> pathIterator) {
+		var childEntries = new ArrayList<TreeEntry>();
+
+		if (filter == null) {
+			var skippedChildren = new ArrayList<Path>();
+			pathIterator.forEachRemaining(skippedChildren::add);
+			var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
+			childEntries.add(childrenSkippedEntry);
+		} else {
+			var skippedChildren = new ArrayList<Path>();
+			while (pathIterator.hasNext()) {
+				var child = pathIterator.next();
+				var childEntry = handle(depth + 1, child, filter);
+				if (childEntry != null) { // Is null if no children file is retained by filter
+					skippedChildren.add(child);
+				}
+			}
+			if (!skippedChildren.isEmpty()) {
 				var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
 				childEntries.add(childrenSkippedEntry);
-			} else {
-				var skippedChildren = new ArrayList<Path>();
-				while (pathIterator.hasNext()) {
-					var child = pathIterator.next();
-					var childEntry = handle(depth + 1, child, filter);
-					if (childEntry != null) { // Is null if no children file is retained by filter
-						skippedChildren.add(child);
-					}
-				}
-				if (!skippedChildren.isEmpty()) {
-					var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
-					childEntries.add(childrenSkippedEntry);
-				}
 			}
 		}
 

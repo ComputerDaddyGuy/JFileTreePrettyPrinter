@@ -3,14 +3,9 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.Sorts;
-import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 class FilteringTest {
-
-	@TempDir
-	private Path root;
 
 	@Test
 	void example() {
