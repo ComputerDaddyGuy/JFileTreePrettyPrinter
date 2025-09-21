@@ -17,8 +17,8 @@ class FileTreePrettyPrinterBuilderTest {
 		var path = FileStructures.simpleDirectoryWithFilesAndFolders(root, 3, 3);
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withChildrenLimit(1))
-			.withOptions(PrettyPrintOptions.createDefault().withChildrenLimit(2)) // this line overrides previous one
+			.customizeOptions(options -> options.withChildLimit(1))
+			.withOptions(PrettyPrintOptions.createDefault().withChildLimit(2)) // this line overrides previous one
 			.build();
 
 		var result = printer.prettyPrint(path);

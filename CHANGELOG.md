@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Filtering
+- New `ChildLimitBuilder` helper class
+- New `PathUtils` helper class
 
 ### Changed
 - Sorting: option method `withFileSort` renamed in `sort`
-- `PathPredicates` help class now returns instances of `PathPredicate` to make predicate recursive
+- Child limit: renaming from 'children limit'
 
 
 ## [0.0.2] - 2025-09-16
@@ -28,6 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release
 - Option: tree format Unicode box drawing / classic ASCII
 - Option: use emojis
-- Option: children limit (static & dynamic)
+- Option: child limit (static & dynamic)
 - Option: compact directories display
 - Option: max directory depth

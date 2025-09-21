@@ -14,7 +14,7 @@
 - [x] Publish on Maven Central!
 
 ## Next version(s)
-- [ ] Directory children limitation function helper
+- [x] Child limitation function helper
 - [x] More default emojis
 - [x] Filtering
 - [x] Ordering

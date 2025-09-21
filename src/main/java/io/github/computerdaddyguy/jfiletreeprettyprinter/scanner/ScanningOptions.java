@@ -10,7 +10,7 @@ public interface ScanningOptions {
 
 	int getMaxDepth();
 
-	ToIntFunction<Path> getChildrenLimitFunction();
+	ToIntFunction<Path> getChildLimit();
 
 	Comparator<Path> pathComparator();
 

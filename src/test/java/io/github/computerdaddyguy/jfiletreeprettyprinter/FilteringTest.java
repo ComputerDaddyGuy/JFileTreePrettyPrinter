@@ -70,10 +70,10 @@ class FilteringTest {
 	}
 
 	@Test
-	void example_childrenLimit_1() {
+	void example_childLimit_1() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withChildrenLimit(1))
+			.customizeOptions(options -> options.withChildLimit(1))
 			.build();
 		var filter = PathPredicates.hasExtension("java");
 
@@ -88,10 +88,10 @@ class FilteringTest {
 	}
 
 	@Test
-	void example_childrenLimit_2() {
+	void example_childLimit_2() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withChildrenLimit(2))
+			.customizeOptions(options -> options.withChildLimit(2))
 			.build();
 		var filter = PathPredicates.hasExtension("java");
 
@@ -110,10 +110,10 @@ class FilteringTest {
 	}
 
 	@Test
-	void example_childrenLimit_3() {
+	void example_childLimit_3() {
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withChildrenLimit(3))
+			.customizeOptions(options -> options.withChildLimit(3))
 			.build();
 		var filter = PathPredicates.hasExtension("java");
 

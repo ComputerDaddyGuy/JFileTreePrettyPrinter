@@ -50,32 +50,33 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 			return new DirectoryEntry(dir, List.of(maxDepthEntry));
 		}
 
-		var childrenEntries = new ArrayList<TreeEntry>();
+		List<TreeEntry> childEntries;
 
 		try (var childrenStream = Files.newDirectoryStream(dir)) {
 			var it = directoryStreamToIterator(childrenStream, filter);
-			handleDirectoryChildren(depth, dir, filter, it, childrenEntries);
+			childEntries = handleDirectoryChildren(depth, dir, filter, it);
 		} catch (IOException e) {
-			var exceptionEntry = new DirectoryListingExceptionEntry(dir, e);
-			childrenEntries.add(exceptionEntry);
+			childEntries = List.of(new DirectoryListingExceptionEntry(dir, e));
 		}
 
 		// Filter is active and no children match
-		if (depth > 0 && filter != null && childrenEntries.isEmpty() && !filter.test(dir)) {
-			return null;
+		if (depth > 0 && filter != null && childEntries.isEmpty() && !filter.test(dir)) {
+			return null; // Do no show this directory at all
 		}
-		return new DirectoryEntry(dir, childrenEntries);
 
+		return new DirectoryEntry(dir, childEntries);
 	}
 
-	private void handleDirectoryChildren(int depth, Path dir, Predicate<Path> filter, Iterator<Path> pathIterator, ArrayList<TreeEntry> childrenEntries) {
+	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Predicate<Path> filter, Iterator<Path> pathIterator) {
 
-		int maxChildrenEntries = options.getChildrenLimitFunction().applyAsInt(dir);
+		var childEntries = new ArrayList<TreeEntry>();
+		int maxChildEntries = options.getChildLimit().applyAsInt(dir);
+		var hasChildLimitation = maxChildEntries >= 0;
 
 		var childCount = 0;
 		while (pathIterator.hasNext()) {
 			childCount++;
-			if (maxChildrenEntries >= 0 && childCount > maxChildrenEntries) {
+			if (hasChildLimitation && childCount > maxChildEntries) {
 				break;
 			}
 			var child = pathIterator.next();
@@ -83,7 +84,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 			if (childEntry == null) {
 				childCount--; // The child did not pass the filter, so it doesn't count
 			} else {
-				childrenEntries.add(childEntry);
+				childEntries.add(childEntry);
 			}
 		}
 
@@ -93,7 +94,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 				var skippedChildren = new ArrayList<Path>();
 				pathIterator.forEachRemaining(skippedChildren::add);
 				var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
-				childrenEntries.add(childrenSkippedEntry);
+				childEntries.add(childrenSkippedEntry);
 			} else {
 				var skippedChildren = new ArrayList<Path>();
 				while (pathIterator.hasNext()) {
@@ -105,10 +106,12 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 				}
 				if (!skippedChildren.isEmpty()) {
 					var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
-					childrenEntries.add(childrenSkippedEntry);
+					childEntries.add(childrenSkippedEntry);
 				}
 			}
 		}
+
+		return childEntries;
 	}
 
 	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream, @Nullable Predicate<Path> filter) {

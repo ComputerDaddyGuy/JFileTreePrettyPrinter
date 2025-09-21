@@ -71,7 +71,7 @@ base/
 
 * [Tree format](#tree-format)
 * [Emojis ❤️](#emojis-%EF%B8%8F)
-* [Children limit](#children-limit)
+* [Child limit](#child-limit)
 * [Compact directories](#compact-directories)
 * [Max depth](#max-depth)
 * [Sorting](#sorting)
@@ -132,18 +132,18 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 > [!TIP]
 > *Idea for a future version: option to allow custom emoji mapping*
 
-## Children limit
+## Child limit
 You can set a fixed limit to the number of children displayed for each directory.
 
 ```java
-// Example: ChildrenLimitStatic.java
+// Example: ChildLimitStatic.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withChildrenLimit(3))
+    .customizeOptions(options -> options.withChildLimit(3))
     .build();
 ```
 
 ```
-children_limit_static/
+child_limit_static/
 ├─ file_0_1
 ├─ folder_1/
 │  ├─ file_1_1
@@ -162,17 +162,20 @@ children_limit_static/
 Or you can also set a limitation function, to dynamically choose the number of children displayed in each directory.
 It avoids cluttering the whole console with known large folders (e.g. `node_modules`) but continue to pretty print normally other folders.
 
-The `PathPredicates` class contains several ready-to-use predicates to help you.
+Use the `ChildLimitBuilder` and `PathPredicates` classes to help you build the limit function that fits your needs..
 
 ```java
-// Example: ChildrenLimitDynamic.java
-Function<Path, Integer> pathLimitFunction = path -> PathPredicates.hasName(path, "node_modules") ? 0 : -1; // Negative value means "no limit"
+// Example: ChildLimitDynamic.java
+var childLimit = ChildLimitBuilder.builder()
+	.defaultLimit(ChildLimitBuilder.UNLIMITED)
+	.limit(PathPredicates.hasName("node_modules"), 0)
+	.build();
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withChildrenLimitFunction(pathLimitFunction)) 
+    .customizeOptions(options -> options.withChildLimit(childLimit)) 
     .build();
 ```
 ```
-children_limit_dynamic/
+child_limit_dynamic/
 ├─ file_0_1
 ├─ folder_1/
 │  ├─ file_1_1

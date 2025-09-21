@@ -22,7 +22,7 @@ class DepthTest {
 	@Test
 	void getSize_when_empty() {
 		var depth = Depth.createNewEmpty();
-		assertThat(depth.getSize()).isEqualTo(0);
+		assertThat(depth.getSize()).isZero();
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class DepthTest {
 		depth = depth.append(DepthSymbol.NON_LAST_FILE);
 		depth = depth.append(DepthSymbol.NONE);
 		depth = depth.append(DepthSymbol.SKIP);
-		assertThat(depth.toString()).isEqualTo(depth.getSymbols().toString());
+		assertThat(depth).hasToString(depth.getSymbols().toString());
 	}
 
 	@Test
@@ -67,11 +67,11 @@ class DepthTest {
 		depth1 = depth1.append(DepthSymbol.NONE);
 		depth1 = depth1.append(DepthSymbol.SKIP);
 
-		var depth1_copy = Depth.createNewEmpty();
-		depth1_copy = depth1_copy.append(DepthSymbol.LAST_FILE);
-		depth1_copy = depth1_copy.append(DepthSymbol.NON_LAST_FILE);
-		depth1_copy = depth1_copy.append(DepthSymbol.NONE);
-		depth1_copy = depth1_copy.append(DepthSymbol.SKIP);
+		var depth1Copy = Depth.createNewEmpty();
+		depth1Copy = depth1Copy.append(DepthSymbol.LAST_FILE);
+		depth1Copy = depth1Copy.append(DepthSymbol.NON_LAST_FILE);
+		depth1Copy = depth1Copy.append(DepthSymbol.NONE);
+		depth1Copy = depth1Copy.append(DepthSymbol.SKIP);
 
 		var depth2 = Depth.createNewEmpty();
 		depth2 = depth2.append(DepthSymbol.LAST_FILE);
@@ -79,14 +79,15 @@ class DepthTest {
 		depth2 = depth2.append(DepthSymbol.SKIP);
 		depth2 = depth2.append(DepthSymbol.NONE);
 
-		assertThat(depth1).hasSameHashCodeAs(depth1);
-		assertThat(depth1).isEqualTo(depth1);
+		assertThat(depth1)
+			.hasSameHashCodeAs(depth1)
+			.isEqualTo(depth1)
 
-		assertThat(depth1).hasSameHashCodeAs(depth1_copy);
-		assertThat(depth1).isEqualTo(depth1_copy);
+			.hasSameHashCodeAs(depth1Copy)
+			.isEqualTo(depth1Copy)
 
-		assertThat(depth1).isNotEqualTo(depth2);
-		assertThat(depth1).isNotEqualTo(new Object());
+			.isNotEqualTo(depth2)
+			.isNotEqualTo(new Object());
 	}
 
 }
