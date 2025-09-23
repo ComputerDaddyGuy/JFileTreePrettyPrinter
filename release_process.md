@@ -20,6 +20,7 @@
   - Create new release based on `vX.Y.Z` tag: copy content of `CHANGELOG.md` for this version
   - Github `release` workflow will run automatically
   - Few minutes later, artifact is available on Maven Central 🎉
+  - Update wiki if required
 
 - **Merge `main` back into `develop` branch**
   - Note: `pom.xml` now has `X.Y.(Z+1)-SNAPSHOT` version

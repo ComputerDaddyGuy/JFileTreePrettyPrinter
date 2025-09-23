@@ -20,6 +20,9 @@
 > This lib was developed just for fun, and has not been thoroughly tested!  
 > May not be suitable for production code 😊
 
+> [!IMPORTANT]
+> Complete documentation available in [wiki](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/wiki).
+
 <p align="center">
 	<img src="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/assets/basic_usage.jpg?raw=true" alt="JFileTreePrettyPrint basic usage"/>
 </p>

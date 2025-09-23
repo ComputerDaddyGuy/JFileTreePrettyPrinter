@@ -18,11 +18,11 @@
 - [x] Ordering
 
 ## To do
+- [x] Use Github wiki to document options instead of readme
 - [ ] Additional text on lines
 - [ ] Option: Filename decorator
 
 ## Backlog
-- [ ] Use Github wiki to document options instead of readme
 - [ ] Option: custom tree format
 - [ ] Option: custom emojis
 - [ ] Option: color
