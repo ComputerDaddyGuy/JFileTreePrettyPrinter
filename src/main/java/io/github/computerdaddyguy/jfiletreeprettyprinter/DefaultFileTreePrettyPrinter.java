@@ -4,9 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.TreeEntryRende
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.PathToTreeScanner;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.function.Predicate;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class DefaultFileTreePrettyPrinter implements FileTreePrettyPrinter {
@@ -20,8 +18,8 @@ class DefaultFileTreePrettyPrinter implements FileTreePrettyPrinter {
 	}
 
 	@Override
-	public String prettyPrint(Path path, @Nullable Predicate<Path> filter) {
-		var tree = scanner.scan(path, filter);
+	public String prettyPrint(Path path) {
+		var tree = scanner.scan(path);
 		return renderer.renderTree(tree);
 	}
 

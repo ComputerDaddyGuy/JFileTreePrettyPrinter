@@ -31,8 +31,8 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 	}
 
 	@Override
-	public TreeEntry scan(Path fileOrDir, @Nullable Predicate<Path> filter) {
-		return handle(0, fileOrDir, filter);
+	public TreeEntry scan(Path fileOrDir) {
+		return handle(0, fileOrDir, options.pathFilter());
 	}
 
 	@Nullable

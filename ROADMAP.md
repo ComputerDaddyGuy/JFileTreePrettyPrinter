@@ -28,6 +28,7 @@
 - [ ] Option: color
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Jacoco coverage report
+- [ ] More `PathPredicates` functions!
 
 ## Abandoned
 These ideas will likely not been implemented because they do not align with JFileTreePrettyPrint vision:

@@ -25,10 +25,11 @@ class FileTreePrettyPrinterTest {
 	void prettyPrintWithFilter_by_path_and_string_are_same() {
 		var path = FileStructures.simpleDirectoryWithFilesAndFolders(root, 3, 3);
 
-		FileTreePrettyPrinter printer = FileTreePrettyPrinter.createDefault();
-		var filter = PathPredicates.isFile();
+		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
+			.customizeOptions(options -> options.filter(PathPredicates.isFile()))
+			.build();
 
-		assertThat(printer.prettyPrint(path, filter)).isEqualTo(printer.prettyPrint(path.toString(), filter));
+		assertThat(printer.prettyPrint(path)).isEqualTo(printer.prettyPrint(path.toString()));
 	}
 
 }

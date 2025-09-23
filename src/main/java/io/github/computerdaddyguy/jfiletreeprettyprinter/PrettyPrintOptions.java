@@ -5,8 +5,10 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.ScanningOptions
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
@@ -275,6 +277,30 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 */
 	public PrettyPrintOptions sort(Comparator<Path> pathComparator) {
 		this.pathComparator = Objects.requireNonNull(pathComparator, "pathComparator is null").thenComparing(Sorts.BY_NAME);
+		return this;
+	}
+
+	// ---------- Filtering ----------
+
+	@Nullable
+	private Predicate<Path> pathFilter = null;
+
+	@Override
+	@Nullable
+	public Predicate<Path> pathFilter() {
+		return pathFilter;
+	}
+
+	/**
+	 * Use a custom filter for retain only some files and/or directories.
+	 * 
+	 * Filtering is recursive by default: directory's contents will always be traversed.
+	 * However, if a directory does not match and none of its children match, the directory itself will not be displayed.
+	
+	 * @param filter	The filter, <code>null</code> to disable filtering
+	 */
+	public PrettyPrintOptions filter(Predicate<Path> filter) {
+		this.pathFilter = filter;
 		return this;
 	}
 

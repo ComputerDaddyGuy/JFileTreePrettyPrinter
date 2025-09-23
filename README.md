@@ -273,9 +273,9 @@ The `PathPredicates` class provides several ready-to-use `Predicate<Path>` imple
 
 ```java
 // Example: Filtering.java
-var filter = PathPredicates.hasExtension("java");
-var tree = FileTreePrettyPrinter.createDefault()
-	.prettyPrint("src/example/resources/filtering", filter);
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.filter(PathPredicates.hasExtension("java")))
+    .build();
 ```
 ```
 filtering/
