@@ -1,12 +1,9 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
@@ -28,11 +25,6 @@ class EmojiFileFormatter implements FileFormatter {
 		return getEmojiPrefix(emoji);
 	}
 
-	private String getErrorEmojiPrefix(Path file, IOException exc) {
-		var emoji = emojiMapping.getErrorEmoji(file, exc);
-		return getEmojiPrefix(emoji);
-	}
-
 	private String getEmojiPrefix(String emoji) {
 		if (emoji == null) {
 			return "";
@@ -46,20 +38,8 @@ class EmojiFileFormatter implements FileFormatter {
 	}
 
 	@Override
-	public String formatDirectoryException(DirectoryExceptionTreeEntry dirExceptionEntry) {
-		return getErrorEmojiPrefix(dirExceptionEntry.getDir(), dirExceptionEntry.getException())
-			+ decorated.formatDirectoryException(dirExceptionEntry);
-	}
-
-	@Override
 	public String formatFile(FileEntry fileEntry) {
 		return getFileEmojiPrefix(fileEntry.getFile()) + decorated.formatFile(fileEntry);
-	}
-
-	@Override
-	public String formatFileException(FileReadingAttributesExceptionEntry fileReadingAttrsException) {
-		return getErrorEmojiPrefix(fileReadingAttrsException.getFile(), fileReadingAttrsException.getException())
-			+ decorated.formatFileException(fileReadingAttrsException);
 	}
 
 	@Override

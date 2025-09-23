@@ -1,6 +1,5 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
@@ -14,17 +13,15 @@ class DefaultEmojiMapping implements EmojiMapping {
 	private final String defaultFileEmoji;
 	private final Map<String, String> exactFileNamesEmojis;
 	private final Map<String, String> fileExtensionsEmojis;
-	private final String errorEmoji;
 
 	public DefaultEmojiMapping(
-		String directoryEmoji, String defaultFileEmoji, Map<String, String> exactFileNamesEmojis, Map<String, String> fileExtensionsEmojis, String errorEmoji
+		String directoryEmoji, String defaultFileEmoji, Map<String, String> exactFileNamesEmojis, Map<String, String> fileExtensionsEmojis
 	) {
 		super();
 		this.directoryEmoji = Objects.requireNonNull(directoryEmoji, "directoryEmoji is null");
 		this.defaultFileEmoji = Objects.requireNonNull(defaultFileEmoji, "defaultFileEmoji is null");
 		this.exactFileNamesEmojis = Objects.requireNonNull(exactFileNamesEmojis, "exactFileNamesEmojis is null");
 		this.fileExtensionsEmojis = Objects.requireNonNull(fileExtensionsEmojis, "fileExtensionsEmojis is null");
-		this.errorEmoji = Objects.requireNonNull(errorEmoji, "errorEmoji is null");
 	}
 
 	@Override
@@ -47,11 +44,6 @@ class DefaultEmojiMapping implements EmojiMapping {
 	private final String extractExtension(String fileName) {
 		var dotIndex = fileName.lastIndexOf('.');
 		return dotIndex < 0 ? null : fileName.substring(dotIndex + 1);
-	}
-
-	@Override
-	public @Nullable String getErrorEmoji(Path file, IOException exc) {
-		return errorEmoji;
 	}
 
 	public static DefaultEmojiMappingBuilder builder() {

@@ -1,5 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import org.jspecify.annotations.NullMarked;
 
@@ -17,15 +18,19 @@ public interface FileTreePrettyPrinter {
 	 * 
 	 * @param path		A directory or a file.
 	 * @param filter	Filter for paths to retain, <code>null</code> will retain all files. Applies only on children paths, not root path.
+	 * 
+	 * @throws UncheckedIOException	If any IO error occurred
 	 */
-	String prettyPrint(Path path);
+	String prettyPrint(Path path) throws UncheckedIOException;
 
 	/**
 	 * Pretty prints the given path.
 	 * 
 	 * @param path	A directory or a file.
+	 * 
+	 * @throws UncheckedIOException	If any IO error occurred
 	 */
-	default String prettyPrint(String path) {
+	default String prettyPrint(String path) throws UncheckedIOException {
 		return prettyPrint(Path.of(path));
 	}
 

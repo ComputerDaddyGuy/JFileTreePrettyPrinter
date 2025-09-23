@@ -4,9 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file.FileFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
@@ -32,18 +30,8 @@ class DefaultLineRenderer implements LineRenderer {
 	}
 
 	@Override
-	public String renderDirectoryException(Depth depth, DirectoryExceptionTreeEntry dirExceptionEntry) {
-		return treeFormatter.format(depth) + fileFormatter.formatDirectoryException(dirExceptionEntry);
-	}
-
-	@Override
 	public String renderFile(Depth depth, FileEntry fileEntry) {
 		return treeFormatter.format(depth) + fileFormatter.formatFile(fileEntry);
-	}
-
-	@Override
-	public String renderFileException(Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsExceptionEntry) {
-		return treeFormatter.format(depth) + fileFormatter.formatFileException(fileReadingAttrsExceptionEntry);
 	}
 
 	@Override

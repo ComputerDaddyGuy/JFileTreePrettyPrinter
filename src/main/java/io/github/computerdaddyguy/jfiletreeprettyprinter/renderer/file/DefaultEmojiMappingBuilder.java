@@ -8,13 +8,12 @@ import org.jspecify.annotations.NullMarked;
 class DefaultEmojiMappingBuilder {
 
 	private String directoryEmoji = "📂";
-	private String errorEmoji = "❌";
 	private String defaultFileEmoji = "📄";
 	private Map<String, String> exactFileNamesEmojis = buildDefaultExactFileNamesEmojis();
 	private Map<String, String> fileExtensionsEmojis = buildDefaultFileExtensionsEmojis();
 
 	EmojiMapping build() {
-		return new DefaultEmojiMapping(directoryEmoji, defaultFileEmoji, exactFileNamesEmojis, fileExtensionsEmojis, errorEmoji);
+		return new DefaultEmojiMapping(directoryEmoji, defaultFileEmoji, exactFileNamesEmojis, fileExtensionsEmojis);
 	}
 
 	private Map<String, String> buildDefaultExactFileNamesEmojis() {

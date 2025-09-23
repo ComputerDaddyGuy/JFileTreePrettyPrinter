@@ -4,9 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthSymbol;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
@@ -40,8 +38,6 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 			case TreeEntry.FileEntry fileEntry -> renderFile(buff, depth, fileEntry);
 			case TreeEntry.SkippedChildrenEntry skippedChildrenEntry -> renderSkippedChildrenEntry(buff, depth, skippedChildrenEntry);
 			case TreeEntry.MaxDepthReachEntry maxDepthReachEntry -> renderMaxDepthReachEntry(buff, depth, maxDepthReachEntry);
-			case TreeEntry.DirectoryExceptionTreeEntry dirExceptionEntry -> renderDirExceptionEntry(buff, depth, dirExceptionEntry);
-			case TreeEntry.FileReadingAttributesExceptionEntry fileReadingAttrsException -> renderFileReadingAttributesExceptionEntry(buff, depth, fileReadingAttrsException);
 		}
 	}
 
@@ -84,14 +80,6 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 
 	private void renderMaxDepthReachEntry(StringBuilder buff, Depth depth, MaxDepthReachEntry maxDepthReachEntry) {
 		buff.append(lineRenderer.renderMaxDepthReached(depth, maxDepthReachEntry));
-	}
-
-	private void renderDirExceptionEntry(StringBuilder buff, Depth depth, DirectoryExceptionTreeEntry dirExceptionEntry) {
-		buff.append(lineRenderer.renderDirectoryException(depth, dirExceptionEntry));
-	}
-
-	private void renderFileReadingAttributesExceptionEntry(StringBuilder buff, Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsException) {
-		buff.append(lineRenderer.renderFileException(depth, fileReadingAttrsException));
 	}
 
 }

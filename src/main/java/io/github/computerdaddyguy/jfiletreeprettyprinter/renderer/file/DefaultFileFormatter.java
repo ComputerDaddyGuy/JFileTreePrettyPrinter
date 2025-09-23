@@ -1,9 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
@@ -23,12 +21,6 @@ class DefaultFileFormatter implements FileFormatter {
 	}
 
 	@Override
-	public String formatDirectoryException(DirectoryExceptionTreeEntry dirExceptionEntry) {
-		return dirExceptionEntry.getDir().getFileName().toString() + "/: "
-			+ dirExceptionEntry.getException().getMessage();
-	}
-
-	@Override
 	public String formatFile(FileEntry fileEntry) {
 		var fileNameFormatted = fileEntry.getFile().getFileName().toString();
 		if (fileEntry.getAttrs().isSymbolicLink()) {
@@ -37,11 +29,6 @@ class DefaultFileFormatter implements FileFormatter {
 			fileNameFormatted += "?";
 		}
 		return fileNameFormatted;
-	}
-
-	@Override
-	public String formatFileException(FileReadingAttributesExceptionEntry fileReadingAttrsException) {
-		return fileReadingAttrsException.getFile().getFileName().toString() + ": " + fileReadingAttrsException.getException().getMessage();
 	}
 
 	@Override

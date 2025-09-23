@@ -2,12 +2,11 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry.DirectoryListingExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,7 +55,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 			var it = directoryStreamToIterator(childrenStream, filter);
 			childEntries = handleDirectoryChildren(depth, dir, filter, it);
 		} catch (IOException e) {
-			childEntries = List.of(new DirectoryListingExceptionEntry(dir, e));
+			throw new UncheckedIOException("Unable to list files for directory: " + dir, e);
 		}
 
 		// Filter is active and no children match
@@ -139,7 +138,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 			var attrs = Files.readAttributes(file, BasicFileAttributes.class);
 			return new FileEntry(file, attrs);
 		} catch (IOException e) {
-			return new FileReadingAttributesExceptionEntry(file, e);
+			throw new UncheckedIOException("Unable to read file attributes: " + file, e);
 		}
 	}
 

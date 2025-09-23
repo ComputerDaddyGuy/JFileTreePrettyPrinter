@@ -1,6 +1,5 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
@@ -36,68 +35,6 @@ public sealed interface TreeEntry {
 
 	}
 
-	public sealed interface DirectoryExceptionTreeEntry extends TreeEntry {
-
-		Path getDir();
-
-		IOException getException();
-
-		final class DirectoryReadingAttributesExceptionEntry implements DirectoryExceptionTreeEntry {
-
-			final Path dir;
-			final IOException exception;
-
-			public DirectoryReadingAttributesExceptionEntry(Path dir, IOException exception) {
-				this.dir = Objects.requireNonNull(dir, "dir is null");
-				this.exception = Objects.requireNonNull(exception, "exception is null");
-			}
-
-			@Override
-			public String toString() {
-				return "DirectoryReadingAttributesExceptionEntry[dir: " + dir.getFileName() + ", exception: " + exception + "]";
-			}
-
-			@Override
-			public Path getDir() {
-				return dir;
-			}
-
-			@Override
-			public IOException getException() {
-				return exception;
-			}
-
-		}
-
-		final class DirectoryListingExceptionEntry implements DirectoryExceptionTreeEntry {
-
-			final Path dir;
-			final IOException exception;
-
-			public DirectoryListingExceptionEntry(Path dir, IOException exception) {
-				this.dir = Objects.requireNonNull(dir, "dir is null");
-				this.exception = Objects.requireNonNull(exception, "exception is null");
-			}
-
-			@Override
-			public String toString() {
-				return "DirectoryListingExceptionEntry[exception: " + exception + "]";
-			}
-
-			@Override
-			public Path getDir() {
-				return dir;
-			}
-
-			@Override
-			public IOException getException() {
-				return exception;
-			}
-
-		}
-
-	}
-
 	final class FileEntry implements TreeEntry {
 
 		final Path file;
@@ -119,31 +56,6 @@ public sealed interface TreeEntry {
 
 		public BasicFileAttributes getAttrs() {
 			return attrs;
-		}
-
-	}
-
-	final class FileReadingAttributesExceptionEntry implements TreeEntry {
-
-		final Path file;
-		final IOException exception;
-
-		public FileReadingAttributesExceptionEntry(Path file, IOException exception) {
-			this.file = Objects.requireNonNull(file, "file is null");
-			this.exception = Objects.requireNonNull(exception, "exception is null");
-		}
-
-		@Override
-		public String toString() {
-			return "FileReadingAttributesExceptionEntry[file: " + file.getFileName() + ", exception: " + exception + "]";
-		}
-
-		public Path getFile() {
-			return file;
-		}
-
-		public IOException getException() {
-			return exception;
 		}
 
 	}

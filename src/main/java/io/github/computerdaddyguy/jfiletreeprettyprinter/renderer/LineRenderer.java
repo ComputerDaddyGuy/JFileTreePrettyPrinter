@@ -4,9 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file.FileFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
@@ -21,13 +19,7 @@ interface LineRenderer {
 	String renderDirectoryBegin(Depth depth, DirectoryEntry dirEntry, List<Path> dirs);
 
 	@Nullable
-	String renderDirectoryException(Depth depth, DirectoryExceptionTreeEntry dirExceptionEntry);
-
-	@Nullable
 	String renderFile(Depth depth, FileEntry fileEntry);
-
-	@Nullable
-	String renderFileException(Depth depth, FileReadingAttributesExceptionEntry fileReadingAttrsExceptionEntry);
 
 	@Nullable
 	String renderChildLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry);

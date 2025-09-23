@@ -74,6 +74,9 @@ base/
    └─ landscape.jpeg
 ```
 
+> [!NOTE]
+> In case of error while reading directories or files, an [UncheckedIOException](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/UncheckedIOException.html) is thrown. 
+
 # Options
 
 * [Tree format](#tree-format)

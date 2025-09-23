@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Filtering: moved to options
 
+### Removed
+- Error handling: exceptions are now thrown instead of being handled by the renderer
+
 
 ## [0.0.3] - 2025-09-21
 

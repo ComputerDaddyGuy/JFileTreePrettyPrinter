@@ -1,9 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryExceptionTreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileReadingAttributesExceptionEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
@@ -15,11 +13,7 @@ public interface FileFormatter {
 
 	String formatDirectoryBegin(DirectoryEntry dirEntry, List<Path> dirs);
 
-	String formatDirectoryException(DirectoryExceptionTreeEntry dirExceptionEntry);
-
 	String formatFile(FileEntry fileEntry);
-
-	String formatFileException(FileReadingAttributesExceptionEntry fileReadingAttrsException);
 
 	String formatChildLimitReached(SkippedChildrenEntry skippedChildrenEntry);
 
