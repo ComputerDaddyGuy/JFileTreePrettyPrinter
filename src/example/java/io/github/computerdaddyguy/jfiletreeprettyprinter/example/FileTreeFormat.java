@@ -1,7 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.RenderingOptions.TreeFormat;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.TreeFormat;
 
 public class FileTreeFormat {
 

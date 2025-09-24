@@ -1,5 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.TreeFormat;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -22,19 +23,5 @@ public interface RenderingOptions {
 	 * @return
 	 */
 	TreeFormat getTreeFormat();
-
-	enum TreeFormat {
-
-		/**
-		 * Uses characters: |--, `-- and │
-		 */
-		CLASSIC_ASCII,
-
-		/**
-		 * Uses characters: ├─, └─ and │
-		 */
-		UNICODE_BOX_DRAWING,
-
-	}
 
 }

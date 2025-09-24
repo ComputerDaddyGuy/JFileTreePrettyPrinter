@@ -57,6 +57,20 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
 	// ---------- Tree format ----------
 
+	public static enum TreeFormat {
+
+		/**
+		 * Uses characters: |--, `-- and │
+		 */
+		CLASSIC_ASCII,
+
+		/**
+		 * Uses characters: ├─, └─ and │
+		 */
+		UNICODE_BOX_DRAWING,
+
+	}
+
 	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
 
 	@Override
