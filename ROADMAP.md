@@ -14,12 +14,13 @@
 - [x] Publish on Maven Central!
 - [x] Child limitation function helper
 - [x] More default emojis
-- [x] Filtering
-- [x] Ordering
+- [x] Option: Filtering
+- [x] Option: Ordering
 
 ## To do
 - [x] Use Github wiki to document options instead of readme
-- [ ] Additional text on lines
+- [x] Jacoco coverage report
+- [ ] Option: Line extension (=additional text after the file name)
 - [ ] Option: Filename decorator
 
 ## Backlog
@@ -27,7 +28,6 @@
 - [ ] Option: custom emojis
 - [ ] Option: color
 - [ ] Refactor unit tests (custom assert?)
-- [ ] Jacoco coverage report
 - [ ] More `PathPredicates` functions!
 
 ## Abandoned
