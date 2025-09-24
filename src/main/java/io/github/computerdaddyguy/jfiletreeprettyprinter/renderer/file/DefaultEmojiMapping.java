@@ -41,6 +41,7 @@ class DefaultEmojiMapping implements EmojiMapping {
 		return emoji;
 	}
 
+	@Nullable
 	private final String extractExtension(String fileName) {
 		var dotIndex = fileName.lastIndexOf('.');
 		return dotIndex < 0 ? null : fileName.substring(dotIndex + 1);

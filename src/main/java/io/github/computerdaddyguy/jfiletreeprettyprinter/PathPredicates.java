@@ -106,7 +106,7 @@ public final class PathPredicates {
 	 * @return a predicate testing for files to represent a directory
 	 */
 	public static Predicate<Path> isDirectory() {
-		return path -> PathUtils.isDirectory(path);
+		return PathUtils::isDirectory;
 	}
 
 	/**
@@ -115,7 +115,7 @@ public final class PathPredicates {
 	 * @return a predicate testing for files to represent a file
 	 */
 	public static Predicate<Path> isFile() {
-		return path -> PathUtils.isFile(path);
+		return PathUtils::isFile;
 	}
 
 }

@@ -27,6 +27,7 @@ import org.jspecify.annotations.Nullable;
 @NullMarked
 public class PathPredicateBuilder {
 
+	@Nullable
 	private Predicate<Path> combinedPredicate;
 
 	/**

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class EmojiFileFormatter implements FileFormatter {
@@ -25,7 +26,7 @@ class EmojiFileFormatter implements FileFormatter {
 		return getEmojiPrefix(emoji);
 	}
 
-	private String getEmojiPrefix(String emoji) {
+	private String getEmojiPrefix(@Nullable String emoji) {
 		if (emoji == null) {
 			return "";
 		}

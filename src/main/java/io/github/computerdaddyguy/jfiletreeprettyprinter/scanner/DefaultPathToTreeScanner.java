@@ -53,7 +53,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		try (var childrenStream = Files.newDirectoryStream(dir)) {
 			var it = directoryStreamToIterator(childrenStream, filter);
-			childEntries = handleDirectoryChildren(depth, dir, filter, it);
+			childEntries = handleDirectoryChildren(depth, dir, it, filter);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Unable to list files for directory: " + dir, e);
 		}
@@ -66,7 +66,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		return new DirectoryEntry(dir, childEntries);
 	}
 
-	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Predicate<Path> filter, Iterator<Path> pathIterator) {
+	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Iterator<Path> pathIterator, @Nullable Predicate<Path> filter) {
 
 		var childEntries = new ArrayList<TreeEntry>();
 		int maxChildEntries = options.getChildLimit().applyAsInt(dir);
