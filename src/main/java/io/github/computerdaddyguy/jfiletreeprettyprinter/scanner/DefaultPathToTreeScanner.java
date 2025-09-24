@@ -89,13 +89,13 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		// Loop has early exit?
 		if (pathIterator.hasNext()) {
-			childEntries.addAll(handleLeftOverChildren(depth, filter, pathIterator));
+			childEntries.addAll(handleLeftOverChildren(depth, pathIterator, filter));
 		}
 
 		return childEntries;
 	}
 
-	private List<TreeEntry> handleLeftOverChildren(int depth, Predicate<Path> filter, Iterator<Path> pathIterator) {
+	private List<TreeEntry> handleLeftOverChildren(int depth, Iterator<Path> pathIterator, @Nullable Predicate<Path> filter) {
 		var childEntries = new ArrayList<TreeEntry>();
 
 		if (filter == null) {
