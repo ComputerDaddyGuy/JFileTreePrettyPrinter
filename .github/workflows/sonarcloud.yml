@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'releases/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+
+name: SonarCloud analysis
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@6.0.0
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        projectBaseDir: .
+        args: >
+          -Dsonar.projectKey=ComputerDaddyGuy_JFileTreePrettyPrinter
+          -Dsonar.organization=computerdaddyguy
+      
