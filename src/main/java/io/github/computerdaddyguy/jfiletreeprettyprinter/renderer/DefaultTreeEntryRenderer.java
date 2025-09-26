@@ -62,18 +62,18 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 			line += "\n";
 		}
 
-		var childLines = "";
+		var childLines = new StringBuilder();
 
 		while (childIt.hasNext()) {
 			var childEntry = childIt.next();
 			var childDepth = depth.append(childIt.hasNext() ? DepthSymbol.NON_LAST_FILE : DepthSymbol.LAST_FILE);
-			childLines += renderTree(childEntry, childDepth);
+			childLines.append(renderTree(childEntry, childDepth));
 			if (childIt.hasNext()) {
-				childLines += "\n";
+				childLines.append('\n');
 			}
 		}
 
-		return line + childLines;
+		return line + childLines.toString();
 	}
 
 	private String computeLineExtension(Path path) {

@@ -325,6 +325,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	private Function<Path, String> lineExtension;
 
 	@Override
+	@Nullable
 	public Function<Path, String> getLineExtension() {
 		return lineExtension;
 	}
