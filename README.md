@@ -44,13 +44,13 @@ For Maven, import this dependency to your `pom.xml`:
 <dependency>
   <groupId>io.github.computerdaddyguy</groupId>
   <artifactId>jfiletreeprettyprinter</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 ```
 
 For Gradle:
 ```
-implementation "io.github.computerdaddyguy:jfiletreeprettyprinter:0.0.3"
+implementation "io.github.computerdaddyguy:jfiletreeprettyprinter:0.0.4"
 ```
 
 # Usage

@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [0.0.4] - Unreleased
+## [0.0.4] - 2025-09-27
 
 ### Added
 - Line extension: append any String after a path (comment, file details, etc.)
@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - Error handling: exceptions are now thrown instead of being handled by the renderer
+
+### Documentation
+- Documentation moved to [Github wiki](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/wiki)
 
 ---
 ## [0.0.3] - 2025-09-21

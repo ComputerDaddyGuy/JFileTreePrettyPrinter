@@ -16,16 +16,16 @@
 - [x] More default emojis
 - [x] Option: Filtering
 - [x] Option: Ordering
-
-## To do
 - [x] Use Github wiki to document options instead of readme
 - [x] Jacoco coverage report
 - [x] Option: Line extension (=additional text after the file name)
 
-## Backlog / To analyze / To implement if requested
+## To do
 - [ ] More `PathPredicates` functions!
-- [ ] Option: custom tree format
 - [ ] Option: custom emojis
+
+## Backlog / To analyze / To implement if requested
+- [ ] Option: custom tree format
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Option: color
 - [ ] Option: Filename decorator
