@@ -10,21 +10,16 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.Skipp
 import java.nio.file.Path;
 import java.util.List;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 @NullMarked
 interface LineRenderer {
 
-	@Nullable
 	String renderDirectoryBegin(Depth depth, DirectoryEntry dirEntry, List<Path> dirs);
 
-	@Nullable
 	String renderFile(Depth depth, FileEntry fileEntry);
 
-	@Nullable
 	String renderChildLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry);
 
-	@Nullable
 	String renderMaxDepthReached(Depth depth, MaxDepthReachEntry maxDepthReachEntry);
 
 	/**

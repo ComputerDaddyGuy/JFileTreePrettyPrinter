@@ -26,6 +26,10 @@ public class Depth {
 		return symbols.size();
 	}
 
+	public boolean isRoot() {
+		return getSize() == 0;
+	}
+
 	public Depth append(DepthSymbol symbol) {
 		var newList = new ArrayList<DepthSymbol>(symbols);
 		newList.add(symbol);

@@ -44,7 +44,8 @@ class CompactDirectoriesTest {
 			.getPath();
 		var result = printer.prettyPrint(path);
 		var expected = """
-			targetPath/dir1/""";
+			targetPath/
+			└─ dir1/""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -63,18 +64,29 @@ class CompactDirectoriesTest {
 	}
 
 	@Test
-	void dirWithTwoDirs() {
+	void complex() {
+		// @formatter:off
 		var path = FileStructureCreator
 			.forTargetPath(root)
-			.createDirectory("dir1")
-			.createDirectory("dir2")
+			.createAndEnterDirectory("dirA")
+				.createAndEnterDirectory("dirB")
+					.createAndEnterDirectory("dirC")
+						.createFiles("file", 3)
+					.up()
+				.up()
 			.up()
+			.createDirectory("dirX")
 			.getPath();
+		// @formatter:on
+
 		var result = printer.prettyPrint(path);
 		var expected = """
 			targetPath/
-			├─ dir1/
-			└─ dir2/""";
+			├─ dirA/dirB/dirC/
+			│  ├─ file1
+			│  ├─ file2
+			│  └─ file3
+			└─ dirX/""";
 		assertThat(result).isEqualTo(expected);
 	}
 

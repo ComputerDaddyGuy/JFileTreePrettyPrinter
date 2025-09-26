@@ -26,60 +26,76 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 
 	@Override
 	public String renderTree(TreeEntry entry) {
-		var depth = Depth.createNewEmpty();
-		var buff = new StringBuilder();
-		renderTree(entry, depth, buff);
-		return buff.toString();
+		return renderTree(entry, Depth.createNewEmpty());
 	}
 
-	public void renderTree(TreeEntry entry, Depth depth, StringBuilder buff) {
-		switch (entry) {
-			case TreeEntry.DirectoryEntry dirEntry -> renderDirectory(buff, depth, dirEntry, List.of(dirEntry.getDir()));
-			case TreeEntry.FileEntry fileEntry -> renderFile(buff, depth, fileEntry);
-			case TreeEntry.SkippedChildrenEntry skippedChildrenEntry -> renderSkippedChildrenEntry(buff, depth, skippedChildrenEntry);
-			case TreeEntry.MaxDepthReachEntry maxDepthReachEntry -> renderMaxDepthReachEntry(buff, depth, maxDepthReachEntry);
-		}
+	private String renderTree(TreeEntry entry, Depth depth) {
+		return switch (entry) {
+			case TreeEntry.DirectoryEntry dirEntry -> renderDirectory(depth, dirEntry, List.of(dirEntry.getDir()));
+			case TreeEntry.FileEntry fileEntry -> renderFile(depth, fileEntry);
+			case TreeEntry.SkippedChildrenEntry skippedChildrenEntry -> renderSkippedChildrenEntry(depth, skippedChildrenEntry);
+			case TreeEntry.MaxDepthReachEntry maxDepthReachEntry -> renderMaxDepthReachEntry(depth, maxDepthReachEntry);
+		};
 	}
 
-	private void renderDirectory(StringBuilder buff, Depth depth, DirectoryEntry dirEntry, List<Path> compactPaths) {
+	private String renderDirectory(Depth depth, DirectoryEntry dirEntry, List<Path> compactPaths) {
 
 		if (options.areCompactDirectoriesUsed()
+			&& !depth.isRoot()
 			&& dirEntry.getEntries().size() == 1
 			&& dirEntry.getEntries().get(0) instanceof DirectoryEntry childDirEntry) {
-			var newCompactPaths = new ArrayList<>(compactPaths);
-			newCompactPaths.add(childDirEntry.getDir());
-			renderDirectory(buff, depth, childDirEntry, newCompactPaths);
-			return;
+
+			var extension = computeLineExtension(dirEntry.getDir());
+			if (extension.isEmpty()) {
+				var newCompactPaths = new ArrayList<>(compactPaths);
+				newCompactPaths.add(childDirEntry.getDir());
+				return renderDirectory(depth, childDirEntry, newCompactPaths);
+			}
 		}
 
-		buff.append(lineRenderer.renderDirectoryBegin(depth, dirEntry, compactPaths));
+		var line = lineRenderer.renderDirectoryBegin(depth, dirEntry, compactPaths);
+		line += computeLineExtension(dirEntry.getDir());
 
 		var childIt = dirEntry.getEntries().iterator();
 
 		if (childIt.hasNext()) {
-			buff.append('\n');
+			line += "\n";
 		}
+
+		var childLines = new StringBuilder();
 
 		while (childIt.hasNext()) {
 			var childEntry = childIt.next();
 			var childDepth = depth.append(childIt.hasNext() ? DepthSymbol.NON_LAST_FILE : DepthSymbol.LAST_FILE);
-			renderTree(childEntry, childDepth, buff);
+			childLines.append(renderTree(childEntry, childDepth));
 			if (childIt.hasNext()) {
-				buff.append('\n');
+				childLines.append('\n');
 			}
 		}
+
+		return line + childLines.toString();
 	}
 
-	private void renderFile(StringBuilder buff, Depth depth, FileEntry fileEntry) {
-		buff.append(lineRenderer.renderFile(depth, fileEntry));
+	private String computeLineExtension(Path path) {
+		if (options.getLineExtension() == null) {
+			return "";
+		}
+		var extension = options.getLineExtension().apply(path);
+		return extension == null ? "" : extension;
 	}
 
-	private void renderSkippedChildrenEntry(StringBuilder buff, Depth depth, SkippedChildrenEntry skippedChildrenEntry) {
-		buff.append(lineRenderer.renderChildLimitReached(depth, skippedChildrenEntry));
+	private String renderFile(Depth depth, FileEntry fileEntry) {
+		var line = lineRenderer.renderFile(depth, fileEntry);
+		line += computeLineExtension(fileEntry.getFile());
+		return line;
 	}
 
-	private void renderMaxDepthReachEntry(StringBuilder buff, Depth depth, MaxDepthReachEntry maxDepthReachEntry) {
-		buff.append(lineRenderer.renderMaxDepthReached(depth, maxDepthReachEntry));
+	private String renderSkippedChildrenEntry(Depth depth, SkippedChildrenEntry skippedChildrenEntry) {
+		return lineRenderer.renderChildLimitReached(depth, skippedChildrenEntry);
+	}
+
+	private String renderMaxDepthReachEntry(Depth depth, MaxDepthReachEntry maxDepthReachEntry) {
+		return lineRenderer.renderMaxDepthReached(depth, maxDepthReachEntry);
 	}
 
 }

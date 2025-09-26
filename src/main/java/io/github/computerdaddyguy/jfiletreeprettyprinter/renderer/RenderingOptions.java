@@ -1,7 +1,10 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.TreeFormat;
+import java.nio.file.Path;
+import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public interface RenderingOptions {
@@ -23,5 +26,12 @@ public interface RenderingOptions {
 	 * @return
 	 */
 	TreeFormat getTreeFormat();
+
+	/**
+	 * The line extension function.
+	 * @return
+	 */
+	@Nullable
+	Function<Path, String> getLineExtension();
 
 }
