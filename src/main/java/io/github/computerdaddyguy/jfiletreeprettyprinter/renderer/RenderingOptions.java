@@ -4,6 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.Tree
 import java.nio.file.Path;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public interface RenderingOptions {
@@ -30,6 +31,7 @@ public interface RenderingOptions {
 	 * The line extension function.
 	 * @return
 	 */
+	@Nullable
 	Function<Path, String> getLineExtension();
 
 }

@@ -69,6 +69,70 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_first_dir() {
 
+		Function<Path, String> lineExtension = p -> {
+			if (PathUtils.hasName(p, "dirA")) {
+				return " // 1";
+			}
+			return null;
+		};
+
+		var expected = """
+			targetPath/
+			├─ dirA/ // 1
+			│  └─ dirB/dirC/
+			│     ├─ file1
+			│     ├─ file2
+			│     └─ file3
+			└─ dirX/""";
+
+		compact_dir(lineExtension, expected);
+	}
+
+	@Test
+	void compact_dir_middle_dir() {
+
+		Function<Path, String> lineExtension = p -> {
+			if (PathUtils.hasName(p, "dirB")) {
+				return " // 2";
+			}
+			return null;
+		};
+
+		var expected = """
+			targetPath/
+			├─ dirA/dirB/ // 2
+			│  └─ dirC/
+			│     ├─ file1
+			│     ├─ file2
+			│     └─ file3
+			└─ dirX/""";
+
+		compact_dir(lineExtension, expected);
+	}
+
+	@Test
+	void compact_dir_last_dir() {
+
+		Function<Path, String> lineExtension = p -> {
+			if (PathUtils.hasName(p, "dirC")) {
+				return " // 3";
+			}
+			return null;
+		};
+
+		var expected = """
+			targetPath/
+			├─ dirA/dirB/dirC/ // 3
+			│  ├─ file1
+			│  ├─ file2
+			│  └─ file3
+			└─ dirX/""";
+
+		compact_dir(lineExtension, expected);
+	}
+
+	private void compact_dir(Function<Path, String> lineExtension, String expected) {
+
 		// @formatter:off
 		var path = FileStructureCreator
 			.forTargetPath(root)
@@ -83,108 +147,12 @@ class LineExtensionTest {
 			.getPath();
 		// @formatter:on
 
-		Function<Path, String> lineExtension = p -> {
-			if (PathUtils.hasName(p, "dirA")) {
-				return " // 1";
-			}
-			return null;
-		};
-
 		var printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withLineExtension(lineExtension))
 			.customizeOptions(options -> options.withCompactDirectories(true))
 			.build();
 
 		var result = printer.prettyPrint(path);
-		var expected = """
-			targetPath/
-			├─ dirA/ // 1
-			│  └─ dirB/dirC/
-			│     ├─ file1
-			│     ├─ file2
-			│     └─ file3
-			└─ dirX/""";
-		assertThat(result).isEqualTo(expected);
-	}
-
-	@Test
-	void compact_dir_middle_dir() {
-
-		// @formatter:off
-		var path = FileStructureCreator
-			.forTargetPath(root)
-			.createAndEnterDirectory("dirA")
-			.createAndEnterDirectory("dirB")
-			.createAndEnterDirectory("dirC")
-			.createFiles("file", 3)
-			.up()
-			.up()
-			.up()
-			.createDirectory("dirX")
-			.getPath();
-		// @formatter:on
-
-		Function<Path, String> lineExtension = p -> {
-			if (PathUtils.hasName(p, "dirB")) {
-				return " // 2";
-			}
-			return null;
-		};
-
-		var printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withLineExtension(lineExtension))
-			.customizeOptions(options -> options.withCompactDirectories(true))
-			.build();
-
-		var result = printer.prettyPrint(path);
-		var expected = """
-			targetPath/
-			├─ dirA/dirB/ // 2
-			│  └─ dirC/
-			│     ├─ file1
-			│     ├─ file2
-			│     └─ file3
-			└─ dirX/""";
-		assertThat(result).isEqualTo(expected);
-	}
-
-	@Test
-	void compact_dir_last_dir() {
-
-		// @formatter:off
-		var path = FileStructureCreator
-			.forTargetPath(root)
-			.createAndEnterDirectory("dirA")
-			.createAndEnterDirectory("dirB")
-			.createAndEnterDirectory("dirC")
-			.createFiles("file", 3)
-			.up()
-			.up()
-			.up()
-			.createDirectory("dirX")
-			.getPath();
-		// @formatter:on
-
-		Function<Path, String> lineExtension = p -> {
-			if (PathUtils.hasName(p, "dirC")) {
-				return " // 3";
-			}
-			return null;
-		};
-
-		var printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withLineExtension(lineExtension))
-			.customizeOptions(options -> options.withCompactDirectories(true))
-			.build();
-
-		var result = printer.prettyPrint(path);
-		var expected = """
-			targetPath/
-			├─ dirA/dirB/dirC/ // 3
-			│  ├─ file1
-			│  ├─ file2
-			│  └─ file3
-			└─ dirX/""";
 		assertThat(result).isEqualTo(expected);
 	}
 
