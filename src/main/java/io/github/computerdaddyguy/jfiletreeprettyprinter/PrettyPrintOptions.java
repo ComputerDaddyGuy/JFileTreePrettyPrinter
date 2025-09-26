@@ -5,6 +5,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.ScanningOptions
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import org.jspecify.annotations.NullMarked;
@@ -313,8 +314,35 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	
 	 * @param filter	The filter, <code>null</code> to disable filtering
 	 */
-	public PrettyPrintOptions filter(Predicate<Path> filter) {
+	public PrettyPrintOptions filter(@Nullable Predicate<Path> filter) {
 		this.pathFilter = filter;
+		return this;
+	}
+
+	// ---------- Line extension ----------
+
+	@Nullable
+	private Function<Path, String> lineExtension;
+
+	@Override
+	public Function<Path, String> getLineExtension() {
+		return lineExtension;
+	}
+
+	/**
+	 * Sets a custom line extension function that appends additional text to each
+	 * printed line, allowing you to customize the display of files or directories.
+	 * <p>
+	 * Typical use cases include adding comments, showing file sizes, or displaying metadata.
+	 * <p>
+	 * The function receives the current {@link Path} displayed on the line
+	 * and returns an optional string to be appended.
+	 * If the function returns {@code null}, nothing is added.
+	 * 
+	 * @param lineExtension	the custom line extension function, or {@code null} to disable
+	 */
+	public PrettyPrintOptions withLineExtension(@Nullable Function<Path, String> lineExtension) {
+		this.lineExtension = lineExtension;
 		return this;
 	}
 

@@ -60,8 +60,9 @@ class MaxDepthTest {
 
 		var result = printer.prettyPrint(path);
 		var expected = """
-			targetPath/level1/level2/
-			└─ ... (max depth reached)""";
+			targetPath/
+			└─ level1/level2/
+			   └─ ... (max depth reached)""";
 		assertThat(result).isEqualTo(expected);
 	}
 

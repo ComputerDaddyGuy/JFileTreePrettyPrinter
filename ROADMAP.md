@@ -20,18 +20,14 @@
 ## To do
 - [x] Use Github wiki to document options instead of readme
 - [x] Jacoco coverage report
-- [ ] Option: Line extension (=additional text after the file name)
-- [ ] Option: Filename decorator
+- [x] Option: Line extension (=additional text after the file name)
 
-## Backlog
+## Backlog / To analyze / To implement if requested
+- [ ] More `PathPredicates` functions!
 - [ ] Option: custom tree format
 - [ ] Option: custom emojis
-- [ ] Option: color
 - [ ] Refactor unit tests (custom assert?)
-- [ ] More `PathPredicates` functions!
-
-## Abandoned
-These ideas will likely not been implemented because they do not align with JFileTreePrettyPrint vision:
-- File attributes LineRenderer (size, author, createAt, etc.)
-- Print optional legend for symlink/other file types symbols (at the end of the tree)
-- Follow symlink option
+- [ ] Option: color
+- [ ] Option: Filename decorator
+- [ ] Option: Follow symlink
+- [ ] Advanced line extension function (file size, author, timestamps, etc. )

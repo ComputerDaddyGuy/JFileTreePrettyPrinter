@@ -41,14 +41,20 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 	private String renderDirectory(Depth depth, DirectoryEntry dirEntry, List<Path> compactPaths) {
 
 		if (options.areCompactDirectoriesUsed()
+			&& !depth.isRoot()
 			&& dirEntry.getEntries().size() == 1
 			&& dirEntry.getEntries().get(0) instanceof DirectoryEntry childDirEntry) {
-			var newCompactPaths = new ArrayList<>(compactPaths);
-			newCompactPaths.add(childDirEntry.getDir());
-			return renderDirectory(depth, childDirEntry, newCompactPaths);
+
+			var extension = computeLineExtension(dirEntry.getDir());
+			if (extension.isEmpty()) {
+				var newCompactPaths = new ArrayList<>(compactPaths);
+				newCompactPaths.add(childDirEntry.getDir());
+				return renderDirectory(depth, childDirEntry, newCompactPaths);
+			}
 		}
 
 		var line = lineRenderer.renderDirectoryBegin(depth, dirEntry, compactPaths);
+		line += computeLineExtension(dirEntry.getDir());
 
 		var childIt = dirEntry.getEntries().iterator();
 
@@ -70,8 +76,18 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 		return line + childLines;
 	}
 
+	private String computeLineExtension(Path path) {
+		if (options.getLineExtension() == null) {
+			return "";
+		}
+		var extension = options.getLineExtension().apply(path);
+		return extension == null ? "" : extension;
+	}
+
 	private String renderFile(Depth depth, FileEntry fileEntry) {
-		return lineRenderer.renderFile(depth, fileEntry);
+		var line = lineRenderer.renderFile(depth, fileEntry);
+		line += computeLineExtension(fileEntry.getFile());
+		return line;
 	}
 
 	private String renderSkippedChildrenEntry(Depth depth, SkippedChildrenEntry skippedChildrenEntry) {

@@ -15,6 +15,7 @@
 - Limit displayed children (fixed value or dynamically)
 - Compact directory chains
 - Maximum depth
+- Custom line extension (comment, file details, etc.)
 - Various styles for tree rendering
 
 > [!CAUTION]
@@ -90,6 +91,7 @@ base/
 * [Max depth](#max-depth)
 * [Sorting](#sorting)
 * [Filtering](#filtering)
+* [Line extension](#line-extension)
   
 ## Tree format
 Choose between different tree formats.
@@ -294,6 +296,49 @@ filtering/
 │     ├─ file_G.java
 │     └─ file_J.java
 └─ file_A.java
+```
+
+## Line extension
+You can extend each displayed path with additional information by providing a custom `Function<Path, String>`.
+This is useful to annotate your tree with comments, display file sizes, or add domain-specific notes.
+
+The function receives the current path and returns an optional string to append.
+If the function returns `null`, nothing is added.
+
+```java
+// Example: LineExtension.java
+Function<Path, String> lineExtension = path -> {
+	if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "api")) {
+		return "\t\t\t// All API code: controllers, etc.";
+	}
+	if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "domain")) {
+		return "\t\t\t// All domain code: value objects, etc.";
+	}
+	if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "infra")) {
+		return "\t\t\t// All infra code: database, email service, etc.";
+	}
+	if (PathUtils.isFile(path) && PathUtils.hasName(path, "application.properties")) {
+		return "\t// Config file";
+	}
+	return null;
+};
+var prettyPrinter = FileTreePrettyPrinter.builder()
+	.customizeOptions(options -> options.withLineExtension(lineExtension))
+	.build();
+```
+```
+line_extension/
+└─ src/
+   └─ main/
+      ├─ java/
+      │  ├─ api/			// All API code: controllers, etc.
+      │  │  └─ Controller.java
+      │  ├─ domain/			// All domain code: value objects, etc.
+      │  │  └─ ValueObject.java
+      │  └─ infra/			// All infra code: database, email service, etc.
+      │     └─ Repository.java
+      └─ resources/
+         └─ application.properties	// Config file
 ```
 
 # Changelog
