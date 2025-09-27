@@ -360,6 +360,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void does_not_match_sibling() throws IOException {
 			var parent = createTempDir("parent");
 			var child = Files.createDirectory(parent.resolve("child"));
@@ -374,14 +375,14 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
-		void root_has_no_parent() throws IOException {
-			var root = Path.of("root");
+		void root_has_no_parent() {
+			var detachedRoot = Path.of("root");
 
 			var filter = PathPredicates.builder().hasParentMatching(
 				p -> true
 			).build();
 
-			assertThat(filter.test(root)).isFalse();
+			assertThat(filter.test(detachedRoot)).isFalse();
 		}
 
 	}
@@ -422,6 +423,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void does_not_match_sibling() throws IOException {
 			var parent = createTempDir("parent");
 			var child = Files.createDirectory(parent.resolve("child"));
@@ -436,14 +438,14 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
-		void root_has_no_parent() throws IOException {
-			var root = Path.of("root");
+		void root_has_no_parent() {
+			var detachedRoot = Path.of("root");
 
 			var filter = PathPredicates.builder().hasAncestorMatching(
 				p -> true
 			).build();
 
-			assertThat(filter.test(root)).isFalse();
+			assertThat(filter.test(detachedRoot)).isFalse();
 		}
 
 	}
@@ -458,6 +460,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void matches_direct_child() throws IOException {
 			var parent = createTempDir("parent");
 			var child = Files.createDirectory(parent.resolve("child"));
@@ -470,6 +473,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void does_not_match_grandchild() throws IOException {
 			var parent = createTempDir("parent");
 			var child = Files.createDirectory(parent.resolve("child"));
@@ -483,7 +487,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
-		void does_not_match_if_not_directory() throws IOException {
+		void does_not_match_if_not_directory() {
 			var parent = createTempFile("parent");
 
 			var filter = PathPredicates.builder().hasDirectChildMatching(
@@ -494,7 +498,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
-		void does_not_match_if_no_child() throws IOException {
+		void does_not_match_if_no_child() {
 			var parent = createTempDir("parent");
 
 			var filter = PathPredicates.builder().hasDirectChildMatching(
@@ -516,6 +520,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void matches_grandchild() throws IOException {
 			var parent = createTempDir("parent");
 			var child = Files.createDirectory(parent.resolve("child"));
@@ -541,7 +546,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
-		void does_not_match_if_not_directory() throws IOException {
+		void does_not_match_if_not_directory() {
 			var parent = createTempFile("parent");
 
 			var filter = PathPredicates.builder().hasDescendantMatching(
@@ -552,7 +557,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
-		void does_not_match_if_no_child() throws IOException {
+		void does_not_match_if_no_child() {
 			var parent = createTempDir("parent");
 
 			var filter = PathPredicates.builder().hasDescendantMatching(
@@ -574,6 +579,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void matches_sibling() throws IOException {
 			var parent = createTempDir("parent");
 			var child1 = Files.createDirectory(parent.resolve("child1"));
@@ -587,6 +593,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void matches_sibling_failed() throws IOException {
 			var parent = createTempDir("parent");
 			var child1 = Files.createDirectory(parent.resolve("child1"));
@@ -600,7 +607,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
-		void root_has_no_sibling() throws IOException {
+		void root_has_no_sibling() {
 			var root = Path.of("root");
 
 			var filter = PathPredicates.builder().hasSiblingMatching(
@@ -623,6 +630,7 @@ class PathPredicateBuilderTest {
 		}
 
 		@Test
+		@SuppressWarnings("unused")
 		void does_not_match_parent_or_child() throws IOException {
 			var parent = createTempDir("parent");
 			var child = Files.createDirectory(parent.resolve("child"));

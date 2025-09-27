@@ -198,7 +198,7 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder isDirectory() {
-		return pathTest(path -> PathPredicates.isDirectory(path));
+		return pathTest(PathPredicates::isDirectory);
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder isFile() {
-		return pathTest(path -> PathPredicates.isFile(path));
+		return pathTest(PathPredicates::isFile);
 	}
 
 	// ---------- Hierarchy ----------
