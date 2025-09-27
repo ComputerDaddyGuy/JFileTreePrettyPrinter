@@ -158,4 +158,83 @@ public class PathPredicateBuilder {
 		return pathTest(PathPredicates.isFile());
 	}
 
+	// ---------- Hierarchy ----------
+
+	/**
+	 * Adds a condition that tests the direct parent of the path.
+	 *
+	 * @param parentPredicate the predicate to apply on the direct parent
+	 * 
+	 * @return this builder for chaining
+	 * 
+	 * @see PathPredicates#hasParentMatching(Predicate)
+	 */
+	public PathPredicateBuilder hasParentMatching(Predicate<Path> parentPredicate) {
+		return pathTest(PathPredicates.hasParentMatching(parentPredicate));
+	}
+
+	/**
+	 * Adds a condition that tests all ancestors of the path (stopping at the first match).
+	 *
+	 * The condition is satisfied if the given {@code ancestorPredicate} evaluates 
+	 * to {@code true} for any ancestor in the {@link Path#getParent()} chain.
+	 * 
+	 * @param ancestorPredicate the predicate to apply on each ancestor
+	 * 
+	 * @return this builder for chaining
+	 * 
+	 * @see PathPredicates#hasAncestorMatching(Predicate)
+	 */
+	public PathPredicateBuilder hasAncestorMatching(Predicate<Path> ancestorPredicate) {
+		return pathTest(PathPredicates.hasAncestorMatching(ancestorPredicate));
+	}
+
+	/**
+	 * Adds a condition that tests the direct children of the path.
+	 *
+	 * The condition is satisfied if the given {@code childPredicate} evaluates
+	 * to {@code true} for at least one direct child of the tested path.
+	 * 
+	 * @param childPredicate the predicate to apply on each direct child
+	 * 
+	 * @return this builder for chaining
+	 * 
+	 * @see PathPredicates#hasDirectChildMatching(Predicate)
+	 */
+	public PathPredicateBuilder hasDirectChildMatching(Predicate<Path> childPredicate) {
+		return pathTest(PathPredicates.hasDirectChildMatching(childPredicate));
+	}
+
+	/**
+	 * Adds a condition that tests all descendants of the path (children at any depth).
+	 *
+	 * The condition is satisfied if the given {@code descendantPredicate} evaluates
+	 * to {@code true} for at least one descendant in the directory tree.
+	 * 
+	 * @param descendantPredicate the predicate to apply on each descendant
+	 * 
+	 * @return this builder for chaining
+	 * 
+	 * @see PathPredicates#hasDescendantMatching(Predicate)
+	 */
+	public PathPredicateBuilder hasDescendantMatching(Predicate<Path> descendantPredicate) {
+		return pathTest(PathPredicates.hasDescendantMatching(descendantPredicate));
+	}
+
+	/**
+	 * Adds a condition that tests the siblings of the path.
+	 *
+	 * The condition is satisfied if the given {@code siblingPredicate} evaluates
+	 * to {@code true} for at least one sibling of the tested path.
+	 * 
+	 * @param siblingPredicate the predicate to apply on each sibling
+	 * 
+	 * @return this builder for chaining
+	 * 
+	 * @see PathPredicates#hasSiblingMatching(Predicate)
+	 */
+	public PathPredicateBuilder hasSiblingMatching(Predicate<Path> siblingPredicate) {
+		return pathTest(PathPredicates.hasSiblingMatching(siblingPredicate));
+	}
+
 }
