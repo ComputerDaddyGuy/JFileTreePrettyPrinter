@@ -608,13 +608,13 @@ class PathPredicateBuilderTest {
 
 		@Test
 		void root_has_no_sibling() {
-			var root = Path.of("root");
+			var detachedRoot = Path.of("root");
 
 			var filter = PathPredicates.builder().hasSiblingMatching(
 				p -> true
 			).build();
 
-			assertThat(filter.test(root)).isFalse();
+			assertThat(filter.test(detachedRoot)).isFalse();
 		}
 
 		@Test
