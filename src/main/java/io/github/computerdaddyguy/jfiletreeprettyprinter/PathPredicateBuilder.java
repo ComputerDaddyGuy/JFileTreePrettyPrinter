@@ -2,6 +2,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -75,6 +76,32 @@ public class PathPredicateBuilder {
 		return pathTest(path -> predicate.test(path.toFile()));
 	}
 
+	// ---------- PathMatcher ----------
+
+	/**
+	 * Adds a condition that tests whether the path matches the specified glob pattern.
+	 * 
+	 * @param glob the glob pattern to match; must not be {@code null}
+	 * 
+	 * @return this builder for chaining
+	 */
+	public PathPredicateBuilder hasFullPathMatchingGlob(String glob) {
+		Objects.requireNonNull(glob, "glob is null");
+		return pathTest(path -> PathPredicates.hasFullPathMatchingGlob(path, glob));
+	}
+
+	/**
+	 * Adds a condition that tests whether the path matches the provided {@link PathMatcher}.
+	 * 
+	 * @param matcher the {@code PathMatcher} to use; must not be {@code null}
+	 * 
+	 * @return this builder for chaining
+	 */
+	public PathPredicateBuilder hasFullPathMatching(PathMatcher matcher) {
+		Objects.requireNonNull(matcher, "matcher is null");
+		return pathTest(path -> PathPredicates.hasFullPathMatching(path, matcher));
+	}
+
 	// ---------- Name ----------
 
 	/**
@@ -113,6 +140,26 @@ public class PathPredicateBuilder {
 	public PathPredicateBuilder hasNameMatching(Pattern pattern) {
 		Objects.requireNonNull(pattern, "pattern is null");
 		return pathTest(path -> PathPredicates.hasNameMatching(path, pattern));
+	}
+
+	/**
+	 * Adds a condition that tests whether the file name of the given path
+	 * matches the specified glob pattern.
+	 *
+	 * <p><b>Note:</b> Only the file name (the last element of the path) is tested,
+	 * not the entire path. For example, {@code "*.txt"} will match {@code "file.txt"}.
+	 *
+	 * <p>The glob syntax follows {@link java.nio.file.FileSystem#getPathMatcher(String)} conventions.
+	 *
+	 * @param glob the glob pattern to match against the file name; must not be {@code null}
+	 * 
+	 * @return this builder for chaining
+	 * 
+	 * @see #hasFullPathMatchingGlob(String)
+	 */
+	public PathPredicateBuilder hasNameMatchingGlob(String glob) {
+		Objects.requireNonNull(glob, "glob is null");
+		return pathTest(path -> PathPredicates.hasNameMatchingGlob(path, glob));
 	}
 
 	/**

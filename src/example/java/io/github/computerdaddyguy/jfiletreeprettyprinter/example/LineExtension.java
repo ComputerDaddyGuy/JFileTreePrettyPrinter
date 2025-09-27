@@ -9,16 +9,16 @@ public class LineExtension {
 
 	public static void main(String[] args) {
 		Function<Path, String> lineExtension = path -> {
-			if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "api")) {
+			if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/api")) {
 				return "\t\t\t// All API code: controllers, etc.";
 			}
-			if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "domain")) {
+			if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/domain")) {
 				return "\t\t\t// All domain code: value objects, etc.";
 			}
-			if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "infra")) {
+			if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/infra")) {
 				return "\t\t\t// All infra code: database, email service, etc.";
 			}
-			if (PathPredicates.isFile(path) && PathPredicates.hasName(path, "application.properties")) {
+			if (PathPredicates.hasNameMatchingGlob(path, "*.properties")) {
 				return "\t// Config file";
 			}
 			return null;

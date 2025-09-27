@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -37,6 +38,53 @@ public final class PathPredicates {
 	 */
 	public static PathPredicateBuilder builder() {
 		return new PathPredicateBuilder();
+	}
+
+	// ---------- PathMatcher ----------
+
+	/**
+	 * Tests whether the given {@link Path} matches the specified glob pattern.
+	 *
+	 * <p>The glob syntax follows {@link java.nio.file.FileSystem#getPathMatcher(String)} conventions.
+	 *
+	 * @param path the path to test; must not be {@code null}
+	 * @param glob the glob pattern; must not be {@code null}
+	 * 
+	 * @return {@code true} if the path matches the glob pattern, {@code false} otherwise
+	 * 
+	 * @throws NullPointerException if {@code path} or {@code glob} is {@code null}
+	 * 
+	 * @see #hasNameMatchingGlob(Path, String)
+	 * @see #hasFullPathMatching(Path, PathMatcher)
+	 */
+	public static boolean hasFullPathMatchingGlob(Path path, String glob) {
+		Objects.requireNonNull(path, "path is null");
+		Objects.requireNonNull(glob, "glob is null");
+
+		// From Files.newDirectoryStream(Path dir, String glob)
+		if (glob.equals("*")) {
+			return true;
+		}
+		var matcher = path.getFileSystem().getPathMatcher("glob:" + glob);
+		return matcher.matches(path);
+	}
+
+	/**
+	 * Checks if the given {@link Path} matches the provided {@link PathMatcher}.
+	 *
+	 * @param path    the path to test; must not be {@code null}
+	 * @param matcher the {@code PathMatcher} to use; must not be {@code null}
+	 * 
+	 * @return {@code true} if the path matches the matcher, {@code false} otherwise
+	 * 
+	 * @throws NullPointerException if {@code path} or {@code matcher} is {@code null}
+	 * 
+	 * @see #hasFullPathMatchingGlob(Path, String)
+	 */
+	public static boolean hasFullPathMatching(Path path, PathMatcher matcher) {
+		Objects.requireNonNull(path, "path is null");
+		Objects.requireNonNull(matcher, "matcher is null");
+		return matcher.matches(path);
 	}
 
 	// ---------- Name ----------
@@ -88,6 +136,26 @@ public final class PathPredicates {
 		Objects.requireNonNull(path, "path is null");
 		Objects.requireNonNull(pattern, "pattern is null");
 		return pattern.matcher(path.getFileName().toString()).matches();
+	}
+
+	/**
+	 * Tests whether the given path's file name matches the provided glob.
+	 *
+	 * <p>The glob syntax follows {@link java.nio.file.FileSystem#getPathMatcher(String)} conventions.
+	 * 
+	 * @param path the path to test
+	 * @param glob the glob pattern to match against the file name; must not be {@code null}
+	 * 
+	 * @return {@code true} if the file name matches the glob
+	 * 
+	 * @throws NullPointerException if {@code path} or {@code glob} is {@code null}
+	 * 
+	 * @see #hasFullPathMatchingGlob(Path, String)
+	 */
+	public static boolean hasNameMatchingGlob(Path path, String glob) {
+		Objects.requireNonNull(path, "path is null");
+		Objects.requireNonNull(glob, "glob is null");
+		return hasFullPathMatchingGlob(path.getFileName(), glob);
 	}
 
 	/**

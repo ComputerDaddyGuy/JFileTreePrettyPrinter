@@ -46,32 +46,82 @@ class PathPredicateBuilderTest {
 		assertThat(filter).isNull();
 	}
 
-	@Test
-	void pathTest_match() {
-		var path = createTempFile("myFile.java");
-		var filter = PathPredicates.builder().pathTest(p -> p.equals(path)).build();
-		assertThat(filter.test(path)).isTrue();
+	@Nested
+	class PathTest {
+
+		@Test
+		void match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().pathTest(p -> p.equals(path)).build();
+			assertThat(filter.test(path)).isTrue();
+		}
+
+		@Test
+		void no_match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().pathTest(p -> p.equals(new Object())).build();
+			assertThat(filter.test(path)).isFalse();
+		}
+
 	}
 
-	@Test
-	void pathTest_noMatch() {
-		var path = createTempFile("myFile.java");
-		var filter = PathPredicates.builder().pathTest(p -> p.equals(new Object())).build();
-		assertThat(filter.test(path)).isFalse();
+	@Nested
+	class FileTest {
+
+		@Test
+		void match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().fileTest(p -> p.equals(path.toFile())).build();
+			assertThat(filter.test(path)).isTrue();
+		}
+
+		@Test
+		void no_match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().fileTest(p -> p.equals(new Object())).build();
+			assertThat(filter.test(path)).isFalse();
+		}
+
 	}
 
-	@Test
-	void fileTest_match() {
-		var path = createTempFile("myFile.java");
-		var filter = PathPredicates.builder().fileTest(p -> p.equals(path.toFile())).build();
-		assertThat(filter.test(path)).isTrue();
+	// ---------- PathMatcher ----------
+
+	@Nested
+	class HasFullPathMatchingGlob {
+
+		@Test
+		void match_wildcard() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().hasFullPathMatchingGlob("*").build();
+			assertThat(filter.test(path)).isTrue();
+		}
+
+		@Test
+		void match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().hasFullPathMatchingGlob("**/*.java").build();
+			assertThat(filter.test(path)).isTrue();
+		}
+
+		@Test
+		void no_match_because_full_path() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().hasFullPathMatchingGlob("*.java").build();
+			assertThat(filter.test(path)).isFalse();
+		}
+
+		@Test
+		void no_match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().hasFullPathMatchingGlob("**/*.php").build();
+			assertThat(filter.test(path)).isFalse();
+		}
+
 	}
 
-	@Test
-	void fileTest_noMatch() {
-		var path = createTempFile("myFile.java");
-		var filter = PathPredicates.builder().fileTest(p -> p.equals(new Object())).build();
-		assertThat(filter.test(path)).isFalse();
+	@Nested
+	class MatchesPathMatcher {
+
 	}
 
 	// ---------- Name ----------
@@ -142,6 +192,32 @@ class PathPredicateBuilderTest {
 		void no_match() {
 			var path = createTempFile("myFile.java");
 			var filter = PathPredicates.builder().hasNameMatching(Pattern.compile("ma.*")).build();
+			assertThat(filter.test(path)).isFalse();
+		}
+
+	}
+
+	@Nested
+	class HasNameMatchingGlob {
+
+		@Test
+		void match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().hasNameMatchingGlob("my*").build();
+			assertThat(filter.test(path)).isTrue();
+		}
+
+		@Test
+		void no_match() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().hasNameMatchingGlob("ma*").build();
+			assertThat(filter.test(path)).isFalse();
+		}
+
+		@Test
+		void no_match_dir() {
+			var path = createTempFile("myFile.java");
+			var filter = PathPredicates.builder().hasNameMatchingGlob("*/my*").build();
 			assertThat(filter.test(path)).isFalse();
 		}
 
