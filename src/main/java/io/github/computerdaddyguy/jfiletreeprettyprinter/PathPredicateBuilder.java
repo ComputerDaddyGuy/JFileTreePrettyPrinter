@@ -86,7 +86,8 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder hasName(String name) {
-		return pathTest(PathPredicates.hasName(name));
+		Objects.requireNonNull(name, "name is null");
+		return pathTest(path -> PathPredicates.hasName(path, name));
 	}
 
 	/**
@@ -98,7 +99,8 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder hasNameIgnoreCase(String name) {
-		return pathTest(PathPredicates.hasNameIgnoreCase(name));
+		Objects.requireNonNull(name, "name is null");
+		return pathTest(path -> PathPredicates.hasNameIgnoreCase(path, name));
 	}
 
 	/**
@@ -109,7 +111,8 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder hasNameMatching(Pattern pattern) {
-		return pathTest(PathPredicates.hasNameMatching(pattern));
+		Objects.requireNonNull(pattern, "pattern is null");
+		return pathTest(path -> PathPredicates.hasNameMatching(path, pattern));
 	}
 
 	/**
@@ -120,7 +123,8 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder hasNameEndingWith(String suffix) {
-		return pathTest(PathPredicates.hasNameEndingWith(suffix));
+		Objects.requireNonNull(suffix, "suffix is null");
+		return pathTest(path -> PathPredicates.hasNameEndingWith(path, suffix));
 	}
 
 	/**
@@ -135,7 +139,8 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder hasExtension(String extension) {
-		return pathTest(PathPredicates.hasExtension(extension));
+		Objects.requireNonNull(extension, "extension is null");
+		return pathTest(path -> PathPredicates.hasExtension(path, extension));
 	}
 
 	// ---------- Type ----------
@@ -146,7 +151,7 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder isDirectory() {
-		return pathTest(PathPredicates.isDirectory());
+		return pathTest(path -> PathPredicates.isDirectory(path));
 	}
 
 	/**
@@ -155,7 +160,7 @@ public class PathPredicateBuilder {
 	 * @return this builder for chaining
 	 */
 	public PathPredicateBuilder isFile() {
-		return pathTest(PathPredicates.isFile());
+		return pathTest(path -> PathPredicates.isFile(path));
 	}
 
 	// ---------- Hierarchy ----------
@@ -170,7 +175,8 @@ public class PathPredicateBuilder {
 	 * @see PathPredicates#hasParentMatching(Predicate)
 	 */
 	public PathPredicateBuilder hasParentMatching(Predicate<Path> parentPredicate) {
-		return pathTest(PathPredicates.hasParentMatching(parentPredicate));
+		Objects.requireNonNull(parentPredicate, "parentPredicate is null");
+		return pathTest(path -> PathPredicates.hasParentMatching(path, parentPredicate));
 	}
 
 	/**
@@ -186,7 +192,8 @@ public class PathPredicateBuilder {
 	 * @see PathPredicates#hasAncestorMatching(Predicate)
 	 */
 	public PathPredicateBuilder hasAncestorMatching(Predicate<Path> ancestorPredicate) {
-		return pathTest(PathPredicates.hasAncestorMatching(ancestorPredicate));
+		Objects.requireNonNull(ancestorPredicate, "ancestorPredicate is null");
+		return pathTest(path -> PathPredicates.hasAncestorMatching(path, ancestorPredicate));
 	}
 
 	/**
@@ -202,7 +209,8 @@ public class PathPredicateBuilder {
 	 * @see PathPredicates#hasDirectChildMatching(Predicate)
 	 */
 	public PathPredicateBuilder hasDirectChildMatching(Predicate<Path> childPredicate) {
-		return pathTest(PathPredicates.hasDirectChildMatching(childPredicate));
+		Objects.requireNonNull(childPredicate, "childPredicate is null");
+		return pathTest(path -> PathPredicates.hasDirectChildMatching(path, childPredicate));
 	}
 
 	/**
@@ -218,7 +226,8 @@ public class PathPredicateBuilder {
 	 * @see PathPredicates#hasDescendantMatching(Predicate)
 	 */
 	public PathPredicateBuilder hasDescendantMatching(Predicate<Path> descendantPredicate) {
-		return pathTest(PathPredicates.hasDescendantMatching(descendantPredicate));
+		Objects.requireNonNull(descendantPredicate, "descendantPredicate is null");
+		return pathTest(path -> PathPredicates.hasDescendantMatching(path, descendantPredicate));
 	}
 
 	/**
@@ -234,7 +243,8 @@ public class PathPredicateBuilder {
 	 * @see PathPredicates#hasSiblingMatching(Predicate)
 	 */
 	public PathPredicateBuilder hasSiblingMatching(Predicate<Path> siblingPredicate) {
-		return pathTest(PathPredicates.hasSiblingMatching(siblingPredicate));
+		Objects.requireNonNull(siblingPredicate, "siblingPredicate is null");
+		return pathTest(path -> PathPredicates.hasSiblingMatching(path, siblingPredicate));
 	}
 
 }

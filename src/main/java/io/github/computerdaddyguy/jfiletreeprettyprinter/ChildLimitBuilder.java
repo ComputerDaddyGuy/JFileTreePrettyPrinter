@@ -26,8 +26,8 @@ import org.jspecify.annotations.NullMarked;
  * <pre>{@code
  * var childLimit = ChildLimitBuilder.builder()
  *     .defaultLimit(ChildLimit.UNLIMITED)   // unlimited unless specified
- *     .limit(path -> PathUtils.hasName("bigDir"), 10)  // max 10 children in "bigDir"
- *     .limit(path -> PathUtils.hasName("emptyDir"), 0) // disallow children in "emptyDir"
+ *     .limit(path -> PathPredicates.hasName(path, "bigDir"), 10)  // max 10 children in "bigDir"
+ *     .limit(path -> PathPredicates.hasName(path, "emptyDir"), 0) // disallow children in "emptyDir"
  *     .build();
  *
  * }</pre>

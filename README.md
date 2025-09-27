@@ -178,13 +178,14 @@ child_limit_static/
 Or you can also set a limitation function, to dynamically choose the number of children displayed in each directory.
 It avoids cluttering the whole console with known large folders (e.g. `node_modules`) but continue to pretty print normally other folders.
 
-Use the `ChildLimitBuilder` and `PathPredicates` classes to help you build the limit function that fits your needs..
+Use the `ChildLimitBuilder` and `PathPredicates` classes to help you build the limit function that fits your needs.
 
 ```java
 // Example: ChildLimitDynamic.java
+var isNodeModulePredicate = PathPredicates.builder().hasName("node_modules").build();
 var childLimit = ChildLimitBuilder.builder()
 	.defaultLimit(ChildLimitBuilder.UNLIMITED)
-	.limit(PathPredicates.hasName("node_modules"), 0)
+	.limit(isNodeModulePredicate, 0)
 	.build();
 var prettyPrinter = FileTreePrettyPrinter.builder()
     .customizeOptions(options -> options.withChildLimit(childLimit)) 
@@ -278,12 +279,13 @@ Files and directories can be selectively included or excluded using a custom `Pr
 Filtering is **recursive by default**: directory's contents will always be traversed.
 However, if a directory does not match and none of its children match, the directory itself will not be displayed.
 
-The `PathPredicates` class provides several ready-to-use `Predicate<Path>` implementations for common cases, as well as a builder for creating more advanced predicates.
+The `PathPredicates` class provides several ready-to-use methods for creating common predicates, as well as a builder for creating more advanced predicates.
 
 ```java
 // Example: Filtering.java
+var hasJavaExtensionPredicate = PathPredicates.builder().hasExtension("java").build();
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.filter(PathPredicates.hasExtension("java")))
+    .customizeOptions(options -> options.filter(hasJavaExtensionPredicate))
     .build();
 ```
 ```
@@ -308,16 +310,16 @@ If the function returns `null`, nothing is added.
 ```java
 // Example: LineExtension.java
 Function<Path, String> lineExtension = path -> {
-	if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "api")) {
+	if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "api")) {
 		return "\t\t\t// All API code: controllers, etc.";
 	}
-	if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "domain")) {
+	if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "domain")) {
 		return "\t\t\t// All domain code: value objects, etc.";
 	}
-	if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "infra")) {
+	if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "infra")) {
 		return "\t\t\t// All infra code: database, email service, etc.";
 	}
-	if (PathUtils.isFile(path) && PathUtils.hasName(path, "application.properties")) {
+	if (PathPredicates.isFile(path) && PathPredicates.hasName(path, "application.properties")) {
 		return "\t// Config file";
 	}
 	return null;

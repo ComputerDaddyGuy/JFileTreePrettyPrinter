@@ -30,16 +30,16 @@ class LineExtensionTest {
 	void example_dir_match() {
 
 		Function<Path, String> lineExtension = path -> {
-			if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "api")) {
+			if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "api")) {
 				return "\t\t\t// All API code: controllers, etc.";
 			}
-			if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "domain")) {
+			if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "domain")) {
 				return "\t\t\t// All domain code: value objects, etc.";
 			}
-			if (PathUtils.isDirectory(path) && PathUtils.hasName(path, "infra")) {
+			if (PathPredicates.isDirectory(path) && PathPredicates.hasName(path, "infra")) {
 				return "\t\t\t// All infra code: database, email service, etc.";
 			}
-			if (PathUtils.isFile(path) && PathUtils.hasName(path, "application.properties")) {
+			if (PathPredicates.isFile(path) && PathPredicates.hasName(path, "application.properties")) {
 				return "\t// Config file";
 			}
 			return null;
@@ -70,7 +70,7 @@ class LineExtensionTest {
 	void compact_dir_first_dir() {
 
 		Function<Path, String> lineExtension = p -> {
-			if (PathUtils.hasName(p, "dirA")) {
+			if (PathPredicates.hasName(p, "dirA")) {
 				return " // 1";
 			}
 			return null;
@@ -92,7 +92,7 @@ class LineExtensionTest {
 	void compact_dir_middle_dir() {
 
 		Function<Path, String> lineExtension = p -> {
-			if (PathUtils.hasName(p, "dirB")) {
+			if (PathPredicates.hasName(p, "dirB")) {
 				return " // 2";
 			}
 			return null;
@@ -114,7 +114,7 @@ class LineExtensionTest {
 	void compact_dir_last_dir() {
 
 		Function<Path, String> lineExtension = p -> {
-			if (PathUtils.hasName(p, "dirC")) {
+			if (PathPredicates.hasName(p, "dirC")) {
 				return " // 3";
 			}
 			return null;

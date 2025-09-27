@@ -7,9 +7,10 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
 public class ChildLimitDynamic {
 
 	public static void main(String[] args) {
+		var isNodeModulePredicate = PathPredicates.builder().hasName("node_modules").build();
 		var childLimit = ChildLimitBuilder.builder()
 			.defaultLimit(ChildLimitBuilder.UNLIMITED)
-			.limit(PathPredicates.hasName("node_modules"), 0)
+			.limit(isNodeModulePredicate, 0)
 			.build();
 		var prettyPrinter = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(childLimit))

@@ -124,7 +124,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream, @Nullable Predicate<Path> filter) {
 		var stream = StreamSupport.stream(childrenStream.spliterator(), false);
 		if (filter != null) {
-			var recursiveFilter = PathPredicates.isDirectory().or(filter);
+			var recursiveFilter = PathPredicates.builder().isDirectory().build().or(filter);
 			stream = stream.filter(recursiveFilter);
 		}
 		return stream

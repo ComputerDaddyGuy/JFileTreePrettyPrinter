@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New path predicates: `hasParentMatching`, `hasAncestorMatching`, `hasDirectChildMatching`, `hasDescendantMatching`, `hasSiblingMatching`
 
+### Changed
+- `PathUtils` removed, `PathPredicates`rework
+
 ---
 ## [0.0.4] - 2025-09-27
 
