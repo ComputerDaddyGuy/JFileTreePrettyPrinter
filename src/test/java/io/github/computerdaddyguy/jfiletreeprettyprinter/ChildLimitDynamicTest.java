@@ -17,8 +17,8 @@ class ChildLimitDynamicTest {
 		.customizeOptions(
 		// @formatter:off
 			options -> options.withChildLimit(
-				p -> PathUtils.hasName(p, "limit_1") ? 1 : 
-					 PathUtils.hasName(p, "limit_3") ? 3 :
+				p -> PathPredicates.hasName(p, "limit_1") ? 1 : 
+					 PathPredicates.hasName(p, "limit_3") ? 3 :
 				     -1
 			)
 			// @formatter:on

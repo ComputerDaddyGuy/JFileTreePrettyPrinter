@@ -26,7 +26,7 @@ class FileTreePrettyPrinterTest {
 		var path = FileStructures.simpleDirectoryWithFilesAndFolders(root, 3, 3);
 
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.filter(PathPredicates.isFile()))
+			.customizeOptions(options -> options.filter(PathPredicates::isFile))
 			.build();
 
 		assertThat(printer.prettyPrint(path)).isEqualTo(printer.prettyPrint(path.toString()));

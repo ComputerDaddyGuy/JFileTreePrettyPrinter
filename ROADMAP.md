@@ -21,7 +21,7 @@
 - [x] Option: Line extension (=additional text after the file name)
 
 ## To do
-- [ ] More `PathPredicates` functions!
+- [x] More `PathPredicates` functions!
 - [ ] Option: custom emojis
 
 ## Backlog / To analyze / To implement if requested
