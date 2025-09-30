@@ -26,7 +26,7 @@
 > Complete documentation available in [wiki](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/wiki).
 
 <p align="center">
-	<img src="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/assets/basic_usage.jpg?raw=true" alt="JFileTreePrettyPrint basic usage"/>
+	<img src="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/assets/JfileTreePrettyPrinter-structure.png?raw=true" alt="JFileTreePrettyPrint structure, using JFileTreePrettyPrint"/>
 </p>
 
 * [Import dependency](#import-dependency)
