@@ -297,25 +297,37 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
 	// ---------- Filtering ----------
 
-	@Nullable
-	private Predicate<Path> pathFilter = null;
+	private Predicate<Path> dirFilter = dir -> true;
+	private Predicate<Path> fileFilter = dir -> true;
 
 	@Override
-	@Nullable
 	public Predicate<Path> pathFilter() {
-		return pathFilter;
+		return path -> PathPredicates.isDirectory(path)
+			? dirFilter.test(path)
+			: fileFilter.test(path);
 	}
 
 	/**
-	 * Use a custom filter for retain only some files and/or directories.
+	 * Use a custom filter for retain only some directories.
 	 * 
-	 * Filtering is recursive by default: directory's contents will always be traversed.
-	 * However, if a directory does not match and none of its children match, the directory itself will not be displayed.
-	
-	 * @param filter	The filter, <code>null</code> to disable filtering
+	 * Directories that do not pass this filter will not be displayed.
+	 * 
+	 * @param filter	The filter to apply on directories, cannot be <code>null</code>
 	 */
-	public PrettyPrintOptions filter(@Nullable Predicate<Path> filter) {
-		this.pathFilter = filter;
+	public PrettyPrintOptions filterDirectories(@Nullable Predicate<Path> filter) {
+		this.dirFilter = Objects.requireNonNull(filter, "filter is null");
+		return this;
+	}
+
+	/**
+	 * Use a custom filter for retain only some files.
+	 * 
+	 * Files that do not pass this filter will not be displayed.
+	 * 
+	 * @param filter	The filter to apply on files, cannot be <code>null</code>
+	 */
+	public PrettyPrintOptions filterFiles(@Nullable Predicate<Path> filter) {
+		this.fileFilter = Objects.requireNonNull(filter, "filter is null");
 		return this;
 	}
 

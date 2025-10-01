@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `PathUtils` removed, `PathPredicates` rework
 - Line extension: empty string is permitted
+- Filtering: split into distinct directories and files filters
 
 ---
 ## [0.0.4] - 2025-09-27

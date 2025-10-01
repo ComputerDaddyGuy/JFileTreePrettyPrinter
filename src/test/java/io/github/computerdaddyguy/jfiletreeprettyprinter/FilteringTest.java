@@ -3,16 +3,22 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.Sorts;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructureCreator;
+import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class FilteringTest {
 
+	@TempDir
+	private Path root;
+
 	@Test
-	void example() {
+	void example_file() {
 
 		var filter = PathPredicates.builder().hasExtension("java").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.filter(filter))
+			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
 
 		var result = printer.prettyPrint("src/example/resources/filtering");
@@ -22,27 +28,30 @@ class FilteringTest {
 			│  ├─ file_B.java
 			│  └─ file_E.java
 			├─ dir_with_nested_java_files/
-			│  └─ nested_dir_with_java_files/
-			│     ├─ file_G.java
-			│     └─ file_J.java
+			│  ├─ nested_dir_with_java_files/
+			│  │  ├─ file_G.java
+			│  │  └─ file_J.java
+			│  └─ nested_dir_with_no_java_file/
+			├─ dir_with_no_java_file/
 			└─ file_A.java""";
 		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
-	void example_dir_match() {
+	void example_dir() {
 
 		var filter = PathPredicates.builder().hasNameEndingWith("no_java_file").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.filter(filter))
+			.customizeOptions(options -> options.filterDirectories(filter))
 			.build();
 
 		var result = printer.prettyPrint("src/example/resources/filtering");
 		var expected = """
 			filtering/
-			├─ dir_with_nested_java_files/
-			│  └─ nested_dir_with_no_java_file/
-			└─ dir_with_no_java_file/""";
+			├─ dir_with_no_java_file/
+			│  ├─ file_M.cpp
+			│  └─ file_N.ts
+			└─ file_A.java""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -52,14 +61,16 @@ class FilteringTest {
 		var filter = PathPredicates.builder().hasExtension("java").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.sort(Sorts.BY_NAME.reversed()))
-			.customizeOptions(options -> options.filter(filter))
+			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
 
 		var result = printer.prettyPrint("src/example/resources/filtering");
 		var expected = """
 			filtering/
 			├─ file_A.java
+			├─ dir_with_no_java_file/
 			├─ dir_with_nested_java_files/
+			│  ├─ nested_dir_with_no_java_file/
 			│  └─ nested_dir_with_java_files/
 			│     ├─ file_J.java
 			│     └─ file_G.java
@@ -75,7 +86,7 @@ class FilteringTest {
 		var filter = PathPredicates.builder().hasExtension("java").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(1))
-			.customizeOptions(options -> options.filter(filter))
+			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
 
 		var result = printer.prettyPrint("src/example/resources/filtering");
@@ -84,7 +95,7 @@ class FilteringTest {
 			├─ dir_with_java_files/
 			│  ├─ file_B.java
 			│  └─ ... (1 file skipped)
-			└─ ... (1 file and 1 directory skipped)""";
+			└─ ... (1 file and 2 directories skipped)""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -94,7 +105,7 @@ class FilteringTest {
 		var filter = PathPredicates.builder().hasExtension("java").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(2))
-			.customizeOptions(options -> options.filter(filter))
+			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
 
 		var result = printer.prettyPrint("src/example/resources/filtering");
@@ -104,10 +115,11 @@ class FilteringTest {
 			│  ├─ file_B.java
 			│  └─ file_E.java
 			├─ dir_with_nested_java_files/
-			│  └─ nested_dir_with_java_files/
-			│     ├─ file_G.java
-			│     └─ file_J.java
-			└─ ... (1 file skipped)""";
+			│  ├─ nested_dir_with_java_files/
+			│  │  ├─ file_G.java
+			│  │  └─ file_J.java
+			│  └─ nested_dir_with_no_java_file/
+			└─ ... (1 file and 1 directory skipped)""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -117,7 +129,7 @@ class FilteringTest {
 		var filter = PathPredicates.builder().hasExtension("java").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(3))
-			.customizeOptions(options -> options.filter(filter))
+			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
 
 		var result = printer.prettyPrint("src/example/resources/filtering");
@@ -127,32 +139,43 @@ class FilteringTest {
 			│  ├─ file_B.java
 			│  └─ file_E.java
 			├─ dir_with_nested_java_files/
-			│  └─ nested_dir_with_java_files/
-			│     ├─ file_G.java
-			│     └─ file_J.java
-			└─ file_A.java""";
+			│  ├─ nested_dir_with_java_files/
+			│  │  ├─ file_G.java
+			│  │  └─ file_J.java
+			│  └─ nested_dir_with_no_java_file/
+			├─ dir_with_no_java_file/
+			└─ ... (1 file skipped)""";
 		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
 	void example_compact_dir() {
 
+		// @formatter:off
+		var path = FileStructureCreator
+			.forTargetPath(root)
+			.createAndEnterDirectory("level1")
+				.createAndEnterDirectory("level2")
+					.createAndEnterDirectory("level3")
+						.createAndEnterDirectory("level4")
+							.createFiles("file4#", 3)
+						.up() // level4
+					.up() // level3
+				.up() // level2
+			.up() // level1
+			.getPath();
+		// @formatter:on
+
 		var filter = PathPredicates.builder().hasExtension("java").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withCompactDirectories(true))
-			.customizeOptions(options -> options.filter(filter))
+			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
 
-		var result = printer.prettyPrint("src/example/resources/filtering");
+		var result = printer.prettyPrint(path);
 		var expected = """
-			filtering/
-			├─ dir_with_java_files/
-			│  ├─ file_B.java
-			│  └─ file_E.java
-			├─ dir_with_nested_java_files/nested_dir_with_java_files/
-			│  ├─ file_G.java
-			│  └─ file_J.java
-			└─ file_A.java""";
+			targetPath/
+			└─ level1/level2/level3/level4/""";
 		assertThat(result).isEqualTo(expected);
 	}
 
