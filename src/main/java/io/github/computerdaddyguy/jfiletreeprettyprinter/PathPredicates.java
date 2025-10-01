@@ -159,6 +159,22 @@ public final class PathPredicates {
 	}
 
 	/**
+	 * Tests whether the given path's file name starts with the specified suffix.
+	 *
+	 * @param path the path to test
+	 * @param prefix the prefix to test (e.g. ".", "analysis-")
+	 * 
+	 * @return {@code true} if the file name starts with the given prefix
+	 * 
+	 * @throws NullPointerException if {@code path} or {@code prefix} is {@code null}
+	 */
+	public static boolean hasNameStartingWith(Path path, String prefix) {
+		Objects.requireNonNull(path, "path is null");
+		Objects.requireNonNull(prefix, "prefix is null");
+		return path.getFileName().toString().startsWith(prefix);
+	}
+
+	/**
 	 * Tests whether the given path's file name ends with the specified suffix.
 	 *
 	 * @param path the path to test

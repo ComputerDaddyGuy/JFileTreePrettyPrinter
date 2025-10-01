@@ -9,10 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.5] - Unreleased
 
 ### Added
-- New path predicates: `hasParentMatching`, `hasAncestorMatching`, `hasDirectChildMatching`, `hasDescendantMatching`, `hasSiblingMatching`, `hasFullPathMatchingGlob`, `hasFullPathMatching`, `hasNameMatchingGlob`
+- New path predicates: `hasParentMatching`, `hasAncestorMatching`, `hasDirectChildMatching`, `hasDescendantMatching`, `hasSiblingMatching`, `hasFullPathMatchingGlob`, `hasFullPathMatching`, `hasNameMatchingGlob`, `hasNameStartingWith`
 
 ### Changed
-- `PathUtils` removed, `PathPredicates`rework
+- `PathUtils` removed, `PathPredicates` rework
 
 ---
 ## [0.0.4] - 2025-09-27
