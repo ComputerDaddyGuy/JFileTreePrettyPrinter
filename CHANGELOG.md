@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Line extension: empty string is permitted
 - Filtering: split into distinct directories and files filters
 
+### Fixed
+- The folder name is properly displayed at root when calling `prettyPrint(".")` (instead of "./")
+
 ---
 ## [0.0.4] - 2025-09-27
 
