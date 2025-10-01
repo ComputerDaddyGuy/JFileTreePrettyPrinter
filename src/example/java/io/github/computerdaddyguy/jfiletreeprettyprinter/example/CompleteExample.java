@@ -13,12 +13,12 @@ public class CompleteExample {
 
 		var filterDir = PathPredicates.builder()
 			.pathTest(path -> !PathPredicates.hasName(path, ".git"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "**/.git"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "**/.github"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "**/.settings"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "**/src/example"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "**/src/test"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "**/target"))
+			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./.git"))
+			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./.github"))
+			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./.settings"))
+			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./src/example"))
+			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./src/test"))
+			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./target"))
 			.build();
 
 		var filterFiles = PathPredicates.builder()

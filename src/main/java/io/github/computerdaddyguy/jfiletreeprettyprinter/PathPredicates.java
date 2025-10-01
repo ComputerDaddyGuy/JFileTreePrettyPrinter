@@ -66,7 +66,8 @@ public final class PathPredicates {
 			return true;
 		}
 		var matcher = path.getFileSystem().getPathMatcher("glob:" + glob);
-		return matcher.matches(path);
+		var result = matcher.matches(path);
+		return result;
 	}
 
 	/**

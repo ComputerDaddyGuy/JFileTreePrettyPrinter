@@ -1,5 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
@@ -30,18 +31,18 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 	@Override
 	public TreeEntry scan(Path fileOrDir) {
-		return handle(0, fileOrDir, options.pathFilter());
+		return handle(fileOrDir, 0, fileOrDir.relativize(fileOrDir).resolve("."), options.pathFilter());
 	}
 
 	@Nullable
-	private TreeEntry handle(int depth, Path fileOrDir, Predicate<Path> filter) {
-		return fileOrDir.toFile().isDirectory()
-			? handleDirectory(depth, fileOrDir, filter)
+	private TreeEntry handle(Path root, int depth, Path fileOrDir, Predicate<Path> filter) {
+		return PathPredicates.isDirectory(fileOrDir)
+			? handleDirectory(root, depth, fileOrDir, filter)
 			: handleFile(fileOrDir);
 	}
 
 	@Nullable
-	private TreeEntry handleDirectory(int depth, Path dir, Predicate<Path> filter) {
+	private TreeEntry handleDirectory(Path root, int depth, Path dir, Predicate<Path> filter) {
 
 		if (depth >= options.getMaxDepth()) {
 			var maxDepthEntry = new MaxDepthReachEntry(depth);
@@ -50,9 +51,9 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		List<TreeEntry> childEntries;
 
-		try (var childrenStream = Files.newDirectoryStream(dir)) {
+		try (var childrenStream = Files.newDirectoryStream(dir, path -> filter.test(path))) {
 			var it = directoryStreamToIterator(childrenStream, filter);
-			childEntries = handleDirectoryChildren(depth, dir, it, filter);
+			childEntries = handleDirectoryChildren(root, depth, dir, it, filter);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Unable to list files for directory: " + dir, e);
 		}
@@ -60,7 +61,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		return new DirectoryEntry(dir, childEntries);
 	}
 
-	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Iterator<Path> pathIterator, Predicate<Path> filter) {
+	private List<TreeEntry> handleDirectoryChildren(Path root, int depth, Path dir, Iterator<Path> pathIterator, Predicate<Path> filter) {
 
 		var childEntries = new ArrayList<TreeEntry>();
 		int maxChildEntries = options.getChildLimit().applyAsInt(dir);
@@ -73,7 +74,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 				break;
 			}
 			var child = pathIterator.next();
-			var childEntry = handle(depth + 1, child, filter);
+			var childEntry = handle(root, depth + 1, child, filter);
 			if (childEntry == null) {
 				childCount--; // The child did not pass the filter, so it doesn't count
 			} else {
@@ -83,19 +84,19 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		// Loop has early exit?
 		if (pathIterator.hasNext()) {
-			childEntries.addAll(handleLeftOverChildren(depth, pathIterator, filter));
+			childEntries.addAll(handleLeftOverChildren(root, depth, pathIterator, filter));
 		}
 
 		return childEntries;
 	}
 
-	private List<TreeEntry> handleLeftOverChildren(int depth, Iterator<Path> pathIterator, Predicate<Path> filter) {
+	private List<TreeEntry> handleLeftOverChildren(Path root, int depth, Iterator<Path> pathIterator, Predicate<Path> filter) {
 		var childEntries = new ArrayList<TreeEntry>();
 
 		var skippedChildren = new ArrayList<Path>();
 		while (pathIterator.hasNext()) {
 			var child = pathIterator.next();
-			var childEntry = handle(depth + 1, child, filter);
+			var childEntry = handle(root, depth + 1, child, filter);
 			if (childEntry != null) { // Is null if no children file is retained by filter
 				skippedChildren.add(child);
 			}
@@ -111,7 +112,6 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream, Predicate<Path> filter) {
 		return StreamSupport
 			.stream(childrenStream.spliterator(), false)
-			.filter(filter)
 			.sorted(options.pathComparator())
 			.iterator();
 	}
