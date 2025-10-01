@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -40,12 +41,13 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 
 	private String renderDirectory(Depth depth, DirectoryEntry dirEntry, List<Path> compactPaths) {
 
+		Optional<String> extension = null;
 		if (options.areCompactDirectoriesUsed()
 			&& !depth.isRoot()
 			&& dirEntry.getEntries().size() == 1
 			&& dirEntry.getEntries().get(0) instanceof DirectoryEntry childDirEntry) {
 
-			var extension = computeLineExtension(dirEntry.getDir());
+			extension = computeLineExtension(dirEntry.getDir());
 			if (extension.isEmpty()) {
 				var newCompactPaths = new ArrayList<>(compactPaths);
 				newCompactPaths.add(childDirEntry.getDir());
@@ -54,7 +56,10 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 		}
 
 		var line = lineRenderer.renderDirectoryBegin(depth, dirEntry, compactPaths);
-		line += computeLineExtension(dirEntry.getDir());
+		if (extension == null) {
+			extension = computeLineExtension(dirEntry.getDir());
+		}
+		line += extension.orElse("");
 
 		var childIt = dirEntry.getEntries().iterator();
 
@@ -76,17 +81,16 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 		return line + childLines.toString();
 	}
 
-	private String computeLineExtension(Path path) {
+	private Optional<String> computeLineExtension(Path path) {
 		if (options.getLineExtension() == null) {
-			return "";
+			return Optional.empty();
 		}
-		var extension = options.getLineExtension().apply(path);
-		return extension == null ? "" : extension;
+		return Optional.ofNullable(options.getLineExtension().apply(path));
 	}
 
 	private String renderFile(Depth depth, FileEntry fileEntry) {
 		var line = lineRenderer.renderFile(depth, fileEntry);
-		line += computeLineExtension(fileEntry.getFile());
+		line += computeLineExtension(fileEntry.getFile()).orElse("");
 		return line;
 	}
 
