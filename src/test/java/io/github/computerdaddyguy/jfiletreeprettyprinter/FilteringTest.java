@@ -155,10 +155,13 @@ class FilteringTest {
 		var path = FileStructureCreator
 			.forTargetPath(root)
 			.createAndEnterDirectory("level1")
-				.createAndEnterDirectory("level2")
-					.createAndEnterDirectory("level3")
-						.createAndEnterDirectory("level4")
-							.createFiles("file4#", 3)
+				.createAndEnterDirectory("level2-1")
+					.createAndEnterDirectory("level3-1")
+						.createAndEnterDirectory("level4-1")
+							.createFiles("file4-1#", 3)
+						.up() // level4
+						.createAndEnterDirectory("level4-2")
+						.createFiles("file4-2#", 3)
 						.up() // level4
 					.up() // level3
 				.up() // level2
@@ -166,16 +169,18 @@ class FilteringTest {
 			.getPath();
 		// @formatter:on
 
-		var filter = PathPredicates.builder().hasExtension("java").build();
+		var dirFilter = PathPredicates.builder().hasNameEndingWith("1").build();
+		var fileFilter = PathPredicates.builder().hasExtension("java").build();
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withCompactDirectories(true))
-			.customizeOptions(options -> options.filterFiles(filter))
+			.customizeOptions(options -> options.filterDirectories(dirFilter))
+			.customizeOptions(options -> options.filterFiles(fileFilter))
 			.build();
 
 		var result = printer.prettyPrint(path);
 		var expected = """
 			targetPath/
-			└─ level1/level2/level3/level4/""";
+			└─ level1/level2-1/level3-1/level4-1/""";
 		assertThat(result).isEqualTo(expected);
 	}
 
