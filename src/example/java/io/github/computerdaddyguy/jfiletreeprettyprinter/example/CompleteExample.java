@@ -11,8 +11,6 @@ public class CompleteExample {
 
 	public static void main(String[] args) {
 
-		var rootFolder = "JFileTreePrettyPrinter";
-
 		var filterDir = PathPredicates.builder()
 			.pathTest(path -> !PathPredicates.hasName(path, ".git"))
 			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "**/.git"))
