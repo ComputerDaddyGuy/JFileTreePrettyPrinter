@@ -276,17 +276,23 @@ sorting/
 ## Filtering
 Files and directories can be selectively included or excluded using a custom `Predicate<Path>`.
 
-Filtering is **recursive by default**: directory's contents will always be traversed.
-However, if a directory does not match and none of its children match, the directory itself will not be displayed.
+Filtering is independant for files & directories. Files are filtered only if their parent directory pass the directory filter.
+If none of some directory's children match, the directory is still displayed.
 
 The `PathPredicates` class provides several ready-to-use methods for creating common predicates, as well as a builder for creating more advanced predicates.
 
 ```java
 // Example: Filtering.java
-var hasJavaExtensionPredicate = PathPredicates.builder().hasExtension("java").build();
+Predicate<Path> excludeDirWithNoJavaFiles = dir -> !PathPredicates.hasNameEndingWith(dir, "no_java_file");
+var isJavaFilePredicate = PathPredicates.builder().hasExtension("java").build();
+
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.filter(hasJavaExtensionPredicate))
-    .build();
+	.customizeOptions(
+		options -> options
+			.filterDirectories(excludeDirWithNoJavaFiles)
+			.filterFiles(hasJavaExtensionPredicate)
+	)
+	.build();
 ```
 ```
 filtering/

@@ -89,6 +89,28 @@ class LineExtensionTest {
 	}
 
 	@Test
+	void compact_dir_empty_string_workds() {
+
+		Function<Path, String> lineExtension = p -> {
+			if (PathPredicates.hasName(p, "dirA")) {
+				return "";
+			}
+			return null;
+		};
+
+		var expected = """
+			targetPath/
+			├─ dirA/
+			│  └─ dirB/dirC/
+			│     ├─ file1
+			│     ├─ file2
+			│     └─ file3
+			└─ dirX/""";
+
+		compact_dir(lineExtension, expected);
+	}
+
+	@Test
 	void compact_dir_middle_dir() {
 
 		Function<Path, String> lineExtension = p -> {

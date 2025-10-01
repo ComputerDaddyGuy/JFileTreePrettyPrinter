@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class DefaultTreeEntryRenderer implements TreeEntryRenderer {
@@ -41,14 +42,17 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 
 	private String renderDirectory(Depth depth, DirectoryEntry dirEntry, List<Path> compactPaths) {
 
-		Optional<String> extension = null;
+		boolean extensionEvaluated = false;
+		String extension = null;
+
 		if (options.areCompactDirectoriesUsed()
 			&& !depth.isRoot()
 			&& dirEntry.getEntries().size() == 1
 			&& dirEntry.getEntries().get(0) instanceof DirectoryEntry childDirEntry) {
 
 			extension = computeLineExtension(dirEntry.getDir());
-			if (extension.isEmpty()) {
+			extensionEvaluated = true;
+			if (extension == null) {
 				var newCompactPaths = new ArrayList<>(compactPaths);
 				newCompactPaths.add(childDirEntry.getDir());
 				return renderDirectory(depth, childDirEntry, newCompactPaths);
@@ -56,10 +60,10 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 		}
 
 		var line = lineRenderer.renderDirectoryBegin(depth, dirEntry, compactPaths);
-		if (extension == null) {
+		if (!extensionEvaluated) {
 			extension = computeLineExtension(dirEntry.getDir());
 		}
-		line += extension.orElse("");
+		line += Optional.ofNullable(extension).orElse("");
 
 		var childIt = dirEntry.getEntries().iterator();
 
@@ -81,16 +85,17 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 		return line + childLines.toString();
 	}
 
-	private Optional<String> computeLineExtension(Path path) {
+	@Nullable
+	private String computeLineExtension(Path path) {
 		if (options.getLineExtension() == null) {
-			return Optional.empty();
+			return null;
 		}
-		return Optional.ofNullable(options.getLineExtension().apply(path));
+		return options.getLineExtension().apply(path);
 	}
 
 	private String renderFile(Depth depth, FileEntry fileEntry) {
 		var line = lineRenderer.renderFile(depth, fileEntry);
-		line += computeLineExtension(fileEntry.getFile()).orElse("");
+		line += Optional.ofNullable(computeLineExtension(fileEntry.getFile())).orElse("");
 		return line;
 	}
 

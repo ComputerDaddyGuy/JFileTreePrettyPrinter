@@ -1,6 +1,5 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
@@ -35,14 +34,14 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 	}
 
 	@Nullable
-	private TreeEntry handle(int depth, Path fileOrDir, @Nullable Predicate<Path> filter) {
+	private TreeEntry handle(int depth, Path fileOrDir, Predicate<Path> filter) {
 		return fileOrDir.toFile().isDirectory()
 			? handleDirectory(depth, fileOrDir, filter)
 			: handleFile(fileOrDir);
 	}
 
 	@Nullable
-	private TreeEntry handleDirectory(int depth, Path dir, @Nullable Predicate<Path> filter) {
+	private TreeEntry handleDirectory(int depth, Path dir, Predicate<Path> filter) {
 
 		if (depth >= options.getMaxDepth()) {
 			var maxDepthEntry = new MaxDepthReachEntry(depth);
@@ -58,15 +57,10 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 			throw new UncheckedIOException("Unable to list files for directory: " + dir, e);
 		}
 
-		// Filter is active and no children match
-		if (depth > 0 && filter != null && childEntries.isEmpty() && !filter.test(dir)) {
-			return null; // Do no show this directory at all
-		}
-
 		return new DirectoryEntry(dir, childEntries);
 	}
 
-	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Iterator<Path> pathIterator, @Nullable Predicate<Path> filter) {
+	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Iterator<Path> pathIterator, Predicate<Path> filter) {
 
 		var childEntries = new ArrayList<TreeEntry>();
 		int maxChildEntries = options.getChildLimit().applyAsInt(dir);
@@ -95,39 +89,29 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		return childEntries;
 	}
 
-	private List<TreeEntry> handleLeftOverChildren(int depth, Iterator<Path> pathIterator, @Nullable Predicate<Path> filter) {
+	private List<TreeEntry> handleLeftOverChildren(int depth, Iterator<Path> pathIterator, Predicate<Path> filter) {
 		var childEntries = new ArrayList<TreeEntry>();
 
-		if (filter == null) {
-			var skippedChildren = new ArrayList<Path>();
-			pathIterator.forEachRemaining(skippedChildren::add);
+		var skippedChildren = new ArrayList<Path>();
+		while (pathIterator.hasNext()) {
+			var child = pathIterator.next();
+			var childEntry = handle(depth + 1, child, filter);
+			if (childEntry != null) { // Is null if no children file is retained by filter
+				skippedChildren.add(child);
+			}
+		}
+		if (!skippedChildren.isEmpty()) {
 			var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
 			childEntries.add(childrenSkippedEntry);
-		} else {
-			var skippedChildren = new ArrayList<Path>();
-			while (pathIterator.hasNext()) {
-				var child = pathIterator.next();
-				var childEntry = handle(depth + 1, child, filter);
-				if (childEntry != null) { // Is null if no children file is retained by filter
-					skippedChildren.add(child);
-				}
-			}
-			if (!skippedChildren.isEmpty()) {
-				var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
-				childEntries.add(childrenSkippedEntry);
-			}
 		}
 
 		return childEntries;
 	}
 
-	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream, @Nullable Predicate<Path> filter) {
-		var stream = StreamSupport.stream(childrenStream.spliterator(), false);
-		if (filter != null) {
-			var recursiveFilter = PathPredicates.builder().isDirectory().build().or(filter);
-			stream = stream.filter(recursiveFilter);
-		}
-		return stream
+	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream, Predicate<Path> filter) {
+		return StreamSupport
+			.stream(childrenStream.spliterator(), false)
+			.filter(filter)
 			.sorted(options.pathComparator())
 			.iterator();
 	}
