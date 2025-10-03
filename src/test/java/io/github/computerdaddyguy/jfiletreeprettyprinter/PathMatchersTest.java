@@ -56,7 +56,8 @@ class PathMatchersTest {
 
 		@Test
 		void shouldThrowIfIterableEmpty() {
-			assertThatThrownBy(() -> PathMatchers.allOf(Collections.<PathMatcher> emptyList()))
+			var emptyList = Collections.<PathMatcher> emptyList();
+			assertThatThrownBy(() -> PathMatchers.allOf(emptyList))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("No matcher provided");
 		}
@@ -85,7 +86,8 @@ class PathMatchersTest {
 
 		@Test
 		void shouldThrowIfIterableEmpty() {
-			assertThatThrownBy(() -> PathMatchers.anyOf(Collections.<PathMatcher> emptyList()))
+			var emptyList = Collections.<PathMatcher> emptyList();
+			assertThatThrownBy(() -> PathMatchers.anyOf(emptyList))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("No matcher provided");
 		}
@@ -114,7 +116,8 @@ class PathMatchersTest {
 
 		@Test
 		void shouldThrowIfIterableEmpty() {
-			assertThatThrownBy(() -> PathMatchers.noneOf(Collections.<PathMatcher> emptyList()))
+			var emptyList = Collections.<PathMatcher> emptyList();
+			assertThatThrownBy(() -> PathMatchers.noneOf(emptyList))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("No matcher provided");
 		}
@@ -202,7 +205,8 @@ class PathMatchersTest {
 				.isInstanceOf(NullPointerException.class)
 				.hasMessageContaining("ref is null");
 
-			assertThatThrownBy(() -> PathMatchers.hasRelativePathMatchingGlob(Paths.get("."), null))
+			var path = Paths.get(".");
+			assertThatThrownBy(() -> PathMatchers.hasRelativePathMatchingGlob(path, null))
 				.isInstanceOf(NullPointerException.class)
 				.hasMessageContaining("glob is null");
 		}
@@ -254,11 +258,13 @@ class PathMatchersTest {
 
 		@Test
 		void shouldThrowOnNulls() {
-			assertThatThrownBy(() -> PathMatchers.hasRelativePathMatching(null, PathMatchers.hasName("x")))
+			var matcher = PathMatchers.hasName("x");
+			assertThatThrownBy(() -> PathMatchers.hasRelativePathMatching(null, matcher))
 				.isInstanceOf(NullPointerException.class)
 				.hasMessageContaining("ref is null");
 
-			assertThatThrownBy(() -> PathMatchers.hasRelativePathMatching(Paths.get("."), null))
+			var path = Paths.get(".");
+			assertThatThrownBy(() -> PathMatchers.hasRelativePathMatching(path, null))
 				.isInstanceOf(NullPointerException.class)
 				.hasMessageContaining("matcher is null");
 		}

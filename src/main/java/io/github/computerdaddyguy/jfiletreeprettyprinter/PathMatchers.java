@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Utility class providing factory and composition methods for {@link PathMatcher}s.
@@ -192,13 +193,15 @@ public final class PathMatchers {
 		return combineMatchers(matchers, Mode.ANY);
 	}
 
-	private static List<PathMatcher> buildSafeList(PathMatcher matcher, PathMatcher... matchers) {
+	private static List<PathMatcher> buildSafeList(PathMatcher matcher, @Nullable PathMatcher... matchers) {
 		Objects.requireNonNull(matcher, "matcher is null");
 		var list = new ArrayList<PathMatcher>(1 + (matchers == null ? 0 : matchers.length));
 		list.add(matcher);
-		for (PathMatcher m : matchers) {
-			Objects.requireNonNull(m, "some matcher is null");
-			list.add(m);
+		if (matchers != null) {
+			for (PathMatcher m : matchers) {
+				Objects.requireNonNull(m, "some matcher is null");
+				list.add(m);
+			}
 		}
 		return List.copyOf(list);
 	}
@@ -219,30 +222,35 @@ public final class PathMatchers {
 		if (list.isEmpty()) {
 			throw new IllegalArgumentException("No matcher provided");
 		}
-		return path -> {
-			switch (mode) {
-				case ALL:
-					for (PathMatcher m : list) {
-						if (!m.matches(path))
-							return false;
-					}
-					return true;
-				case ANY:
-					for (PathMatcher m : list) {
-						if (m.matches(path))
-							return true;
-					}
-					return false;
-				case NONE:
-					for (PathMatcher m : list) {
-						if (m.matches(path))
-							return false;
-					}
-					return true;
-				default:
-					throw new AssertionError("Unknown mode: " + mode);
-			}
+		return switch (mode) {
+			case ALL -> path -> all(path, list);
+			case ANY -> path -> any(path, list);
+			case NONE -> path -> none(path, list);
 		};
+	}
+
+	private static boolean all(Path path, List<PathMatcher> matchers) {
+		for (PathMatcher m : matchers) {
+			if (!m.matches(path))
+				return false;
+		}
+		return true;
+	}
+
+	private static boolean any(Path path, List<PathMatcher> matchers) {
+		for (PathMatcher m : matchers) {
+			if (m.matches(path))
+				return true;
+		}
+		return false;
+	}
+
+	private static boolean none(Path path, List<PathMatcher> matchers) {
+		for (PathMatcher m : matchers) {
+			if (m.matches(path))
+				return false;
+		}
+		return true;
 	}
 
 	/**
@@ -589,7 +597,7 @@ public final class PathMatchers {
 	 * @return matcher returning {@code true} if the path is a symbolic link
 	 */
 	public static PathMatcher isSymbolicLink() {
-		return path -> Files.isSymbolicLink(path);
+		return Files::isSymbolicLink;
 	}
 
 	// ---------- Hierarchy ----------
@@ -688,7 +696,7 @@ public final class PathMatchers {
 			return stream
 				.skip(1) // skip the root path itself
 				.filter(inclusionFilter)
-				.anyMatch(p -> descendantMatcher.matches(p));
+				.anyMatch(descendantMatcher::matches);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Exception while walking files of " + path, e);
 		}

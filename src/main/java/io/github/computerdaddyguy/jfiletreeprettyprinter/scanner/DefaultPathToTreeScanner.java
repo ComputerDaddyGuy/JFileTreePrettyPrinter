@@ -52,7 +52,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		List<TreeEntry> childEntries;
 
-		try (var childrenStream = Files.newDirectoryStream(dir, path -> filter.matches(path))) {
+		try (var childrenStream = Files.newDirectoryStream(dir, filter::matches)) {
 			var it = directoryStreamToIterator(childrenStream);
 			childEntries = handleDirectoryChildren(root, depth, dir, it, filter);
 		} catch (IOException e) {
