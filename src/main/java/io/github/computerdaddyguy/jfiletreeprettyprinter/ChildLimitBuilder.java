@@ -1,10 +1,10 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import org.jspecify.annotations.NullMarked;
 
@@ -26,8 +26,8 @@ import org.jspecify.annotations.NullMarked;
  * <pre>{@code
  * var childLimit = ChildLimitBuilder.builder()
  *     .defaultLimit(ChildLimit.UNLIMITED)   // unlimited unless specified
- *     .limit(path -> PathPredicates.hasName(path, "bigDir"), 10)  // max 10 children in "bigDir"
- *     .limit(path -> PathPredicates.hasName(path, "emptyDir"), 0) // disallow children in "emptyDir"
+ *     .limit(PathMatchers.hasName("bigDir"), 10)  // max 10 children in "bigDir"
+ *     .limit(PathMatchers.hasName("emptyDir"), 0) // disallow children in "emptyDir"
  *     .build();
  *
  * }</pre>
@@ -53,7 +53,7 @@ public class ChildLimitBuilder {
 		this.defaultControl = UNLIMITED_CONTROL;
 	}
 
-	private record ChildControl(Predicate<Path> pathPredicate, int limit) {
+	private record ChildControl(PathMatcher pathMatcher, int limit) {
 
 	}
 
@@ -74,7 +74,7 @@ public class ChildLimitBuilder {
 		var immutControls = List.copyOf(controls);
 		var immutDefaultControl = this.defaultControl;
 		return p -> immutControls.stream()
-			.filter(control -> control.pathPredicate().test(p))
+			.filter(control -> control.pathMatcher().matches(p))
 			.findFirst()
 			.orElse(immutDefaultControl)
 			.limit();
@@ -93,21 +93,21 @@ public class ChildLimitBuilder {
 	}
 
 	/**
-	 * Adds a child limit rule for paths matching the given predicate.
+	 * Adds a child limit rule for paths matching the given matcher.
 	 * <p>
 	 * Rules are evaluated in the order they are added. The first matching rule wins.
 	 * </p>
 	 *
-	 * @param pathPredicate the condition for paths
+	 * @param pathMatcher the condition for paths
 	 * @param limit the maximum number of children (use {@link #UNLIMITED} for no restriction)
 	 * 
 	 * @return this builder for chaining
 	 * 
-	 * @throws NullPointerException if {@code pathPredicate} is null
+	 * @throws NullPointerException if {@code pathMatcher} is null
 	 */
-	public ChildLimitBuilder limit(Predicate<Path> pathPredicate, int limit) {
-		Objects.requireNonNull(pathPredicate, "pathPredicate is null");
-		this.controls.add(new ChildControl(pathPredicate, limit));
+	public ChildLimitBuilder limit(PathMatcher pathMatcher, int limit) {
+		Objects.requireNonNull(pathMatcher, "pathMatcher is null");
+		this.controls.add(new ChildControl(pathMatcher, limit));
 		return this;
 	}
 

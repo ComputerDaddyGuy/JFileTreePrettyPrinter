@@ -3,10 +3,10 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.RenderingOptions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.ScanningOptions;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -297,14 +297,12 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
 	// ---------- Filtering ----------
 
-	private Predicate<Path> dirFilter = dir -> true;
-	private Predicate<Path> fileFilter = dir -> true;
+	private PathMatcher dirMatcher = dir -> true;
+	private PathMatcher fileMatcher = dir -> true;
 
 	@Override
-	public Predicate<Path> pathFilter() {
-		return path -> PathPredicates.isDirectory(path)
-			? dirFilter.test(path)
-			: fileFilter.test(path);
+	public PathMatcher pathFilter() {
+		return PathMatchers.ifMatchesThenElse(PathMatchers.isDirectory(), dirMatcher, fileMatcher);
 	}
 
 	/**
@@ -312,10 +310,10 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * 
 	 * Directories that do not pass this filter will not be displayed.
 	 * 
-	 * @param filter	The filter to apply on directories, cannot be <code>null</code>
+	 * @param matcher	The filter to apply on directories, cannot be <code>null</code>
 	 */
-	public PrettyPrintOptions filterDirectories(@Nullable Predicate<Path> filter) {
-		this.dirFilter = Objects.requireNonNull(filter, "filter is null");
+	public PrettyPrintOptions filterDirectories(@Nullable PathMatcher matcher) {
+		this.dirMatcher = Objects.requireNonNull(matcher, "matcher is null");
 		return this;
 	}
 
@@ -324,10 +322,10 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * 
 	 * Files that do not pass this filter will not be displayed.
 	 * 
-	 * @param filter	The filter to apply on files, cannot be <code>null</code>
+	 * @param matcher	The filter to apply on files, cannot be <code>null</code>
 	 */
-	public PrettyPrintOptions filterFiles(@Nullable Predicate<Path> filter) {
-		this.fileFilter = Objects.requireNonNull(filter, "filter is null");
+	public PrettyPrintOptions filterFiles(@Nullable PathMatcher matcher) {
+		this.fileMatcher = Objects.requireNonNull(matcher, "matcher is null");
 		return this;
 	}
 

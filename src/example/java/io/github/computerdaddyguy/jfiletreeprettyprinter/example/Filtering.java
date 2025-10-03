@@ -1,21 +1,19 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
-import java.nio.file.Path;
-import java.util.function.Predicate;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
 
 public class Filtering {
 
 	public static void main(String[] args) {
-		Predicate<Path> excludeDirWithNoJavaFiles = dir -> !PathPredicates.hasNameEndingWith(dir, "no_java_file");
-		var hasJavaExtensionPredicate = PathPredicates.builder().hasExtension("java").build();
+		var excludeDirWithNoJavaFiles = PathMatchers.not(PathMatchers.hasNameEndingWith("no_java_file"));
+		var hasJavaExtension = PathMatchers.hasExtension("java");
 
 		var prettyPrinter = FileTreePrettyPrinter.builder()
 			.customizeOptions(
 				options -> options
 					.filterDirectories(excludeDirWithNoJavaFiles)
-					.filterFiles(hasJavaExtensionPredicate)
+					.filterFiles(hasJavaExtension)
 			)
 			.build();
 

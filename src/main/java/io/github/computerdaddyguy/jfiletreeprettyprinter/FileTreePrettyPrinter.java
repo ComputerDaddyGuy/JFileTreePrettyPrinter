@@ -31,7 +31,11 @@ public interface FileTreePrettyPrinter {
 	 * @throws UncheckedIOException	If any IO error occurred
 	 */
 	default String prettyPrint(String path) throws UncheckedIOException {
-		return prettyPrint(Path.of(path));
+		var p = Path.of(path);
+		if (p.isAbsolute()) {
+			return prettyPrint(p);
+		}
+		return prettyPrint(Path.of(".", path));
 	}
 
 	/**

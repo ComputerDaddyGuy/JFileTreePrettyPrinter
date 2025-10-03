@@ -29,17 +29,19 @@ class LineExtensionTest {
 	@Test
 	void example_dir_match() {
 
+		var printedPath = Path.of("src/example/resources/line_extension");
+
 		Function<Path, String> lineExtension = path -> {
-			if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/api")) {
+			if (PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api").matches(path)) {
 				return "\t\t\t// All API code: controllers, etc.";
 			}
-			if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/domain")) {
+			if (PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain").matches(path)) {
 				return "\t\t\t// All domain code: value objects, etc.";
 			}
-			if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/infra")) {
+			if (PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra").matches(path)) {
 				return "\t\t\t// All infra code: database, email service, etc.";
 			}
-			if (PathPredicates.hasNameMatchingGlob(path, "*.properties")) {
+			if (PathMatchers.hasNameMatchingGlob("*.properties").matches(path)) {
 				return "\t// Config file";
 			}
 			return null;
@@ -49,7 +51,7 @@ class LineExtensionTest {
 			.customizeOptions(options -> options.withLineExtension(lineExtension))
 			.build();
 
-		var result = printer.prettyPrint("src/example/resources/line_extension");
+		var result = printer.prettyPrint(printedPath);
 		var expected = """
 			line_extension/
 			└─ src/
@@ -70,7 +72,7 @@ class LineExtensionTest {
 	void compact_dir_first_dir() {
 
 		Function<Path, String> lineExtension = p -> {
-			if (PathPredicates.hasName(p, "dirA")) {
+			if (PathMatchers.hasName("dirA").matches(p)) {
 				return " // 1";
 			}
 			return null;
@@ -92,7 +94,7 @@ class LineExtensionTest {
 	void compact_dir_empty_string_workds() {
 
 		Function<Path, String> lineExtension = p -> {
-			if (PathPredicates.hasName(p, "dirA")) {
+			if (PathMatchers.hasName("dirA").matches(p)) {
 				return "";
 			}
 			return null;
@@ -114,7 +116,7 @@ class LineExtensionTest {
 	void compact_dir_middle_dir() {
 
 		Function<Path, String> lineExtension = p -> {
-			if (PathPredicates.hasName(p, "dirB")) {
+			if (PathMatchers.hasName("dirB").matches(p)) {
 				return " // 2";
 			}
 			return null;
@@ -136,7 +138,7 @@ class LineExtensionTest {
 	void compact_dir_last_dir() {
 
 		Function<Path, String> lineExtension = p -> {
-			if (PathPredicates.hasName(p, "dirC")) {
+			if (PathMatchers.hasName("dirC").matches(p)) {
 				return " // 3";
 			}
 			return null;

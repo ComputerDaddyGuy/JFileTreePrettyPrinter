@@ -20,8 +20,7 @@ class DefaultFileTreePrettyPrinter implements FileTreePrettyPrinter {
 	@Override
 	public String prettyPrint(Path path) {
 		Objects.requireNonNull(path, "path cannot be null");
-		var cleanedPath = path.normalize().toAbsolutePath(); // required to avoid "./" at root when calling prettyPrint(".")
-		var tree = scanner.scan(cleanedPath);
+		var tree = scanner.scan(path);
 		return renderer.renderTree(tree);
 	}
 

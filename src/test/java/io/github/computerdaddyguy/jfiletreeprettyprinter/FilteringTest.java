@@ -16,7 +16,7 @@ class FilteringTest {
 	@Test
 	void example_file() {
 
-		var filter = PathPredicates.builder().hasExtension("java").build();
+		var filter = PathMatchers.hasExtension("java");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
@@ -40,7 +40,7 @@ class FilteringTest {
 	@Test
 	void example_dir() {
 
-		var filter = PathPredicates.builder().hasNameEndingWith("no_java_file").build();
+		var filter = PathMatchers.hasNameEndingWith("no_java_file");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.filterDirectories(filter))
 			.build();
@@ -58,7 +58,7 @@ class FilteringTest {
 	@Test
 	void example_and_sorting() {
 
-		var filter = PathPredicates.builder().hasExtension("java").build();
+		var filter = PathMatchers.hasExtension("java");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.sort(Sorts.BY_NAME.reversed()))
 			.customizeOptions(options -> options.filterFiles(filter))
@@ -83,7 +83,7 @@ class FilteringTest {
 	@Test
 	void example_childLimit_1() {
 
-		var filter = PathPredicates.builder().hasExtension("java").build();
+		var filter = PathMatchers.hasExtension("java");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(1))
 			.customizeOptions(options -> options.filterFiles(filter))
@@ -102,7 +102,7 @@ class FilteringTest {
 	@Test
 	void example_childLimit_2() {
 
-		var filter = PathPredicates.builder().hasExtension("java").build();
+		var filter = PathMatchers.hasExtension("java");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(2))
 			.customizeOptions(options -> options.filterFiles(filter))
@@ -126,7 +126,7 @@ class FilteringTest {
 	@Test
 	void example_childLimit_3() {
 
-		var filter = PathPredicates.builder().hasExtension("java").build();
+		var filter = PathMatchers.hasExtension("java");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(3))
 			.customizeOptions(options -> options.filterFiles(filter))
@@ -169,8 +169,8 @@ class FilteringTest {
 			.getPath();
 		// @formatter:on
 
-		var dirFilter = PathPredicates.builder().hasNameEndingWith("1").build();
-		var fileFilter = PathPredicates.builder().hasExtension("java").build();
+		var dirFilter = PathMatchers.hasNameEndingWith("1");
+		var fileFilter = PathMatchers.hasExtension("java");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withCompactDirectories(true))
 			.customizeOptions(options -> options.filterDirectories(dirFilter))

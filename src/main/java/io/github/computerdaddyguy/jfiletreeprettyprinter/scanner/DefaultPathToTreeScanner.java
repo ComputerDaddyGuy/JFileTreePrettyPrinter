@@ -1,5 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
@@ -9,12 +10,12 @@ import java.io.UncheckedIOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -29,19 +30,20 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 	}
 
 	@Override
-	public TreeEntry scan(Path fileOrDir) {
-		return handle(0, fileOrDir, options.pathFilter());
+	public TreeEntry scan(Path root) {
+		var cleanedRoot = root.normalize().toAbsolutePath(); // required to avoid "./" at root when calling prettyPrint(".")
+		return handle(cleanedRoot, 0, cleanedRoot, options.pathFilter());
 	}
 
 	@Nullable
-	private TreeEntry handle(int depth, Path fileOrDir, Predicate<Path> filter) {
-		return fileOrDir.toFile().isDirectory()
-			? handleDirectory(depth, fileOrDir, filter)
+	private TreeEntry handle(Path root, int depth, Path fileOrDir, PathMatcher filter) {
+		return PathMatchers.isDirectory().matches(fileOrDir)
+			? handleDirectory(root, depth, fileOrDir, filter)
 			: handleFile(fileOrDir);
 	}
 
 	@Nullable
-	private TreeEntry handleDirectory(int depth, Path dir, Predicate<Path> filter) {
+	private TreeEntry handleDirectory(Path root, int depth, Path dir, PathMatcher filter) {
 
 		if (depth >= options.getMaxDepth()) {
 			var maxDepthEntry = new MaxDepthReachEntry(depth);
@@ -50,9 +52,9 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		List<TreeEntry> childEntries;
 
-		try (var childrenStream = Files.newDirectoryStream(dir)) {
-			var it = directoryStreamToIterator(childrenStream, filter);
-			childEntries = handleDirectoryChildren(depth, dir, it, filter);
+		try (var childrenStream = Files.newDirectoryStream(dir, filter::matches)) {
+			var it = directoryStreamToIterator(childrenStream);
+			childEntries = handleDirectoryChildren(root, depth, dir, it, filter);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Unable to list files for directory: " + dir, e);
 		}
@@ -60,7 +62,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		return new DirectoryEntry(dir, childEntries);
 	}
 
-	private List<TreeEntry> handleDirectoryChildren(int depth, Path dir, Iterator<Path> pathIterator, Predicate<Path> filter) {
+	private List<TreeEntry> handleDirectoryChildren(Path root, int depth, Path dir, Iterator<Path> pathIterator, PathMatcher filter) {
 
 		var childEntries = new ArrayList<TreeEntry>();
 		int maxChildEntries = options.getChildLimit().applyAsInt(dir);
@@ -73,7 +75,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 				break;
 			}
 			var child = pathIterator.next();
-			var childEntry = handle(depth + 1, child, filter);
+			var childEntry = handle(root, depth + 1, child, filter);
 			if (childEntry == null) {
 				childCount--; // The child did not pass the filter, so it doesn't count
 			} else {
@@ -83,19 +85,19 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		// Loop has early exit?
 		if (pathIterator.hasNext()) {
-			childEntries.addAll(handleLeftOverChildren(depth, pathIterator, filter));
+			childEntries.addAll(handleLeftOverChildren(root, depth, pathIterator, filter));
 		}
 
 		return childEntries;
 	}
 
-	private List<TreeEntry> handleLeftOverChildren(int depth, Iterator<Path> pathIterator, Predicate<Path> filter) {
+	private List<TreeEntry> handleLeftOverChildren(Path root, int depth, Iterator<Path> pathIterator, PathMatcher filter) {
 		var childEntries = new ArrayList<TreeEntry>();
 
 		var skippedChildren = new ArrayList<Path>();
 		while (pathIterator.hasNext()) {
 			var child = pathIterator.next();
-			var childEntry = handle(depth + 1, child, filter);
+			var childEntry = handle(root, depth + 1, child, filter);
 			if (childEntry != null) { // Is null if no children file is retained by filter
 				skippedChildren.add(child);
 			}
@@ -108,10 +110,9 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 		return childEntries;
 	}
 
-	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream, Predicate<Path> filter) {
+	private Iterator<Path> directoryStreamToIterator(DirectoryStream<Path> childrenStream) {
 		return StreamSupport
 			.stream(childrenStream.spliterator(), false)
-			.filter(filter)
 			.sorted(options.pathComparator())
 			.iterator();
 	}
