@@ -38,7 +38,7 @@ public class CompleteExample {
 			.build();
 
 		Function<Path, String> lineExtension = path -> {
-			if (PathMatchers.hasName("JfileTreePrettyPrinter-structure.png").matches(path)) {
+			if (PathMatchers.hasName("project-structure.png").matches(path)) {
 				return "\t// This image";
 			} else if (PathMatchers.hasName("FileTreePrettyPrinter.java").matches(path)) {
 				return "\t// Main entry point";

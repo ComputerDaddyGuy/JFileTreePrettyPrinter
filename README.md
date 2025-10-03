@@ -10,13 +10,20 @@
 [![Apache License 2.0](https://img.shields.io/:license-Apache%20License%202.0-blue.svg)](https://github.com/computerdaddyguy/jfiletreeprettyprinter/blob/main/LICENSE)
 
 **A lightweight Java library for printing directory structures in a clean, tree-like format.**
-- Sorting & filtering
+
+Supports various [options](#options) to customize the directories scanning and rendering:
+- Filtering & sorting
 - Emoji support 🎉
 - Limit displayed children (fixed value or dynamically)
+- Custom line extension (comment, file details, etc.)
 - Compact directory chains
 - Maximum depth
-- Custom line extension (comment, file details, etc.)
 - Various styles for tree rendering
+
+<p align="center">
+	JFileTreePrettyPrint project structure, pretty printed using JFileTreePrettyPrint (see <a href="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/src/example/java/io/github/computerdaddyguy/jfiletreeprettyprinter/example/CompleteExample.java">CompleteExample.java</a>)
+	<img src="https://raw.githubusercontent.com/ComputerDaddyGuy/JFileTreePrettyPrinter/refs/heads/develop/assets/project-structure.png" alt="JFileTreePrettyPrint project structure, using JFileTreePrettyPrint"/>
+</p>
 
 > [!CAUTION]
 > This lib was developed just for fun, and has not been thoroughly tested!  
@@ -24,10 +31,6 @@
 
 > [!IMPORTANT]
 > Complete documentation available in [wiki](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/wiki).
-
-<p align="center">
-	<img src="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/assets/JfileTreePrettyPrinter-structure.png?raw=true" alt="JFileTreePrettyPrint structure, using JFileTreePrettyPrint"/>
-</p>
 
 * [Import dependency](#import-dependency)
 * [Usage](#usage)  
@@ -84,38 +87,73 @@ base/
 
 # Options
 
-* [Tree format](#tree-format)
+* [Filtering](#filtering)
+* [Sorting](#sorting)
 * [Emojis ❤️](#emojis-%EF%B8%8F)
 * [Child limit](#child-limit)
+* [Line extension](#line-extension)
 * [Compact directories](#compact-directories)
 * [Max depth](#max-depth)
-* [Sorting](#sorting)
-* [Filtering](#filtering)
-* [Line extension](#line-extension)
+* [Tree format](#tree-format)
   
-## Tree format
-Choose between different tree formats.
-The default is `UNICODE_BOX_DRAWING`, supported by all terminals, but you can also switch to use `CLASSIC_ASCII`.
+## Filtering
+Files and directories can be selectively included or excluded using a custom `PathMatcher`.
+
+Filtering is independant for files & directories. Files are filtered only if their parent directory pass the directory filter.
+If none of some directory's children match, the directory is still displayed.
+
+The `PathMatchers` class provides several ready-to-use methods for creating and combining common matchers.
 
 ```java
-// Example: FileTreeFormat.java
+// Example: Filtering.java
+var excludeDirWithNoJavaFiles = PathMatchers.not(PathMatchers.hasNameEndingWith("no_java_file"));
+var hasJavaExtension = PathMatchers.hasExtension("java");
+
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withTreeFormat(TreeFormat.CLASSIC_ASCII))
+	.customizeOptions(
+		options -> options
+			.filterDirectories(excludeDirWithNoJavaFiles)
+			.filterFiles(hasJavaExtension)
+	)
+	.build();
+```
+```
+filtering/
+├─ dir_with_java_files/
+│  ├─ file_B.java
+│  └─ file_E.java
+├─ dir_with_nested_java_files/
+│  └─ nested_dir_with_java_files/
+│     ├─ file_G.java
+│     └─ file_J.java
+└─ file_A.java
+```
+
+## Sorting
+Files and directories can be sorted using a custom comparator (default is alphabetical order).
+If the provided comparator considers two paths equal (i.e., returns `0`), an alphabetical comparator is applied as a tie-breaker to ensure consistent results across all systems.  
+
+The `PrettyPrintOptions.Sorts` class provides a set of basic, ready-to-use comparators.
+
+```java
+// Example: Sorting.java
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
     .build();
 ```
-
 ```
-tree_format/
-|-- file_1
-|-- file_2
-`-- subFolder/
-    |-- subFile_1
-    `-- subFile_2
+sorting/
+├─ c_dir/
+│  └─ c_file
+├─ d_dir/
+│  ├─ d_b_dir/
+│  │  └─ d_b_file
+│  └─ d_a_file
+├─ a_file
+├─ b_file
+├─ x_file
+└─ y_file
 ```
-
-> [!TIP]
-> *Idea for a future version: option to allow usage of custom format*
-
 
 ## Emojis ❤️
 If your terminal supports them, you can choose to use emojis.
@@ -207,104 +245,6 @@ child_limit_dynamic/
 > [!TIP]
 > *Idea for a future version: helper for custom basic functions (by name, prefix, regex, etc.)*
 
-## Compact directories
-Directories chain with single directory child are fully expanded by default, but you can compact them into a single tree entry.
-
-```java
-// Example: CompactDirectories.java
-var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withCompactDirectories(true))
-    .build();
-```
-```
-single_directory_child/
-├─ file1
-├─ file2
-└─ this/is/single/directory/child/
-   ├─ file1
-   ├─ file2
-   └─ file3
-```
-
-## Max depth
-You can customize the default max depth (default is 20).
-
-```java
-// Example: MaxDepth.java
-var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withMaxDepth(3))
-    .build();
-```
-```
-max_depth/
-└─ level1/
-   ├─ file1#1
-   ├─ file1#2
-   └─ level2/
-      ├─ file2#1
-      ├─ file2#2
-      └─ level3/
-         └─ ... (max depth reached)
-```
-
-## Sorting
-Files and directories can be sorted using a custom comparator (default is alphabetical order).
-If the provided comparator considers two paths equal (i.e., returns `0`), an alphabetical comparator is applied as a tie-breaker to ensure consistent results across all systems.  
-
-The `PrettyPrintOptions.Sorts` class provides a set of basic, ready-to-use comparators.
-
-```java
-// Example: Sorting.java
-var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
-    .build();
-```
-```
-sorting/
-├─ c_dir/
-│  └─ c_file
-├─ d_dir/
-│  ├─ d_b_dir/
-│  │  └─ d_b_file
-│  └─ d_a_file
-├─ a_file
-├─ b_file
-├─ x_file
-└─ y_file
-```
-
-## Filtering
-Files and directories can be selectively included or excluded using a custom `PathMatcher`.
-
-Filtering is independant for files & directories. Files are filtered only if their parent directory pass the directory filter.
-If none of some directory's children match, the directory is still displayed.
-
-The `PathMatchers` class provides several ready-to-use methods for creating and combining common matchers.
-
-```java
-// Example: Filtering.java
-var excludeDirWithNoJavaFiles = PathMatchers.not(PathMatchers.hasNameEndingWith("no_java_file"));
-var hasJavaExtension = PathMatchers.hasExtension("java");
-
-var prettyPrinter = FileTreePrettyPrinter.builder()
-	.customizeOptions(
-		options -> options
-			.filterDirectories(excludeDirWithNoJavaFiles)
-			.filterFiles(hasJavaExtension)
-	)
-	.build();
-```
-```
-filtering/
-├─ dir_with_java_files/
-│  ├─ file_B.java
-│  └─ file_E.java
-├─ dir_with_nested_java_files/
-│  └─ nested_dir_with_java_files/
-│     ├─ file_G.java
-│     └─ file_J.java
-└─ file_A.java
-```
 
 ## Line extension
 You can extend each displayed path with additional information by providing a custom `Function<Path, String>`.
@@ -350,6 +290,69 @@ line_extension/
       └─ resources/
          └─ application.properties	// Config file
 ```
+
+## Compact directories
+Directories chain with single directory child are fully expanded by default, but you can compact them into a single tree entry.
+
+```java
+// Example: CompactDirectories.java
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.withCompactDirectories(true))
+    .build();
+```
+```
+single_directory_child/
+├─ file1
+├─ file2
+└─ this/is/single/directory/child/
+   ├─ file1
+   ├─ file2
+   └─ file3
+```
+
+## Max depth
+You can customize the default max depth (default is 20).
+
+```java
+// Example: MaxDepth.java
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.withMaxDepth(3))
+    .build();
+```
+```
+max_depth/
+└─ level1/
+   ├─ file1#1
+   ├─ file1#2
+   └─ level2/
+      ├─ file2#1
+      ├─ file2#2
+      └─ level3/
+         └─ ... (max depth reached)
+```
+
+## Tree format
+Choose between different tree formats.
+The default is `UNICODE_BOX_DRAWING`, supported by all terminals, but you can also switch to use `CLASSIC_ASCII`.
+
+```java
+// Example: FileTreeFormat.java
+var prettyPrinter = FileTreePrettyPrinter.builder()
+    .customizeOptions(options -> options.withTreeFormat(TreeFormat.CLASSIC_ASCII))
+    .build();
+```
+
+```
+tree_format/
+|-- file_1
+|-- file_2
+`-- subFolder/
+    |-- subFile_1
+    `-- subFile_2
+```
+
+> [!TIP]
+> *Idea for a future version: option to allow usage of custom format*
 
 # Changelog
 See [CHANGELOG.md](CHANGELOG.md) for released versions.
