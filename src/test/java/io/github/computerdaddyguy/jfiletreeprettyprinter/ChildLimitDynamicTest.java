@@ -15,11 +15,14 @@ class ChildLimitDynamicTest {
 
 	private FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
 		.customizeOptions(
+
 		// @formatter:off
 			options -> options.withChildLimit(
-				p -> PathPredicates.hasName(p, "limit_1") ? 1 : 
-					 PathPredicates.hasName(p, "limit_3") ? 3 :
-				     -1
+				ChildLimitBuilder.builder()
+					.limit(PathMatchers.hasName("limit_1"), 1)
+					.limit(PathMatchers.hasName("limit_3"), 3)
+					.defaultLimit(ChildLimitBuilder.UNLIMITED)
+					.build()
 			)
 			// @formatter:on
 		)

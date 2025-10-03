@@ -2,7 +2,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.ChildLimitBuilder;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathPredicates;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.Sorts;
 import java.nio.file.Path;
 import java.util.function.Function;
@@ -11,39 +11,40 @@ public class CompleteExample {
 
 	public static void main(String[] args) {
 
-		var filterDir = PathPredicates.builder()
-			.pathTest(path -> !PathPredicates.hasName(path, ".git"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./.git"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./.github"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./.settings"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./src/example"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./src/test"))
-			.pathTest(path -> !PathPredicates.hasFullPathMatchingGlob(path, "./target"))
-			.build();
+		var jFileTreePrettyPrintFolder = Path.of(".");
 
-		var filterFiles = PathPredicates.builder()
-			.pathTest(path -> !PathPredicates.hasNameStartingWith(path, "."))
-			.pathTest(path -> {
-				if (PathPredicates.hasParentMatching(path, parent -> PathPredicates.hasName(parent, "jfiletreeprettyprinter"))) {
-					return PathPredicates.hasName(path, "FileTreePrettyPrinter.java");
-				}
-				return true;
-			})
-			.build();
+		var filterDir = PathMatchers.noneOf(
+			PathMatchers.hasName(".git"),
+			PathMatchers.hasRelativePathMatchingGlob(jFileTreePrettyPrintFolder, ".git"),
+			PathMatchers.hasRelativePathMatchingGlob(jFileTreePrettyPrintFolder, ".github"),
+			PathMatchers.hasRelativePathMatchingGlob(jFileTreePrettyPrintFolder, ".settings"),
+			PathMatchers.hasRelativePathMatchingGlob(jFileTreePrettyPrintFolder, "src/example"),
+			PathMatchers.hasRelativePathMatchingGlob(jFileTreePrettyPrintFolder, "src/test"),
+			PathMatchers.hasRelativePathMatchingGlob(jFileTreePrettyPrintFolder, "target")
+		);
+
+		var filterFiles = PathMatchers.allOf(
+			PathMatchers.not(PathMatchers.hasNameStartingWith(".")),
+			PathMatchers.ifMatchesThenElse(
+				PathMatchers.hasDirectParentMatching(PathMatchers.hasName("jfiletreeprettyprinter")), // if
+				PathMatchers.hasName("FileTreePrettyPrinter.java"), // then
+				p -> true // else
+			)
+		);
 
 		var childLimitFunction = ChildLimitBuilder.builder()
-			.limit(path -> PathPredicates.hasFullPathMatchingGlob(path, "**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
-			.limit(path -> PathPredicates.hasFullPathMatchingGlob(path, "**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
+			.limit(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
+			.limit(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
 			.build();
 
 		Function<Path, String> lineExtension = path -> {
-			if (PathPredicates.hasName(path, "JfileTreePrettyPrinter-structure.png")) {
+			if (PathMatchers.hasName("JfileTreePrettyPrinter-structure.png").matches(path)) {
 				return "\t// This image";
-			} else if (PathPredicates.hasName(path, "FileTreePrettyPrinter.java")) {
+			} else if (PathMatchers.hasName("FileTreePrettyPrinter.java").matches(path)) {
 				return "\t// Main entry point";
-			} else if (PathPredicates.hasName(path, "README.md")) {
+			} else if (PathMatchers.hasName("README.md").matches(path)) {
 				return "\t\t// You're reading at this!";
-			} else if (PathPredicates.hasName(path, "java")) {
+			} else if (PathMatchers.hasName("java").matches(path)) {
 				return "";
 			}
 			return null;
@@ -61,7 +62,8 @@ public class CompleteExample {
 					.sort(Sorts.DIRECTORY_FIRST)
 			)
 			.build();
-		var tree = prettyPrinter.prettyPrint(".");
+
+		var tree = prettyPrinter.prettyPrint(jFileTreePrettyPrintFolder);
 		System.out.println(tree);
 	}
 

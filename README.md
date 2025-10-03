@@ -178,14 +178,14 @@ child_limit_static/
 Or you can also set a limitation function, to dynamically choose the number of children displayed in each directory.
 It avoids cluttering the whole console with known large folders (e.g. `node_modules`) but continue to pretty print normally other folders.
 
-Use the `ChildLimitBuilder` and `PathPredicates` classes to help you build the limit function that fits your needs.
+Use the `ChildLimitBuilder` and `PathMatchers` classes to help you build the limit function that fits your needs.
 
 ```java
 // Example: ChildLimitDynamic.java
-var isNodeModulePredicate = PathPredicates.builder().hasName("node_modules").build();
+var isNodeModuleMatcher = PathMatchers.hasName("node_modules");
 var childLimit = ChildLimitBuilder.builder()
 	.defaultLimit(ChildLimitBuilder.UNLIMITED)
-	.limit(isNodeModulePredicate, 0)
+	.limit(isNodeModuleMatcher, 0)
 	.build();
 var prettyPrinter = FileTreePrettyPrinter.builder()
     .customizeOptions(options -> options.withChildLimit(childLimit)) 
@@ -274,23 +274,23 @@ sorting/
 ```
 
 ## Filtering
-Files and directories can be selectively included or excluded using a custom `Predicate<Path>`.
+Files and directories can be selectively included or excluded using a custom `PathMatcher`.
 
 Filtering is independant for files & directories. Files are filtered only if their parent directory pass the directory filter.
 If none of some directory's children match, the directory is still displayed.
 
-The `PathPredicates` class provides several ready-to-use methods for creating common predicates, as well as a builder for creating more advanced predicates.
+The `PathMatchers` class provides several ready-to-use methods for creating and combining common matchers.
 
 ```java
 // Example: Filtering.java
-Predicate<Path> excludeDirWithNoJavaFiles = dir -> !PathPredicates.hasNameEndingWith(dir, "no_java_file");
-var isJavaFilePredicate = PathPredicates.builder().hasExtension("java").build();
+var excludeDirWithNoJavaFiles = PathMatchers.not(PathMatchers.hasNameEndingWith("no_java_file"));
+var hasJavaExtension = PathMatchers.hasExtension("java");
 
 var prettyPrinter = FileTreePrettyPrinter.builder()
 	.customizeOptions(
 		options -> options
 			.filterDirectories(excludeDirWithNoJavaFiles)
-			.filterFiles(hasJavaExtensionPredicate)
+			.filterFiles(hasJavaExtension)
 	)
 	.build();
 ```
@@ -315,17 +315,19 @@ If the function returns `null`, nothing is added.
 
 ```java
 // Example: LineExtension.java
+var printedPath = Path.of("src/example/resources/line_extension");
+
 Function<Path, String> lineExtension = path -> {
-	if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/api")) {
+	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/api", printedPath).matches(path)) {
 		return "\t\t\t// All API code: controllers, etc.";
 	}
-	if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/domain")) {
+	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/domain", printedPath).matches(path)) {
 		return "\t\t\t// All domain code: value objects, etc.";
 	}
-	if (PathPredicates.hasFullPathMatchingGlob(path, "**/src/main/java/infra")) {
+	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/infra", printedPath).matches(path)) {
 		return "\t\t\t// All infra code: database, email service, etc.";
 	}
-	if (PathPredicates.hasNameMatchingGlob(path, "*.properties")) {
+	if (PathMatchers.hasNameMatchingGlob("*.properties").matches(path)) {
 		return "\t// Config file";
 	}
 	return null;

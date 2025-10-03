@@ -9,12 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.5] - Unreleased
 
 ### Added
-- New path predicates: `hasParentMatching`, `hasAncestorMatching`, `hasDirectChildMatching`, `hasDescendantMatching`, `hasSiblingMatching`, `hasFullPathMatchingGlob`, `hasFullPathMatching`, `hasNameMatchingGlob`, `hasNameStartingWith`
+- New path matchers: 
+ `hasParentMatching`, `hasAncestorMatching`, `hasDirectChildMatching`, `hasDescendantMatching`, `hasSiblingMatching`,
+ `hasAbsolutePathMatchingGlob`, `hasAbsolutePathMatching`, 
+ `hasRelativePathMatchingGlob`, `hasRelativePathMatching`, 
+ `hasNameMatchingGlob`, `hasNameStartingWith`
 
 ### Changed
-- `PathUtils` removed, `PathPredicates` rework
-- Line extension: empty string is permitted
-- Filtering: split into distinct directories and files filters
+- Filtering: now using `PathMatcher` instead of `Predicate<Path>`
+- Filtering: split into distinct directories and files filters for better control
+- `PathUtils` and `PathPredicates` removed, use `PathMatchers` instead
+- Line extension: empty string is permitted to force line break in compact paths
 
 ### Fixed
 - The folder name is properly displayed at root when calling `prettyPrint(".")` (instead of "./")

@@ -1,8 +1,8 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Comparator;
-import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import org.jspecify.annotations.NullMarked;
 
@@ -15,6 +15,6 @@ public interface ScanningOptions {
 
 	Comparator<Path> pathComparator();
 
-	Predicate<Path> pathFilter();
+	PathMatcher pathFilter();
 
 }
