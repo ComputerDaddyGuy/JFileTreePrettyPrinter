@@ -14,7 +14,6 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Utility class providing factory and composition methods for {@link PathMatcher}s.
@@ -193,15 +192,13 @@ public final class PathMatchers {
 		return combineMatchers(matchers, Mode.ANY);
 	}
 
-	private static List<PathMatcher> buildSafeList(PathMatcher matcher, @Nullable PathMatcher... matchers) {
+	private static List<PathMatcher> buildSafeList(PathMatcher matcher, PathMatcher... matchers) {
 		Objects.requireNonNull(matcher, "matcher is null");
-		var list = new ArrayList<PathMatcher>(1 + (matchers == null ? 0 : matchers.length));
+		var list = new ArrayList<PathMatcher>(1 + matchers.length);
 		list.add(matcher);
-		if (matchers != null) {
-			for (PathMatcher m : matchers) {
-				Objects.requireNonNull(m, "some matcher is null");
-				list.add(m);
-			}
+		for (PathMatcher m : matchers) {
+			Objects.requireNonNull(m, "some matcher is null");
+			list.add(m);
 		}
 		return List.copyOf(list);
 	}
