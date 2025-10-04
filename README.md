@@ -9,31 +9,30 @@
 [![Javadoc](https://javadoc.io/badge2/io.github.computerdaddyguy/jfiletreeprettyprinter/javadoc.svg?color=blue)](https://javadoc.io/doc/io.github.computerdaddyguy/jfiletreeprettyprinter)
 [![Apache License 2.0](https://img.shields.io/:license-Apache%20License%202.0-blue.svg)](https://github.com/computerdaddyguy/jfiletreeprettyprinter/blob/main/LICENSE)
 
-**A lightweight Java library for printing directory structures in a clean, tree-like format.**
+**A lightweight Java library for printing directory structures in a clean, tree-like format.** 
 
 Supports various [options](#options) to customize the directories scanning and rendering:
-- Filtering & sorting
-- Emoji support 🎉
-- Limit displayed children (fixed value or dynamically)
+- Filtering & sorting files and folders
+- Emojis as file icons 🎉
+- Limit displayed children of a folder (fixed value or dynamically)
 - Custom line extension (comment, file details, etc.)
 - Compact directory chains
-- Maximum depth
+- Maximum scanning depth
 - Various styles for tree rendering
 
+> [!NOTE]
+> JFileTreePrettyPrinter is perfect to explain your project structure!  
+> See <a href="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/src/example/java/io/github/computerdaddyguy/jfiletreeprettyprinter/example/ProjectStructure.java">ProjectStructure.java</a> to read the code that generate the below tree.
+
 <p align="center">
-	JFileTreePrettyPrint project structure, pretty printed using JFileTreePrettyPrint (see <a href="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/src/example/java/io/github/computerdaddyguy/jfiletreeprettyprinter/example/CompleteExample.java">CompleteExample.java</a>)
 	<img src="https://raw.githubusercontent.com/ComputerDaddyGuy/JFileTreePrettyPrinter/refs/heads/develop/assets/project-structure.png" alt="JFileTreePrettyPrint project structure, using JFileTreePrettyPrint"/>
 </p>
-
-> [!CAUTION]
-> This lib was developed just for fun, and has not been thoroughly tested!  
-> May not be suitable for production code 😊
 
 > [!IMPORTANT]
 > Complete documentation available in [wiki](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/wiki).
 
 * [Import dependency](#import-dependency)
-* [Usage](#usage)  
+* [Basic usage](#basic-usage)  
 * [Options](#options)
 * [Changelog](#changelog) 
 * [Roadmap](#roadmap) 
@@ -56,7 +55,7 @@ For Gradle:
 implementation "io.github.computerdaddyguy:jfiletreeprettyprinter:0.0.4"
 ```
 
-# Usage
+# Basic Usage
 ```java
 // Example: BasicUsage.java
 var printer = FileTreePrettyPrinter.createDefault();

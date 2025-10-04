@@ -13,6 +13,7 @@
 - [x] **Documentation**
   - [x] Add examples & README
   - [x] Use Github wiki to document options instead of readme
+  - [x] Complete example with JFileTreePrettyPrint own project
 - [x] **Code style**
   - [x] Use JSpecify annotations
 - [x] **Testing**
@@ -27,7 +28,9 @@
 ## To do
 - [x] More `PathMatchers` functions!
 - [ ] Helper class for line extension
+- [ ] Helper class for sorting
 - [ ] Option: custom emojis
+- [ ] Option: hide number of skipped files and folders for child limit
 - [ ] Rework/fix Github wiki to be up to date
 
 ## Backlog / To analyze / To implement if requested
