@@ -71,7 +71,7 @@ public class LineExtensionBuilder {
 			String result = NO_EXTENSION;
 			for (var rule : immutExtensions) {
 				result = rule.apply(path);
-				if (result != NO_EXTENSION) {
+				if (!Objects.equals(result, NO_EXTENSION)) {
 					break;
 				}
 			}
