@@ -10,11 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - New various path matchers
+- New `LineExtensions`,  `ChildLimits` and `PathSorts` helper classes (and associated builders)
 
 ### Changed
+- Helpers classes `PathUtils` and `PathPredicates` removed, use `PathMatchers` instead
 - Filtering: now using `PathMatcher` interface instead of `Predicate<Path>`
 - Filtering: split into distinct directories and files filters for better control
-- `PathUtils` and `PathPredicates` removed, use `PathMatchers` instead
 - Line extension: empty string is now permitted
 
 ### Fixed

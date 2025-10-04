@@ -27,8 +27,8 @@
 
 ## To do
 - [x] More `PathMatchers` functions!
-- [ ] Helper class for line extension
-- [ ] Helper class for sorting
+- [x] Helper class for line extension
+- [x] Helper class for sorting
 - [ ] Option: custom emojis
 - [ ] Option: hide number of skipped files and folders for child limit
 - [ ] Rework/fix Github wiki to be up to date

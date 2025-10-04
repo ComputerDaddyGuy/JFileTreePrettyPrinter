@@ -132,12 +132,12 @@ filtering/
 Files and directories can be sorted using a custom comparator (default is alphabetical order).
 If the provided comparator considers two paths equal (i.e., returns `0`), an alphabetical comparator is applied as a tie-breaker to ensure consistent results across all systems.  
 
-The `PrettyPrintOptions.Sorts` class provides a set of basic, ready-to-use comparators.
+The `PathSorts` class provides a set of basic, ready-to-use comparators, as well as a builder for creating your own tailor-made sorts.
 
 ```java
 // Example: Sorting.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
+    .customizeOptions(options -> options.sort(PathSorts.DIRECTORY_FIRST))
     .build();
 ```
 ```
@@ -219,14 +219,13 @@ Use the `ChildLimitBuilder` and `PathMatchers` classes to help you build the lim
 
 ```java
 // Example: ChildLimitDynamic.java
-var isNodeModuleMatcher = PathMatchers.hasName("node_modules");
-var childLimit = ChildLimitBuilder.builder()
-	.defaultLimit(ChildLimitBuilder.UNLIMITED)
-	.limit(isNodeModuleMatcher, 0)
+var childLimit = ChildLimits.builder()
+	.setDefault(ChildLimits.UNLIMITED)            // Unlimited children by default
+	.add(PathMatchers.hasName("node_modules"), 0) // Do NOT print any children in "node_modules" folder
 	.build();
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withChildLimit(childLimit)) 
-    .build();
+	.customizeOptions(options -> options.withChildLimit(childLimit))
+	.build();
 ```
 ```
 child_limit_dynamic/
@@ -249,28 +248,23 @@ child_limit_dynamic/
 You can extend each displayed path with additional information by providing a custom `Function<Path, String>`.
 This is useful to annotate your tree with comments, display file sizes, or add domain-specific notes.
 
-The function receives the current path and returns an optional string to append.
+The function receives the current path and returns an optional string to append (empty string is authorized).
 If the function returns `null`, nothing is added.
+
+Use the `LineExtensions` class to help you build line extension functions.
 
 ```java
 // Example: LineExtension.java
 var printedPath = Path.of("src/example/resources/line_extension");
 
-Function<Path, String> lineExtension = path -> {
-	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/api", printedPath).matches(path)) {
-		return "\t\t\t// All API code: controllers, etc.";
-	}
-	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/domain", printedPath).matches(path)) {
-		return "\t\t\t// All domain code: value objects, etc.";
-	}
-	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/infra", printedPath).matches(path)) {
-		return "\t\t\t// All infra code: database, email service, etc.";
-	}
-	if (PathMatchers.hasNameMatchingGlob("*.properties").matches(path)) {
-		return "\t// Config file";
-	}
-	return null;
-};
+Function<Path, String> lineExtension = LineExtensions.builder()
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain"), "\t\t\t// All domain code: value objects, etc.")
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra"), "\t\t\t// All infra code: database, email service, etc.")
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
+	.add(PathMatchers.hasNameMatchingGlob("*.properties"), "\t// Config file")
+	.build();
+	
 var prettyPrinter = FileTreePrettyPrinter.builder()
 	.customizeOptions(options -> options.withLineExtension(lineExtension))
 	.build();

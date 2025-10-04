@@ -31,21 +31,12 @@ class LineExtensionTest {
 
 		var printedPath = Path.of("src/example/resources/line_extension");
 
-		Function<Path, String> lineExtension = path -> {
-			if (PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api").matches(path)) {
-				return "\t\t\t// All API code: controllers, etc.";
-			}
-			if (PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain").matches(path)) {
-				return "\t\t\t// All domain code: value objects, etc.";
-			}
-			if (PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra").matches(path)) {
-				return "\t\t\t// All infra code: database, email service, etc.";
-			}
-			if (PathMatchers.hasNameMatchingGlob("*.properties").matches(path)) {
-				return "\t// Config file";
-			}
-			return null;
-		};
+		Function<Path, String> lineExtension = LineExtensions.builder()
+			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
+			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain"), "\t\t\t// All domain code: value objects, etc.")
+			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra"), "\t\t\t// All infra code: database, email service, etc.")
+			.add(PathMatchers.hasNameMatchingGlob("*.properties"), "\t// Config file")
+			.build();
 
 		var printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withLineExtension(lineExtension))
@@ -71,12 +62,9 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_first_dir() {
 
-		Function<Path, String> lineExtension = p -> {
-			if (PathMatchers.hasName("dirA").matches(p)) {
-				return " // 1";
-			}
-			return null;
-		};
+		Function<Path, String> lineExtension = LineExtensions.builder()
+			.add(PathMatchers.hasName("dirA"), " // 1")
+			.build();
 
 		var expected = """
 			targetPath/
@@ -91,14 +79,11 @@ class LineExtensionTest {
 	}
 
 	@Test
-	void compact_dir_empty_string_workds() {
+	void compact_dir_empty_string_creates_line_break() {
 
-		Function<Path, String> lineExtension = p -> {
-			if (PathMatchers.hasName("dirA").matches(p)) {
-				return "";
-			}
-			return null;
-		};
+		Function<Path, String> lineExtension = LineExtensions.builder()
+			.addLineBreak(PathMatchers.hasName("dirA"))
+			.build();
 
 		var expected = """
 			targetPath/
@@ -115,12 +100,9 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_middle_dir() {
 
-		Function<Path, String> lineExtension = p -> {
-			if (PathMatchers.hasName("dirB").matches(p)) {
-				return " // 2";
-			}
-			return null;
-		};
+		Function<Path, String> lineExtension = LineExtensions.builder()
+			.add(PathMatchers.hasName("dirB"), " // 2")
+			.build();
 
 		var expected = """
 			targetPath/
@@ -137,12 +119,9 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_last_dir() {
 
-		Function<Path, String> lineExtension = p -> {
-			if (PathMatchers.hasName("dirC").matches(p)) {
-				return " // 3";
-			}
-			return null;
-		};
+		Function<Path, String> lineExtension = LineExtensions.builder()
+			.add(PathMatchers.hasName("dirC"), " // 3")
+			.build();
 
 		var expected = """
 			targetPath/
