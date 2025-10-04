@@ -2,7 +2,6 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.Sorts;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructureCreator;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
@@ -60,7 +59,7 @@ class FilteringTest {
 
 		var filter = PathMatchers.hasExtension("java");
 		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.sort(Sorts.BY_NAME.reversed()))
+			.customizeOptions(options -> options.sort(PathSorts.ALPHABETICAL.reversed()))
 			.customizeOptions(options -> options.filterFiles(filter))
 			.build();
 

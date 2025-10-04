@@ -4,7 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.ChildLimitBuilder;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.LineExtensionBuilder;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.Sorts;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.PathSorts;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.function.Function;
@@ -48,15 +48,7 @@ public class ProjectStructure {
 		var fileFilter = PathMatchers.allOf(
 
 			// Hide files with names starting with "."
-			PathMatchers.not(PathMatchers.hasNameStartingWith(".")),
-
-			// Inside "jfiletreeprettyprinter" folder, keep only "FileTreePrettyPrinter.java"
-			// Files in other folders are not restricted by this rule.
-			PathMatchers.ifMatchesThenElse(
-				/*  if  */ PathMatchers.hasDirectParentMatching(PathMatchers.hasName("jfiletreeprettyprinter")),
-				/* then */ PathMatchers.hasName("FileTreePrettyPrinter.java"),
-				/* else */ path -> true
-			)
+			PathMatchers.not(PathMatchers.hasNameStartingWith("."))
 		);
 
 		/*
@@ -66,6 +58,7 @@ public class ProjectStructure {
 			// Hide all files under renderer and scanner packages
 			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
 			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter"), 3)
 			.build();
 
 		/*
@@ -79,9 +72,14 @@ public class ProjectStructure {
 			.build();
 
 		/*
-		 * Sort all paths by directory first (then alphabetically by default)
+		 * Sort all paths by directory first (with highest precedence),
+		 * then "FileTreePrettyPrinter.java" has precedence "-100".
+		 * All other files have default precedence "0", and are then sorted alphabetically by default.
 		 */
-		Comparator<Path> pathComparator = Sorts.DIRECTORY_FIRST;
+		Comparator<Path> pathComparator = PathSorts.builder()
+			.addFirst(PathMatchers.isDirectory())
+			.add(PathMatchers.hasName("FileTreePrettyPrinter.java"), -100) // Default precedence is "0"
+			.build();
 
 		/*
 		 * Build the final FileTreePrettyPrinter
@@ -110,25 +108,27 @@ public class ProjectStructure {
 		        Expected result
 		 ================================
 		 
-			📂 JFileTreePrettyPrinter/
-			├─ 📂 assets/
-			│  └─ 🖼️ project-structure.png	// This image
-			├─ 📂 src/main/java/
-			│  └─ 📂 io/github/computerdaddyguy/jfiletreeprettyprinter/
-			│     ├─ 📂 renderer/
-			│     │  └─ ... (5 files and 2 directories skipped)
-			│     ├─ 📂 scanner/
-			│     │  └─ ... (4 files skipped)
-			│     └─ ☕ FileTreePrettyPrinter.java	// Main entry point
-			├─ 🗺️ CHANGELOG.md
-			├─ 📖 CONTRIBUTING.md
-			├─ 📄 LICENSE
-			├─ 📖 README.md		// You're reading at this!
-			├─ 🗺️ ROADMAP.md
-			├─ 🛡️ SECURITY.md
-			├─ 🏗️ pom.xml
-			├─ 📖 release_process.md
-			└─ 📜 runMutationTests.sh
+		📂 JFileTreePrettyPrinter/
+		├─ 📂 assets/
+		│  └─ 🖼️ project-structure.png	// This image
+		├─ 📂 src/main/java/
+		│  └─ 📂 io/github/computerdaddyguy/jfiletreeprettyprinter/
+		│     ├─ 📂 renderer/
+		│     │  └─ ... (5 files and 2 directories skipped)
+		│     ├─ 📂 scanner/
+		│     │  └─ ... (4 files skipped)
+		│     ├─ ☕ FileTreePrettyPrinter.java	// Main entry point
+		│     └─ ... (8 files skipped)
+		├─ 🗺️ CHANGELOG.md
+		├─ 📖 CONTRIBUTING.md
+		├─ 📄 LICENSE
+		├─ 📖 README.md		// You're reading at this!
+		├─ 🗺️ ROADMAP.md
+		├─ 🛡️ SECURITY.md
+		├─ 🏗️ pom.xml
+		├─ 📖 release_process.md
+		└─ 📜 runMutationTests.sh
+		
 		 */
 	}
 

@@ -132,12 +132,12 @@ filtering/
 Files and directories can be sorted using a custom comparator (default is alphabetical order).
 If the provided comparator considers two paths equal (i.e., returns `0`), an alphabetical comparator is applied as a tie-breaker to ensure consistent results across all systems.  
 
-The `PrettyPrintOptions.Sorts` class provides a set of basic, ready-to-use comparators.
+The `PathSorts` class provides a set of basic, ready-to-use comparators, as well as a builder for creating your own tailor-made sorts.
 
 ```java
 // Example: Sorting.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.sort(PrettyPrintOptions.Sorts.DIRECTORY_FIRST))
+    .customizeOptions(options -> options.sort(PathSorts.DIRECTORY_FIRST))
     .build();
 ```
 ```

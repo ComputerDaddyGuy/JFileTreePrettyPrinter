@@ -31,7 +31,11 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class FileTreePrettyPrinterBuilder {
 
-	private PrettyPrintOptions options = PrettyPrintOptions.createDefault();
+	private PrettyPrintOptions options;
+
+	/* package */ FileTreePrettyPrinterBuilder() {
+		options = PrettyPrintOptions.createDefault();
+	}
 
 	/**
 	 * Builds the pretty printer using the configured options.
