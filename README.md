@@ -219,8 +219,8 @@ Use the `ChildLimitBuilder` and `PathMatchers` classes to help you build the lim
 
 ```java
 // Example: ChildLimitDynamic.java
-var childLimit = ChildLimitBuilder.newInstance()
-	.setDefault(ChildLimitBuilder.UNLIMITED)      // Unlimited children by default
+var childLimit = ChildLimits.builder()
+	.setDefault(ChildLimits.UNLIMITED)            // Unlimited children by default
 	.add(PathMatchers.hasName("node_modules"), 0) // Do NOT print any children in "node_modules" folder
 	.build();
 var prettyPrinter = FileTreePrettyPrinter.builder()
@@ -251,13 +251,13 @@ This is useful to annotate your tree with comments, display file sizes, or add d
 The function receives the current path and returns an optional string to append (empty string is authorized).
 If the function returns `null`, nothing is added.
 
-Use the `LineExtensionBuilder` class to help you build line extension functions.
+Use the `LineExtensions` class to help you build line extension functions.
 
 ```java
 // Example: LineExtension.java
 var printedPath = Path.of("src/example/resources/line_extension");
 
-Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+Function<Path, String> lineExtension = LineExtensions.builder()
 	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
 	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain"), "\t\t\t// All domain code: value objects, etc.")
 	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra"), "\t\t\t// All infra code: database, email service, etc.")

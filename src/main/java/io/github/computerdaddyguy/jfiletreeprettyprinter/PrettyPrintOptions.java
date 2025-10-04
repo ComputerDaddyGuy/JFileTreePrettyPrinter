@@ -27,7 +27,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
 	// ---------- Child limit function ----------
 
-	private ToIntFunction<Path> childLimit = p -> -1;
+	private ToIntFunction<Path> childLimit = p -> ChildLimits.UNLIMITED;
 
 	@Override
 	public ToIntFunction<Path> getChildLimit() {
@@ -50,6 +50,9 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * Default is no limit.
 	 * 
 	 * @param childLimitFunction	The dynamic limitation function, cannot be <code>null</code>. A negative computed value means no limit.
+	 * 
+	 * @see ChildLimits
+	 * @see ChildLimitBuilder
 	 */
 	public PrettyPrintOptions withChildLimit(ToIntFunction<Path> childLimitFunction) {
 		this.childLimit = Objects.requireNonNull(childLimitFunction, "childLimitFunction is null");
@@ -167,6 +170,9 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * to ensure consistent ordering across all systems.
 	 * 
 	 * @param pathComparator The custom comparator
+	 * 
+	 * @see PathSorts
+	 * @see PathSortBuilder
 	 */
 	public PrettyPrintOptions sort(Comparator<Path> pathComparator) {
 		this.pathComparator = Objects.requireNonNull(pathComparator, "pathComparator is null").thenComparing(PathSorts.ALPHABETICAL);
@@ -189,6 +195,8 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * Directories that do not pass this filter will not be displayed.
 	 * 
 	 * @param matcher	The filter to apply on directories, cannot be <code>null</code>
+	 * 
+	 * @see PathMatchers
 	 */
 	public PrettyPrintOptions filterDirectories(@Nullable PathMatcher matcher) {
 		this.dirMatcher = Objects.requireNonNull(matcher, "matcher is null");
@@ -201,6 +209,8 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * Files that do not pass this filter will not be displayed.
 	 * 
 	 * @param matcher	The filter to apply on files, cannot be <code>null</code>
+	 * 
+	 * @see PathMatchers
 	 */
 	public PrettyPrintOptions filterFiles(@Nullable PathMatcher matcher) {
 		this.fileMatcher = Objects.requireNonNull(matcher, "matcher is null");
@@ -229,6 +239,10 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * If the function returns {@code null}, nothing is added.
 	 * 
 	 * @param lineExtension	the custom line extension function, or {@code null} to disable
+	 * 
+	 * 
+	 * @see LineExtensions
+	 * @see LineExtensionBuilder
 	 */
 	public PrettyPrintOptions withLineExtension(@Nullable Function<Path, String> lineExtension) {
 		this.lineExtension = lineExtension;

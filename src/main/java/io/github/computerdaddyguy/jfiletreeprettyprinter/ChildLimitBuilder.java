@@ -38,30 +38,12 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class ChildLimitBuilder {
 
-	/** 
-	 * Special value indicating unlimited children ({@code -1}). 
-	 */
-	public static final int UNLIMITED = -1;
-
 	private List<ToIntFunction<Path>> limits;
 	private int defaultLimit;
 
-	private ChildLimitBuilder(int defaultLimit) {
+	/* package */ ChildLimitBuilder(int defaultLimit) {
 		this.limits = new ArrayList<>();
 		this.defaultLimit = defaultLimit;
-	}
-
-	/**
-	 * Returns a new {@link ChildLimitBuilder}.
-	 *
-	 * @return a fresh builder instance
-	 */
-	public static ChildLimitBuilder newInstance() {
-		return newInstance(UNLIMITED);
-	}
-
-	public static ChildLimitBuilder newInstance(int defaultLimit) {
-		return new ChildLimitBuilder(defaultLimit);
 	}
 
 	/**
@@ -134,7 +116,7 @@ public class ChildLimitBuilder {
 	 */
 	public ChildLimitBuilder add(PathMatcher pathMatcher, int limit) {
 		Objects.requireNonNull(pathMatcher, "pathMatcher is null");
-		return add(path -> pathMatcher.matches(path) ? limit : UNLIMITED);
+		return add(path -> pathMatcher.matches(path) ? limit : ChildLimits.UNLIMITED);
 	}
 
 }

@@ -23,9 +23,9 @@ public final class PathSorts {
 	 * Comparator that sorts paths by file size in ascending order.
 	 * Directories are treated as having a size of {@code 0}, so they appear before regular files.
 	 */
-	public static final Comparator<Path> BY_FILE_SIZE = Comparator.comparing((Path path) -> {
-		return PathMatchers.isDirectory().matches(path) ? 0 : path.toFile().length();
-	});
+	public static final Comparator<Path> BY_FILE_SIZE = Comparator.comparing(
+		(Path path) -> PathMatchers.isDirectory().matches(path) ? 0 : path.toFile().length()
+	);
 
 	/**
 	 * Comparator that places directories before files.

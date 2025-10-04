@@ -1,8 +1,8 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.ChildLimitBuilder;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.ChildLimits;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.LineExtensionBuilder;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.LineExtensions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PathSorts;
 import java.nio.file.Path;
@@ -54,7 +54,7 @@ public class ProjectStructure {
 		/*
 		 * Limit the number of displayed children by directory: some content is not relevant and clutters the final result!
 		 */
-		var childLimitFunction = ChildLimitBuilder.newInstance()
+		var childLimitFunction = ChildLimits.builder()
 			// Hide all files under renderer and scanner packages
 			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
 			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
@@ -64,7 +64,7 @@ public class ProjectStructure {
 		/*
 		 * Add some comments on a few files and directories
 		 */
-		Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+		Function<Path, String> lineExtension = LineExtensions.builder()
 			.add(PathMatchers.hasName("project-structure.png"), "\t// This image")
 			.add(PathMatchers.hasName("FileTreePrettyPrinter.java"), "\t// Main entry point")
 			.add(PathMatchers.hasName("README.md"), "\t\t// You're reading at this!")
@@ -118,7 +118,7 @@ public class ProjectStructure {
 		│     ├─ 📂 scanner/
 		│     │  └─ ... (4 files skipped)
 		│     ├─ ☕ FileTreePrettyPrinter.java	// Main entry point
-		│     └─ ... (8 files skipped)
+		│     └─ ... (10 files skipped)
 		├─ 🗺️ CHANGELOG.md
 		├─ 📖 CONTRIBUTING.md
 		├─ 📄 LICENSE

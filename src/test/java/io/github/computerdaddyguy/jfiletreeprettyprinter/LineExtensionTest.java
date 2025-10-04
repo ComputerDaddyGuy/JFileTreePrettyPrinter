@@ -31,7 +31,7 @@ class LineExtensionTest {
 
 		var printedPath = Path.of("src/example/resources/line_extension");
 
-		Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+		Function<Path, String> lineExtension = LineExtensions.builder()
 			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
 			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain"), "\t\t\t// All domain code: value objects, etc.")
 			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra"), "\t\t\t// All infra code: database, email service, etc.")
@@ -62,7 +62,7 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_first_dir() {
 
-		Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+		Function<Path, String> lineExtension = LineExtensions.builder()
 			.add(PathMatchers.hasName("dirA"), " // 1")
 			.build();
 
@@ -81,7 +81,7 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_empty_string_creates_line_break() {
 
-		Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+		Function<Path, String> lineExtension = LineExtensions.builder()
 			.addLineBreak(PathMatchers.hasName("dirA"))
 			.build();
 
@@ -100,7 +100,7 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_middle_dir() {
 
-		Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+		Function<Path, String> lineExtension = LineExtensions.builder()
 			.add(PathMatchers.hasName("dirB"), " // 2")
 			.build();
 
@@ -119,7 +119,7 @@ class LineExtensionTest {
 	@Test
 	void compact_dir_last_dir() {
 
-		Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+		Function<Path, String> lineExtension = LineExtensions.builder()
 			.add(PathMatchers.hasName("dirC"), " // 3")
 			.build();
 

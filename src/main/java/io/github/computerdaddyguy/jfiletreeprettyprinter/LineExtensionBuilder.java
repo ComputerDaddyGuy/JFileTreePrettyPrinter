@@ -38,22 +38,10 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class LineExtensionBuilder {
 
-	private static final String NO_EXTENSION = null;
-	private static final String LINE_BREAK_EXTENSION = "";
-
 	private List<Function<Path, String>> extensions;
 
-	private LineExtensionBuilder() {
+	/* package */ LineExtensionBuilder() {
 		this.extensions = new ArrayList<>();
-	}
-
-	/**
-	 * Returns a new {@link LineExtensionBuilder}.
-	 *
-	 * @return a fresh builder instance
-	 */
-	public static LineExtensionBuilder newInstance() {
-		return new LineExtensionBuilder();
 	}
 
 	/**
@@ -68,10 +56,10 @@ public class LineExtensionBuilder {
 	public Function<Path, String> build() {
 		var immutExtensions = List.copyOf(extensions);
 		return path -> {
-			String result = NO_EXTENSION;
+			String result = LineExtensions.NO_EXTENSION;
 			for (var rule : immutExtensions) {
 				result = rule.apply(path);
-				if (!Objects.equals(result, NO_EXTENSION)) {
+				if (!Objects.equals(result, LineExtensions.NO_EXTENSION)) {
 					break;
 				}
 			}
@@ -111,7 +99,7 @@ public class LineExtensionBuilder {
 	 */
 	public LineExtensionBuilder add(PathMatcher pathMatcher, String extension) {
 		Objects.requireNonNull(pathMatcher, "pathMatcher is null");
-		return add(path -> pathMatcher.matches(path) ? extension : NO_EXTENSION);
+		return add(path -> pathMatcher.matches(path) ? extension : LineExtensions.NO_EXTENSION);
 	}
 
 	/**
@@ -122,7 +110,7 @@ public class LineExtensionBuilder {
 	 * @return this builder (for chaining)
 	 */
 	public LineExtensionBuilder addLineBreak(PathMatcher pathMatcher) {
-		return add(pathMatcher, LINE_BREAK_EXTENSION);
+		return add(pathMatcher, LineExtensions.LINE_BREAK_EXTENSION);
 	}
 
 }

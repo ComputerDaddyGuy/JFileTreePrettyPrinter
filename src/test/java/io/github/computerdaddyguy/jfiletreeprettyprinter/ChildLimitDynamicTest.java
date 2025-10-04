@@ -18,10 +18,10 @@ class ChildLimitDynamicTest {
 
 		// @formatter:off
 			options -> options.withChildLimit(
-				ChildLimitBuilder.newInstance()
+				ChildLimits.builder()
 					.add(PathMatchers.hasName("limit_1"), 1)
 					.add(PathMatchers.hasName("limit_3"), 3)
-					.setDefault(ChildLimitBuilder.UNLIMITED)
+					.setDefault(ChildLimits.UNLIMITED)
 					.build()
 			)
 			// @formatter:on
