@@ -12,103 +12,129 @@ import org.jspecify.annotations.NullMarked;
  * A builder for creating a {@code ToIntFunction<Path>} that defines
  * how many child entries (files or directories) are allowed under a given path.
  * <p>
- * The resulting function evaluates added rules in the order they were defined.
- * The first matching rule determines the child limit for a given path.
+ * Rules are evaluated in the order they are added (first-match-wins).
+ * The first rule that matches a path determines the limit.
  * If no rules match, the default limit is applied.
  * </p>
  *
  * <p>
- * A limit of {@link #UNLIMITED} ({@code -1}) means no restriction.
- * A limit of {@code 0} means the directory cannot have any children.
+ * Special values:
+ * <ul>
+ *   <li>{@link #UNLIMITED} ({@code -1}) — no restriction on children.</li>
+ *   <li>{@code 0} — directory cannot contain any children.</li>
+ *   <li>Any positive number — maximum number of children allowed.</li>
+ * </ul>
  * </p>
  *
  * <h2>Example usage:</h2>
  * <pre>{@code
- * var childLimit = ChildLimitBuilder.builder()
- *     .defaultLimit(ChildLimit.UNLIMITED)   // unlimited unless specified
- *     .limit(PathMatchers.hasName("bigDir"), 10)  // max 10 children in "bigDir"
- *     .limit(PathMatchers.hasName("emptyDir"), 0) // disallow children in "emptyDir"
+ * var childLimit = ChildLimitBuilder.newInstance()
+ *     .setDefault(ChildLimitBuilder.UNLIMITED)     // unlimited unless specified
+ *     .add(PathMatchers.hasName("bigDir"), 10)     // max 10 children in "bigDir"
+ *     .add(PathMatchers.hasName("emptyDir"), 0)    // disallow children in "emptyDir"
  *     .build();
- *
  * }</pre>
  */
 @NullMarked
 public class ChildLimitBuilder {
 
-	/**
-	 * Unlimited children.
+	/** 
+	 * Special value indicating unlimited children ({@code -1}). 
 	 */
 	public static final int UNLIMITED = -1;
 
-	private static final ChildControl UNLIMITED_CONTROL = new ChildControl(p -> true, UNLIMITED);
+	private List<ToIntFunction<Path>> limits;
+	private int defaultLimit;
 
-	private List<ChildControl> controls;
-	private ChildControl defaultControl;
+	private ChildLimitBuilder(int defaultLimit) {
+		this.limits = new ArrayList<>();
+		this.defaultLimit = defaultLimit;
+	}
 
 	/**
-	 * Creates a new builder.
+	 * Returns a new {@link ChildLimitBuilder}.
+	 *
+	 * @return a fresh builder instance
 	 */
-	private ChildLimitBuilder() {
-		this.controls = new ArrayList<>();
-		this.defaultControl = UNLIMITED_CONTROL;
+	public static ChildLimitBuilder newInstance() {
+		return newInstance(UNLIMITED);
 	}
 
-	private record ChildControl(PathMatcher pathMatcher, int limit) {
-
-	}
-
-	public static ChildLimitBuilder builder() {
-		return new ChildLimitBuilder();
+	public static ChildLimitBuilder newInstance(int defaultLimit) {
+		return new ChildLimitBuilder(defaultLimit);
 	}
 
 	/**
-	 * Builds the child limit function based on the configured rules.
+	 * Builds the final child limit function based on the configured rules.
 	 * <p>
-	 * Rules are tested in the order they were added. The first matching rule
-	 * provides the limit. If no rule matches, the default limit is used.
+	 * Rules are evaluated in insertion order. The first rule that matches a path
+	 * determines its child limit. If no rules match, the default limit is returned.
 	 * </p>
 	 *
 	 * @return a function mapping a {@link Path} to its maximum number of children
 	 */
 	public ToIntFunction<Path> build() {
-		var immutControls = List.copyOf(controls);
-		var immutDefaultControl = this.defaultControl;
-		return p -> immutControls.stream()
-			.filter(control -> control.pathMatcher().matches(p))
-			.findFirst()
-			.orElse(immutDefaultControl)
-			.limit();
+		var immutLimits = List.copyOf(limits);
+		return path -> {
+			int result = defaultLimit;
+			for (var rule : immutLimits) {
+				result = rule.applyAsInt(path);
+				if (result >= 0) {
+					break;
+				}
+			}
+			return result;
+		};
 	}
 
 	/**
 	 * Sets the default child limit to apply when no specific rule matches.
 	 *
 	 * @param limit the default limit (use {@link #UNLIMITED} for no restriction)
-	 * 
 	 * @return this builder for chaining
 	 */
-	public ChildLimitBuilder defaultLimit(int limit) {
-		this.defaultControl = new ChildControl(p -> true, limit);
+	public ChildLimitBuilder setDefault(int limit) {
+		this.defaultLimit = limit;
+		return this;
+	}
+
+	/**
+	 * Adds a custom rule expressed as a {@link ToIntFunction}.
+	 * <p>
+	 * This function should return:
+	 * <ul>
+	 *   <li>{@link #UNLIMITED} ({@code -1}) if it does not apply</li>
+	 *   <li>Any non-negative integer as the effective child limit if it applies</li>
+	 * </ul>
+	 * </p>
+	 *
+	 * @param childLimit the function mapping a path to a child limit
+	 * @return this builder for chaining
+	 * @throws NullPointerException if {@code childLimit} is null
+	 */
+	public ChildLimitBuilder add(ToIntFunction<Path> childLimit) {
+		Objects.requireNonNull(childLimit, "childLimit is null");
+		this.limits.add(childLimit);
 		return this;
 	}
 
 	/**
 	 * Adds a child limit rule for paths matching the given matcher.
 	 * <p>
-	 * Rules are evaluated in the order they are added. The first matching rule wins.
+	 * If the path matches, this rule applies the given limit.
+	 * Otherwise, it yields {@link #UNLIMITED} so that subsequent rules may apply.
+	 * Because rules are evaluated in insertion order, the first matching rule wins.
 	 * </p>
 	 *
-	 * @param pathMatcher the condition for paths
-	 * @param limit the maximum number of children (use {@link #UNLIMITED} for no restriction)
-	 * 
+	 * @param pathMatcher the matcher used to test paths (non-null)
+	 * @param limit the maximum number of children for matching paths
+	 *              (use {@link #UNLIMITED} for no restriction)
 	 * @return this builder for chaining
-	 * 
 	 * @throws NullPointerException if {@code pathMatcher} is null
 	 */
-	public ChildLimitBuilder limit(PathMatcher pathMatcher, int limit) {
+	public ChildLimitBuilder add(PathMatcher pathMatcher, int limit) {
 		Objects.requireNonNull(pathMatcher, "pathMatcher is null");
-		this.controls.add(new ChildControl(pathMatcher, limit));
-		return this;
+		return add(path -> pathMatcher.matches(path) ? limit : UNLIMITED);
 	}
 
 }

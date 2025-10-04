@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Filtering: split into distinct directories and files filters for better control
 - `PathUtils` and `PathPredicates` removed, use `PathMatchers` instead
 - Line extension: empty string is now permitted
+- Renamed some `ChildLimitBuilder` methods
 
 ### Fixed
 - The folder name is properly displayed at root when calling `prettyPrint(".")` (instead of "./")

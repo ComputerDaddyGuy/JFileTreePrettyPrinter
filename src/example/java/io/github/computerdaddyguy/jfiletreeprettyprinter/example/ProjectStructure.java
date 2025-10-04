@@ -2,6 +2,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.ChildLimitBuilder;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.LineExtensionBuilder;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.Sorts;
 import java.nio.file.Path;
@@ -61,10 +62,10 @@ public class ProjectStructure {
 		/*
 		 * Limit the number of displayed children by directory: some content is not relevant and clutters the final result!
 		 */
-		var childLimitFunction = ChildLimitBuilder.builder()
+		var childLimitFunction = ChildLimitBuilder.newInstance()
 			// Hide all files under renderer and scanner packages
-			.limit(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
-			.limit(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
 			.build();
 
 		/*

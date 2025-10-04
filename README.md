@@ -219,14 +219,13 @@ Use the `ChildLimitBuilder` and `PathMatchers` classes to help you build the lim
 
 ```java
 // Example: ChildLimitDynamic.java
-var isNodeModuleMatcher = PathMatchers.hasName("node_modules");
-var childLimit = ChildLimitBuilder.builder()
-	.defaultLimit(ChildLimitBuilder.UNLIMITED)
-	.limit(isNodeModuleMatcher, 0)
+var childLimit = ChildLimitBuilder.newInstance()
+	.setDefault(ChildLimitBuilder.UNLIMITED)      // Unlimited children by default
+	.add(PathMatchers.hasName("node_modules"), 0) // Do NOT print any children in "node_modules" folder
 	.build();
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withChildLimit(childLimit)) 
-    .build();
+	.customizeOptions(options -> options.withChildLimit(childLimit))
+	.build();
 ```
 ```
 child_limit_dynamic/
