@@ -10,6 +10,11 @@
   - [x] Option: children limit (static & dynamic)
   - [x] Option: tree format Unicode box drawing / classic ASCII
   - [x] Option: max directory depth
+- [x] **Helpers**
+  - [x] Path matchers
+  - [x] Child limit
+  - [x] Line extension
+  - [x] Sort
 - [x] **Documentation**
   - [x] Add examples & README
   - [x] Use Github wiki to document options instead of readme
@@ -26,11 +31,8 @@
   - [x] Publish on Maven Central!
 
 ## To do
-- [x] More `PathMatchers` functions!
-- [x] Helper class for line extension
-- [x] Helper class for sorting
-- [ ] Option: custom emojis
 - [ ] Option: hide number of skipped files and folders for child limit
+- [ ] Option: custom emojis
 - [ ] Rework/fix Github wiki to be up to date
 
 ## Backlog / To analyze / To implement if requested
