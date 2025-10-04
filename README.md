@@ -249,28 +249,23 @@ child_limit_dynamic/
 You can extend each displayed path with additional information by providing a custom `Function<Path, String>`.
 This is useful to annotate your tree with comments, display file sizes, or add domain-specific notes.
 
-The function receives the current path and returns an optional string to append.
+The function receives the current path and returns an optional string to append (empty string is authorized).
 If the function returns `null`, nothing is added.
+
+Use the `LineExtensionBuilder` class to help you build line extension functions.
 
 ```java
 // Example: LineExtension.java
 var printedPath = Path.of("src/example/resources/line_extension");
 
-Function<Path, String> lineExtension = path -> {
-	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/api", printedPath).matches(path)) {
-		return "\t\t\t// All API code: controllers, etc.";
-	}
-	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/domain", printedPath).matches(path)) {
-		return "\t\t\t// All domain code: value objects, etc.";
-	}
-	if (PathMatchers.hasRelativePathMatchingGlob("src/main/java/infra", printedPath).matches(path)) {
-		return "\t\t\t// All infra code: database, email service, etc.";
-	}
-	if (PathMatchers.hasNameMatchingGlob("*.properties").matches(path)) {
-		return "\t// Config file";
-	}
-	return null;
-};
+Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain"), "\t\t\t// All domain code: value objects, etc.")
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra"), "\t\t\t// All infra code: database, email service, etc.")
+	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
+	.add(PathMatchers.hasNameMatchingGlob("*.properties"), "\t// Config file")
+	.build();
+	
 var prettyPrinter = FileTreePrettyPrinter.builder()
 	.customizeOptions(options -> options.withLineExtension(lineExtension))
 	.build();

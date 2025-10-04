@@ -70,18 +70,12 @@ public class ProjectStructure {
 		/*
 		 * Add some comments on a few files and directories
 		 */
-		Function<Path, String> lineExtension = path -> {
-			if (PathMatchers.hasName("project-structure.png").matches(path)) {
-				return "\t// This image";
-			} else if (PathMatchers.hasName("FileTreePrettyPrinter.java").matches(path)) {
-				return "\t// Main entry point";
-			} else if (PathMatchers.hasName("README.md").matches(path)) {
-				return "\t\t// You're reading at this!";
-			} else if (PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src/main/java").matches(path)) {
-				return ""; // Empty string: force line break in compact directory chain
-			}
-			return null;
-		};
+		Function<Path, String> lineExtension = LineExtensionBuilder.newInstance()
+			.add(PathMatchers.hasName("project-structure.png"), "\t// This image")
+			.add(PathMatchers.hasName("FileTreePrettyPrinter.java"), "\t// Main entry point")
+			.add(PathMatchers.hasName("README.md"), "\t\t// You're reading at this!")
+			.addLineBreak(PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src/main/java"))
+			.build();
 
 		/*
 		 * Sort all paths by directory first (then alphabetically by default)
