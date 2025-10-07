@@ -85,7 +85,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		// Loop has early exit?
 		if (pathIterator.hasNext()) {
-			childEntries.add(new SkippedChildrenEntry());
+			childEntries.add(new SkippedChildrenEntry(dir));
 		}
 
 		return childEntries;

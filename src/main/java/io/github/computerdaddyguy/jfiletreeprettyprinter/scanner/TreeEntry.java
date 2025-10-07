@@ -61,12 +61,15 @@ public sealed interface TreeEntry {
 
 	final class SkippedChildrenEntry implements TreeEntry {
 
-		public SkippedChildrenEntry() {
+		final Path dir;
+
+		public SkippedChildrenEntry(Path dir) {
+			this.dir = Objects.requireNonNull(dir, "dir is null");
 		}
 
 		@Override
 		public String toString() {
-			return "SkippedChildrenEntry[]";
+			return "SkippedChildrenEntry[dir: " + dir.getFileName() + "]";
 		}
 
 	}
