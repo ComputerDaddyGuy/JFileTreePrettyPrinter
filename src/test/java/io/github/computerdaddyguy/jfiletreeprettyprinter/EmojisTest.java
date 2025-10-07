@@ -36,6 +36,7 @@ class EmojisTest {
 			│  ├─ 📂 executables/
 			│  │  ├─ 📱 file.apk
 			│  │  ├─ 🖥️ file.app
+			│  │  ├─ ⚙️ file.bin
 			│  │  ├─ ⚙️ file.exe
 			│  │  ├─ 📦 file.msi
 			│  │  └─ 📱 file2.ipa
@@ -52,24 +53,15 @@ class EmojisTest {
 			│  ├─ 📦 file.tar
 			│  └─ 📦 file.zip
 			├─ 📂 code/
-			│  ├─ 🙈 .gitignore
+			│  ├─ 🚫 .gitignore
 			│  ├─ 🐳 Dockerfile
 			│  ├─ 🤵 Jenkinsfile
 			│  ├─ 📂 build_tools/
-			│  │  ├─ 🏗️ build.gradle
-			│  │  ├─ 🏗️ package.json
-			│  │  └─ 🏗️ pom.xml
-			│  ├─ 📂 github/
-			│  │  ├─ 🗺️ changelog
-			│  │  ├─ 🗺️ changelog.md
-			│  │  ├─ 🗺️ licence
-			│  │  ├─ 🗺️ licence.md
-			│  │  ├─ 📖 readme
-			│  │  ├─ 📖 readme.md
-			│  │  ├─ 🗺️ roadmap
-			│  │  ├─ 🗺️ roadmap.md
-			│  │  ├─ 🛡️ security
-			│  │  └─ 🛡️ security.md
+			│  │  ├─ 🛠️ build.gradle
+			│  │  ├─ 🛠️ makefile
+			│  │  ├─ 🛠️ package.json
+			│  │  └─ 🛠️ pom.xml
+			│  ├─ ⚙️ docker-compose.yml
 			│  ├─ 📂 lang/
 			│  │  ├─ 💠 file.c
 			│  │  ├─ ☕ file.class
@@ -105,28 +97,43 @@ class EmojisTest {
 			│  ├─ 📝 file.yaml
 			│  └─ 📝 file.yml
 			├─ 📂 doc/
-			│  ├─ 📃 file.doc
-			│  ├─ 📃 file.docx
+			│  ├─ 📝 file.doc
+			│  ├─ 📝 file.docx
 			│  ├─ 📚 file.epub
-			│  ├─ 📖 file.md
-			│  ├─ 📃 file.odt
+			│  ├─ 📝 file.md
+			│  ├─ 📝 file.odt
 			│  ├─ 📕 file.pdf
-			│  ├─ 📃 file.rtf
-			│  └─ 📄 file.txt
+			│  ├─ 📝 file.rtf
+			│  └─ 📝 file.txt
 			├─ 📄 file.unknown_extension
 			├─ 📄 file_without_extension
+			├─ 📂 internet/
+			│  ├─ 📂 github/
+			│  │  ├─ 🆕 changelog
+			│  │  ├─ 🆕 changelog.md
+			│  │  ├─ 🤝 contributing
+			│  │  ├─ 🤝 contributing.md
+			│  │  ├─ ⚖️ license
+			│  │  ├─ ⚖️ license.md
+			│  │  ├─ 📘 readme
+			│  │  ├─ 📘 readme.md
+			│  │  ├─ 🗺️ roadmap
+			│  │  ├─ 🗺️ roadmap.md
+			│  │  ├─ 🛡️ security
+			│  │  └─ 🛡️ security.md
+			│  └─ 🤖 robots.txt
 			├─ 📂 media/
 			│  ├─ 📂 audio/
-			│  │  ├─ 🎶 file.aac
-			│  │  ├─ 🎶 file.flac
+			│  │  ├─ 🎵 file.aac
+			│  │  ├─ 🎵 file.flac
 			│  │  ├─ 🎹 file.midi
 			│  │  ├─ 🎵 file.mp3
-			│  │  ├─ 🎶 file.ogg
+			│  │  ├─ 🎵 file.ogg
 			│  │  └─ 🎵 file.wav
 			│  ├─ 📂 images/
 			│  │  ├─ 🖼️ file.bmp
 			│  │  ├─ 🎞️ file.gif
-			│  │  ├─ 🔲 file.ico
+			│  │  ├─ 🖼️ file.ico
 			│  │  ├─ 🖼️ file.jpeg
 			│  │  ├─ 🖼️ file.jpg
 			│  │  ├─ 🖼️ file.png

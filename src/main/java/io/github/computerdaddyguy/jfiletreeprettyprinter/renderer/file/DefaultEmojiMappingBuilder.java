@@ -24,32 +24,40 @@ class DefaultEmojiMappingBuilder {
 		// ---------- Archives ----------
 
 		// ---------- Code ----------
-
-		// Code - default
-		map.put(".gitignore", "🙈");
+		map.put(".gitignore", "🚫");
 		map.put("dockerfile", "🐳");
+		map.put("docker-compose.yaml", "⚙️");
+		map.put("docker-compose.yml", "⚙️");
 		map.put("jenkinsfile", "🤵");
 
-		// Code - github
-		map.put("readme", "📖");
-		map.put("readme.md", "📖");
-		map.put("roadmap", "🗺️");
-		map.put("roadmap.md", "🗺️");
-		map.put("licence", "🗺️");
-		map.put("licence.md", "🗺️");
-		map.put("changelog", "🗺️");
-		map.put("changelog.md", "🗺️");
-		map.put("security", "🛡️");
-		map.put("security.md", "🛡️");
-
 		// Code - build tools
-		map.put("pom.xml", "🏗️");
-		map.put("build.gradle", "🏗️");
-		map.put("package.json", "🏗️");
+		map.put("makefile", "🛠️");
+		map.put("pom.xml", "🛠️");
+		map.put("build.gradle", "🛠️");
+		map.put("package.json", "🛠️");
 
 		// ---------- Data ----------
 
 		// ---------- Doc ----------
+
+		// ---------- Internet ----------
+		map.put("robots.txt", "🤖");
+
+		// Internet - github
+		map.put("readme", "📘");
+		map.put("readme.md", "📘");
+		map.put("roadmap", "🗺️");
+		map.put("roadmap.md", "🗺️");
+		map.put("license", "⚖️");
+		map.put("license.md", "⚖️");
+		map.put("changelog", "🆕");
+		map.put("changelog.md", "🆕");
+		map.put("security", "🛡️");
+		map.put("security.md", "🛡️");
+		map.put("todo", "✅");
+		map.put("todo.md", "✅");
+		map.put("contributing", "🤝");
+		map.put("contributing.md", "🤝");
 
 		// ---------- Media ----------
 
@@ -63,6 +71,7 @@ class DefaultEmojiMappingBuilder {
 
 		// Applications - executables
 		map.put("exe", "⚙️");
+		map.put("bin", "⚙️");
 		map.put("msi", "📦");
 		map.put("apk", "📱");
 		map.put("ipa", "📱");
@@ -83,6 +92,7 @@ class DefaultEmojiMappingBuilder {
 		map.put("zip", "📦");
 
 		// ---------- Code ----------
+
 		// Code - build tools
 
 		// Code - lang
@@ -90,7 +100,7 @@ class DefaultEmojiMappingBuilder {
 		map.put("class", "☕");
 		map.put("jar", "📦");
 		map.put("py", "🐍");
-		map.put("js", "🟨");
+		map.put("js", "⚡");
 		map.put("ts", "🔷");
 		map.put("c", "💠");
 		map.put("cpp", "💠");
@@ -125,22 +135,24 @@ class DefaultEmojiMappingBuilder {
 		map.put("yml", "📝");
 
 		// ---------- Doc ----------
-		map.put("doc", "📃");
-		map.put("docx", "📃");
+		map.put("doc", "📝");
+		map.put("docx", "📝");
 		map.put("epub", "📚");
-		map.put("md", "📖");
-		map.put("odt", "📃");
+		map.put("md", "📝");
+		map.put("odt", "📝");
 		map.put("pdf", "📕");
-		map.put("rtf", "📃");
-		map.put("txt", "📄");
+		map.put("rtf", "📝");
+		map.put("txt", "📝");
+
+		// ---------- Internet ----------
 
 		// ---------- Media ----------
 		// Media - Audio
-		map.put("aac", "🎶");
-		map.put("flac", "🎶");
+		map.put("aac", "🎵");
+		map.put("flac", "🎵");
 		map.put("midi", "🎹");
 		map.put("mp3", "🎵");
-		map.put("ogg", "🎶");
+		map.put("ogg", "🎵");
 		map.put("wav", "🎵");
 
 		// Media - Images
@@ -150,7 +162,7 @@ class DefaultEmojiMappingBuilder {
 		map.put("jpg", "🖼️");
 		map.put("png", "🖼️");
 		map.put("svg", "✒️");
-		map.put("ico", "🔲");
+		map.put("ico", "🖼️");
 
 		// Media - Video
 		map.put("avi", "🎬");
