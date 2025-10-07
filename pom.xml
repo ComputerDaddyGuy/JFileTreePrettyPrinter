@@ -9,7 +9,7 @@
 
 	<packaging>jar</packaging>
 	<name>JFileTreePrettyPrinter</name>
-	<description>A lightweight Java library for printing directory structures in a clean, tree-like format.</description>
+	<description>A lightweight and flexible Java library to pretty-print directory structures — ideal for documentation, project overviews, or CLI tools.</description>
 	<url>https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter</url>
 
 	<licenses>

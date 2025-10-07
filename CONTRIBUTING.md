@@ -22,4 +22,4 @@ Thank you for your understanding. 🙏
 - **Ask questions** if something is unclear  
 - **Star ⭐ the repository** if you find it useful  
 
-Your feedback is very valuable, even if direct code contributions aren’t accepted.
+Your feedback is very valuable, even if direct code contributions aren’t accepted **for now**.

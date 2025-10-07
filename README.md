@@ -1,5 +1,4 @@
 # JFileTreePrettyPrint
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ComputerDaddyGuy_JFileTreePrettyPrinter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ComputerDaddyGuy_JFileTreePrettyPrinter)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ComputerDaddyGuy_JFileTreePrettyPrinter&metric=alert_status&token=42442b67d269c6a17b4578ba2d87731c92b8922a)](https://sonarcloud.io/summary/new_code?id=ComputerDaddyGuy_JFileTreePrettyPrinter)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ComputerDaddyGuy_JFileTreePrettyPrinter&metric=security_rating&token=42442b67d269c6a17b4578ba2d87731c92b8922a)](https://sonarcloud.io/summary/new_code?id=ComputerDaddyGuy_JFileTreePrettyPrinter)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ComputerDaddyGuy_JFileTreePrettyPrinter&metric=vulnerabilities&token=42442b67d269c6a17b4578ba2d87731c92b8922a)](https://sonarcloud.io/summary/new_code?id=ComputerDaddyGuy_JFileTreePrettyPrinter)
@@ -9,7 +8,7 @@
 [![Javadoc](https://javadoc.io/badge2/io.github.computerdaddyguy/jfiletreeprettyprinter/javadoc.svg?color=blue)](https://javadoc.io/doc/io.github.computerdaddyguy/jfiletreeprettyprinter)
 [![Apache License 2.0](https://img.shields.io/:license-Apache%20License%202.0-blue.svg)](https://github.com/computerdaddyguy/jfiletreeprettyprinter/blob/main/LICENSE)
 
-**A lightweight Java library for printing directory structures in a clean, tree-like format.** 
+**A lightweight and flexible Java library to pretty-print directory structures — ideal for documentation, project overviews, or CLI tools.** 
 
 Supports various [options](#options) to customize the directories scanning and rendering:
 - Filtering & sorting files and folders
@@ -31,13 +30,23 @@ Supports various [options](#options) to customize the directories scanning and r
 > [!IMPORTANT]
 > Complete documentation available in [wiki](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/wiki).
 
+* [Why use JFileTreePrettyPrinter?](#why-use-jfiletreeprettyprinter)
+* [Requirements](#requirements)
 * [Import dependency](#import-dependency)
 * [Basic usage](#basic-usage)  
-* [Options](#options)
-* [Changelog](#changelog) 
-* [Roadmap](#roadmap) 
-* [License](#license) 
-* [Contributing & Contact](#contributing--contact) 
+* [Customization options](#customization-options)
+* [Project Information](#project-information) 
+
+# Why use JFileTreePrettyPrinter?
+Unlike a plain recursive `Files.walk()`, this library:
+- Prints **visually appealing** directory trees.
+- Allows **rich customization** (filters, sorts, emojis, compacting, tree style).
+- Supports **dynamic child limits** and **custom extensions** per line.
+- Is **dependency-free** (on runtime) and compatible with **Java 21+**.
+
+# Requirements
+- **Java 21 or later**
+- No runtime dependencies
 
 # Import dependency
 For Maven, import this dependency to your `pom.xml`:
@@ -51,20 +60,21 @@ For Maven, import this dependency to your `pom.xml`:
 ```
 
 For Gradle:
-```
+```groovy
 implementation "io.github.computerdaddyguy:jfiletreeprettyprinter:0.0.5"
 ```
 
-# Basic Usage
+# Basic usage
 ```java
 // Example: BasicUsage.java
-var printer = FileTreePrettyPrinter.createDefault();
-var tree = printer.prettyPrint("src/example/resources/base");
-System.out.println(tree);
+var printer = FileTreePrettyPrinter.createDefault(); // Create a printer with default options
+var tree = printer.prettyPrint("src/example/resources/base"); // Pretty print the target folder
+System.out.println(tree); // Admire the result!
 ```
 
 Result:
-```
+
+```text
 base/
 ├─ businessPlan.pdf
 ├─ businessProject.pdf
@@ -84,7 +94,7 @@ base/
 > [!NOTE]
 > In case of error while reading directories or files, an [UncheckedIOException](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/UncheckedIOException.html) is thrown. 
 
-# Options
+# Customization options
 
 * [Filtering](#filtering)
 * [Sorting](#sorting)
@@ -98,8 +108,8 @@ base/
 ## Filtering
 Files and directories can be selectively included or excluded using a custom `PathMatcher`.
 
-Filtering is independant for files & directories. Files are filtered only if their parent directory pass the directory filter.
-If none of some directory's children match, the directory is still displayed.
+Filtering applies independently to files and directories. Files are filtered only if their parent directory passes the directory filter.
+If none of a directory’s children match, the directory is still displayed.
 
 The `PathMatchers` class provides several ready-to-use methods for creating and combining common matchers.
 
@@ -116,7 +126,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 	)
 	.build();
 ```
-```
+
+```text
 filtering/
 ├─ dir_with_java_files/
 │  ├─ file_B.java
@@ -140,7 +151,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     .customizeOptions(options -> options.sort(PathSorts.DIRECTORY_FIRST))
     .build();
 ```
-```
+
+```text
 sorting/
 ├─ c_dir/
 │  └─ c_file
@@ -156,7 +168,7 @@ sorting/
 
 ## Emojis ❤️
 If your terminal supports them, you can choose to use emojis.
-Folders will have the "📂" emoji, and files will have an emoji depending on their extension (when applicable).
+Folders use the 📂 emoji, and files will have an emoji depending on their extension (when applicable).
 
 ```java
 // Example: Emojis.java
@@ -165,8 +177,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     .build();
 ```
 
-```
-// Run Emojis.java example for exhaustive list
+```text
+// Run Emojis.java example for the full list of emoji mappings
 📂 emojis/
 ├─ 📦 file.zip
 ├─ 🐳 Dockerfile
@@ -186,7 +198,7 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 > *Idea for a future version: option to allow custom emoji mapping*
 
 ## Child limit
-You can set a fixed limit to the number of children displayed for each directory. Each directory and file that pass filter (if set) counts for one.
+You can set a fixed limit to the number of children displayed for each directory. Each directory and file that pass the filter (if set) counts for one.
 
 ```java
 // Example: ChildLimitStatic.java
@@ -195,7 +207,7 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     .build();
 ```
 
-```
+```text
 child_limit_static/
 ├─ file_0_1
 ├─ folder_1/
@@ -213,7 +225,7 @@ child_limit_static/
 ```
 
 Or you can also set a limitation function, to dynamically choose the number of children displayed in each directory.
-It avoids cluttering the whole console with known large folders (e.g. `node_modules`) but continue to pretty print normally other folders.
+This avoids cluttering the result with known large folders (e.g. `node_modules`) while continuing to pretty-print other folders normally.
 
 Use the `ChildLimits` class to help you build the limit function that fits your needs.
 
@@ -227,7 +239,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 	.customizeOptions(options -> options.withChildLimit(childLimit))
 	.build();
 ```
-```
+
+```text
 child_limit_dynamic/
 ├─ file_0_1
 ├─ folder_1/
@@ -257,7 +270,6 @@ Function<Path, String> lineExtension = LineExtensions.builder()
 	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
 	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain"), "\t\t\t// All domain code: value objects, etc.")
 	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra"), "\t\t\t// All infra code: database, email service, etc.")
-	.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
 	.add(PathMatchers.hasNameMatchingGlob("*.properties"), "\t// Config file")
 	.build();
 	
@@ -265,7 +277,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 	.customizeOptions(options -> options.withLineExtension(lineExtension))
 	.build();
 ```
-```
+
+```text
 line_extension/
 └─ src/
    └─ main/
@@ -281,7 +294,7 @@ line_extension/
 ```
 
 ## Compact directories
-Directories chain with single directory child are fully expanded by default, but you can compact them into a single tree entry.
+Directory chains with a single child directory are fully expanded by default, but you can inline them into a single tree entry.
 
 ```java
 // Example: CompactDirectories.java
@@ -289,7 +302,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     .customizeOptions(options -> options.withCompactDirectories(true))
     .build();
 ```
-```
+
+```text
 single_directory_child/
 ├─ file1
 ├─ file2
@@ -308,7 +322,8 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     .customizeOptions(options -> options.withMaxDepth(3))
     .build();
 ```
-```
+
+```text
 max_depth/
 └─ level1/
    ├─ file1#1
@@ -331,7 +346,7 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
     .build();
 ```
 
-```
+```text
 tree_format/
 |-- file_1
 |-- file_2
@@ -343,15 +358,19 @@ tree_format/
 > [!TIP]
 > *Idea for a future version: option to allow usage of custom format*
 
-# Changelog
-See [CHANGELOG.md](CHANGELOG.md) for released versions.
+# Project Information
 
-# Roadmap
-See [ROADMAP.md](ROADMAP.md) for upcoming features.
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md) for a list of released versions and detailed changes.
 
-# License
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+## Roadmap
+See [ROADMAP.md](ROADMAP.md) to discover planned features and upcoming improvements.
 
-# Contributing & Contact
-For any questions or feedback, please open an issue on this repository.
+## License
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+
+## Contributing & Contact
+For any questions or feedback please open an issue on this repository, as detailed in [CONTRIBUTING.md](CONTRIBUTING.md).
 	
+---
+Made with ❤️ by [ComputerDaddyGuy](https://github.com/ComputerDaddyGuy)
