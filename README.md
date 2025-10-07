@@ -10,7 +10,7 @@
 
 **A lightweight and flexible Java library to pretty-print directory structures — ideal for documentation, project overviews, or CLI tools.** 
 
-Supports various [options](#options) to customize the directories scanning and rendering:
+Supports various [options](#customization-options) to customize the directories scanning and rendering:
 - Filtering & sorting files and folders
 - Emojis as file icons 🎉
 - Limit displayed children of a folder (fixed value or dynamically)
@@ -360,17 +360,10 @@ tree_format/
 
 # Project Information
 
-## Changelog
-See [CHANGELOG.md](CHANGELOG.md) for a list of released versions and detailed changes.
-
-## Roadmap
-See [ROADMAP.md](ROADMAP.md) to discover planned features and upcoming improvements.
-
-## License
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
-
-## Contributing & Contact
-For any questions or feedback please open an issue on this repository, as detailed in [CONTRIBUTING.md](CONTRIBUTING.md).
+* See [🆕CHANGELOG.md](CHANGELOG.md) for a list of released versions and detailed changes.
+* See [🗺️ROADMAP.md](ROADMAP.md) to discover planned features and upcoming improvements.
+* This project is licensed under the Apache License 2.0. See [⚖️LICENSE](LICENSE) for details.
+* For any questions or feedback please open an issue on this repository, as detailed in [🤝CONTRIBUTING.md](CONTRIBUTING.md).
 	
 ---
 Made with ❤️ by [ComputerDaddyGuy](https://github.com/ComputerDaddyGuy)
