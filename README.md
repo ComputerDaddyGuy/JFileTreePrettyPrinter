@@ -186,7 +186,7 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 > *Idea for a future version: option to allow custom emoji mapping*
 
 ## Child limit
-You can set a fixed limit to the number of children displayed for each directory.
+You can set a fixed limit to the number of children displayed for each directory. Each directory and file that pass filter (if set) counts for one.
 
 ```java
 // Example: ChildLimitStatic.java
@@ -202,13 +202,13 @@ child_limit_static/
 │  ├─ file_1_1
 │  ├─ file_1_2
 │  ├─ file_1_3
-│  └─ ... (2 files skipped)
+│  └─ ...
 ├─ folder_2/
 │  ├─ file_2_1
 │  ├─ file_2_2
 │  ├─ file_2_3
-│  └─ ... (2 files skipped)
-└─ ... (3 directories skipped)
+│  └─ ...
+└─ ...
 
 ```
 
@@ -237,7 +237,7 @@ child_limit_dynamic/
 │  ├─ file_1_4
 │  └─ file_1_5
 └─ node_modules/
-   └─ ... (9 files skipped)
+   └─ ...
 ```
 
 ## Line extension

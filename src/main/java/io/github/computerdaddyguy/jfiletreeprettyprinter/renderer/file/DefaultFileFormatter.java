@@ -5,7 +5,6 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileE
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.SkippedChildrenEntry;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.jspecify.annotations.NullMarked;
@@ -33,51 +32,12 @@ class DefaultFileFormatter implements FileFormatter {
 
 	@Override
 	public String formatChildLimitReached(SkippedChildrenEntry skippedChildrenEntry) {
-		return "... (" + childrenAsString(skippedChildrenEntry.getSkippedChildren()) + " skipped)";
+		return "...";
 	}
 
 	@Override
 	public String formatMaxDepthReached(MaxDepthReachEntry maxDepthReachEntry) {
-		return "... (max depth reached)";
-	}
-
-	private String childrenAsString(Collection<Path> notVisited) {
-
-		var dirCount = countDirs(notVisited);
-		var fileCount = countFiles(notVisited, dirCount);
-
-		var dirText = dirText(dirCount);
-		var fileText = fileText(fileCount);
-
-		return fileText + (!fileText.isEmpty() && !dirText.isEmpty() ? " and " : "") + dirText;
-	}
-
-	private long countDirs(Collection<Path> notVisited) {
-		return notVisited.stream().filter(path -> path.toFile().isDirectory()).count();
-	}
-
-	private String dirText(long dirCount) {
-		if (dirCount == 0) {
-			return "";
-		}
-		if (dirCount == 1) {
-			return "1 directory";
-		}
-		return dirCount + " directories";
-	}
-
-	private long countFiles(Collection<Path> notVisited, long dirCount) {
-		return notVisited.size() - dirCount;
-	}
-
-	private String fileText(long fileCount) {
-		if (fileCount == 0) {
-			return "";
-		}
-		if (fileCount == 1) {
-			return "1 file";
-		}
-		return fileCount + " files";
+		return "...";
 	}
 
 }

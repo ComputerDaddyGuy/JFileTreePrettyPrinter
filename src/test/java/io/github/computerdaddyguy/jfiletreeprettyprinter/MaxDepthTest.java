@@ -62,7 +62,7 @@ class MaxDepthTest {
 		var expected = """
 			targetPath/
 			└─ level1/level2/
-			   └─ ... (max depth reached)""";
+			   └─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -99,7 +99,7 @@ class MaxDepthTest {
 			   ├─ file1#2
 			   ├─ file1#3
 			   └─ level2/
-			      └─ ... (max depth reached)""";
+			      └─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 

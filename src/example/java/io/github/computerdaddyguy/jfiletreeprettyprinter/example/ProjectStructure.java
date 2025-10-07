@@ -114,11 +114,11 @@ public class ProjectStructure {
 		├─ 📂 src/main/java/
 		│  └─ 📂 io/github/computerdaddyguy/jfiletreeprettyprinter/
 		│     ├─ 📂 renderer/
-		│     │  └─ ... (5 files and 2 directories skipped)
+		│     │  └─ ...
 		│     ├─ 📂 scanner/
-		│     │  └─ ... (4 files skipped)
+		│     │  └─ ...
 		│     ├─ ☕ FileTreePrettyPrinter.java	// Main entry point
-		│     └─ ... (10 files skipped)
+		│     └─ ...
 		├─ 🗺️ CHANGELOG.md
 		├─ 📖 CONTRIBUTING.md
 		├─ 📄 LICENSE

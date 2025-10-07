@@ -59,12 +59,12 @@ class ChildLimitDynamicTest {
 			targetPath/
 			├─ limit_1/
 			│  ├─ file1
-			│  └─ ... (4 files skipped)
+			│  └─ ...
 			├─ limit_3/
 			│  ├─ file1
 			│  ├─ file2
 			│  ├─ file3
-			│  └─ ... (2 files skipped)
+			│  └─ ...
 			└─ simpleDir/
 			   ├─ file1
 			   ├─ file2
@@ -91,7 +91,7 @@ class ChildLimitDynamicTest {
 			targetPath/
 			└─ limit_1/
 			   ├─ file1
-			   └─ ... (4 files skipped)""";
+			   └─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -114,7 +114,7 @@ class ChildLimitDynamicTest {
 			   ├─ file1
 			   ├─ file2
 			   ├─ file3
-			   └─ ... (2 files skipped)""";
+			   └─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
