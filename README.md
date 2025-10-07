@@ -132,7 +132,7 @@ filtering/
 Files and directories can be sorted using a custom comparator (default is alphabetical order).
 If the provided comparator considers two paths equal (i.e., returns `0`), an alphabetical comparator is applied as a tie-breaker to ensure consistent results across all systems.  
 
-The `PathSorts` class provides a set of basic, ready-to-use comparators, as well as a builder for creating your own tailor-made sorts.
+The `PathSorts` class provides a set of basic, ready-to-use comparators, as well as a builder for creating your own tailor-made sort.
 
 ```java
 // Example: Sorting.java
@@ -215,7 +215,7 @@ child_limit_static/
 Or you can also set a limitation function, to dynamically choose the number of children displayed in each directory.
 It avoids cluttering the whole console with known large folders (e.g. `node_modules`) but continue to pretty print normally other folders.
 
-Use the `ChildLimitBuilder` and `PathMatchers` classes to help you build the limit function that fits your needs.
+Use the `ChildLimits` class to help you build the limit function that fits your needs.
 
 ```java
 // Example: ChildLimitDynamic.java
@@ -239,10 +239,6 @@ child_limit_dynamic/
 └─ node_modules/
    └─ ... (9 files skipped)
 ```
-
-> [!TIP]
-> *Idea for a future version: helper for custom basic functions (by name, prefix, regex, etc.)*
-
 
 ## Line extension
 You can extend each displayed path with additional information by providing a custom `Function<Path, String>`.
