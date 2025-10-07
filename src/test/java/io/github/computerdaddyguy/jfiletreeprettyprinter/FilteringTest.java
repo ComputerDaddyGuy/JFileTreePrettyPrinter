@@ -93,8 +93,8 @@ class FilteringTest {
 			filtering/
 			├─ dir_with_java_files/
 			│  ├─ file_B.java
-			│  └─ ... (1 file skipped)
-			└─ ... (1 file and 2 directories skipped)""";
+			│  └─ ...
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -118,7 +118,7 @@ class FilteringTest {
 			│  │  ├─ file_G.java
 			│  │  └─ file_J.java
 			│  └─ nested_dir_with_no_java_file/
-			└─ ... (1 file and 1 directory skipped)""";
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -143,7 +143,7 @@ class FilteringTest {
 			│  │  └─ file_J.java
 			│  └─ nested_dir_with_no_java_file/
 			├─ dir_with_no_java_file/
-			└─ ... (1 file skipped)""";
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 

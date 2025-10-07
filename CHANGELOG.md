@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 ## [0.0.6] - Unreleased
 
+### Changed
+- Child limit: do not print skipped children count
+- Max depth: do not print "max depth reached"
+
 ---
 ## [0.0.5] - 2025-10-04
 

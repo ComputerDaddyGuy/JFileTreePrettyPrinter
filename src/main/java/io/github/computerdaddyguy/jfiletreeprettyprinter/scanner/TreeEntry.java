@@ -2,7 +2,6 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
@@ -62,19 +61,15 @@ public sealed interface TreeEntry {
 
 	final class SkippedChildrenEntry implements TreeEntry {
 
-		final Collection<Path> skippedChildren;
+		final Path dir;
 
-		public SkippedChildrenEntry(List<Path> skippedChildren) {
-			this.skippedChildren = Objects.requireNonNull(skippedChildren, "skippedChildren is null");
+		public SkippedChildrenEntry(Path dir) {
+			this.dir = Objects.requireNonNull(dir, "dir is null");
 		}
 
 		@Override
 		public String toString() {
-			return "SkippedChildrenEntry[skippedChildren: " + skippedChildren.stream().map(Path::getFileName).toList() + "]";
-		}
-
-		public Collection<Path> getSkippedChildren() {
-			return skippedChildren;
+			return "SkippedChildrenEntry[dir: " + dir.getFileName() + "]";
 		}
 
 	}

@@ -66,7 +66,7 @@ class ChildLimitStaticTest {
 			├─ file1
 			├─ file2
 			├─ file3
-			└─ ... (1 file skipped)""";
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -79,7 +79,7 @@ class ChildLimitStaticTest {
 			├─ file1
 			├─ file2
 			├─ file3
-			└─ ... (2 files skipped)""";
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -92,7 +92,7 @@ class ChildLimitStaticTest {
 			├─ file1
 			├─ file2
 			├─ file3
-			└─ ... (2 files and 1 directory skipped)""";
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -105,7 +105,7 @@ class ChildLimitStaticTest {
 			├─ file1
 			├─ file2
 			├─ file3
-			└─ ... (2 files and 2 directories skipped)""";
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 

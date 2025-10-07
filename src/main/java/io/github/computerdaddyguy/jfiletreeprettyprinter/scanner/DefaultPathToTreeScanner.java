@@ -85,26 +85,7 @@ class DefaultPathToTreeScanner implements PathToTreeScanner {
 
 		// Loop has early exit?
 		if (pathIterator.hasNext()) {
-			childEntries.addAll(handleLeftOverChildren(root, depth, pathIterator, filter));
-		}
-
-		return childEntries;
-	}
-
-	private List<TreeEntry> handleLeftOverChildren(Path root, int depth, Iterator<Path> pathIterator, PathMatcher filter) {
-		var childEntries = new ArrayList<TreeEntry>();
-
-		var skippedChildren = new ArrayList<Path>();
-		while (pathIterator.hasNext()) {
-			var child = pathIterator.next();
-			var childEntry = handle(root, depth + 1, child, filter);
-			if (childEntry != null) { // Is null if no children file is retained by filter
-				skippedChildren.add(child);
-			}
-		}
-		if (!skippedChildren.isEmpty()) {
-			var childrenSkippedEntry = new SkippedChildrenEntry(skippedChildren);
-			childEntries.add(childrenSkippedEntry);
+			childEntries.add(new SkippedChildrenEntry(dir));
 		}
 
 		return childEntries;

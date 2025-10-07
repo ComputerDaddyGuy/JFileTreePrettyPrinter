@@ -26,7 +26,7 @@ class FileTreePrettyPrinterBuilderTest {
 			targetPath/
 			├─ file1
 			├─ file2
-			└─ ... (1 file and 3 directories skipped)""";
+			└─ ...""";
 		assertThat(result).isEqualTo(expected);
 	}
 
