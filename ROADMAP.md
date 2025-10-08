@@ -33,10 +33,10 @@
 ## To do
 - [ ] Option: hide number of skipped files and folders for child limit
 - [ ] Option: custom emojis
-- [ ] Rework/fix Github wiki to be up to date
+- [ ] Option: custom tree format
 
 ## Backlog / To analyze / To implement if requested
-- [ ] Option: custom tree format
+- [ ] Rework/fix Github wiki to be up to date
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Option: color
 - [ ] Option: Filename decorator
