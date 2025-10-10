@@ -1,7 +1,5 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
@@ -27,7 +25,7 @@ interface LineRenderer {
 	 * @return
 	 */
 	static LineRenderer create(RenderingOptions options) {
-		var treeFormatter = DepthFormatter.getInstance(options.getTreeFormat());
+		var treeFormatter = TreeFormatter.getInstance(options.getTreeFormat());
 
 		var fileFormatter = FileFormatter.createDefault();
 		fileFormatter = FileFormatter.wrapWithEmojis(fileFormatter, options.getEmojiMapping());

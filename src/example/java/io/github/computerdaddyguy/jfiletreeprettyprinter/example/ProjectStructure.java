@@ -1,10 +1,10 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.ChildLimits;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.LineExtensions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathSorts;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.ChildLimits;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.LineExtensions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathSorts;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.function.Function;
@@ -56,9 +56,10 @@ public class ProjectStructure {
 		 */
 		var childLimitFunction = ChildLimits.builder()
 			// Hide all files under renderer and scanner packages
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/options"), 0)
 			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
 			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
-			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter"), 3)
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter"), 4)
 			.build();
 
 		/*
@@ -113,21 +114,24 @@ public class ProjectStructure {
 		│  └─ 🖼️ project-structure.png	// This image
 		├─ 📂 src/main/java/
 		│  └─ 📂 io/github/computerdaddyguy/jfiletreeprettyprinter/
+		│     ├─ 📂 options/
+		│     │  └─ ...
 		│     ├─ 📂 renderer/
 		│     │  └─ ...
 		│     ├─ 📂 scanner/
 		│     │  └─ ...
 		│     ├─ ☕ FileTreePrettyPrinter.java	// Main entry point
 		│     └─ ...
-		├─ 🗺️ CHANGELOG.md
-		├─ 📖 CONTRIBUTING.md
-		├─ 📄 LICENSE
-		├─ 📖 README.md		// You're reading at this!
+		├─ 🆕 CHANGELOG.md
+		├─ 🤝 CONTRIBUTING.md
+		├─ ⚖️ LICENSE
+		├─ 📘 README.md		// You're reading at this!
 		├─ 🗺️ ROADMAP.md
 		├─ 🛡️ SECURITY.md
-		├─ 🏗️ pom.xml
-		├─ 📖 release_process.md
+		├─ 🛠️ pom.xml
+		├─ 📝 release_process.md
 		└─ 📜 runMutationTests.sh
+		
 		
 		 */
 	}

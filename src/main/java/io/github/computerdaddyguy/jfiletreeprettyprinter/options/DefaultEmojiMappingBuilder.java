@@ -1,6 +1,6 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.PathMatcherEmojiFunction.EmojiMatch;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatcherEmojiFunction.EmojiMatch;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.HashMap;

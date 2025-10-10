@@ -1,7 +1,6 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.RenderingOptions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.EmojiMapping;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.ScanningOptions;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
@@ -62,21 +61,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
 	// ---------- Tree format ----------
 
-	public static enum TreeFormat {
-
-		/**
-		 * Uses characters: |--, `-- and │
-		 */
-		CLASSIC_ASCII,
-
-		/**
-		 * Uses characters: ├─, └─ and │
-		 */
-		UNICODE_BOX_DRAWING,
-
-	}
-
-	private TreeFormat treeFormat = TreeFormat.UNICODE_BOX_DRAWING;
+	private TreeFormat treeFormat = TreeFormats.UNICODE_BOX_DRAWING;
 
 	@Override
 	public TreeFormat getTreeFormat() {
@@ -85,7 +70,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
 	/**
 	 * Sets the depth rendering format.
-	 * Default is {@link TreeFormat#UNICODE_BOX_DRAWING}.
+	 * Default is {@link TreeFormats#UNICODE_BOX_DRAWING}.
 	 * 
 	 * @param treeFormat The format to use, cannot be <code>null</code>.
 	 */

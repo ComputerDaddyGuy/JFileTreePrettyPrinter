@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

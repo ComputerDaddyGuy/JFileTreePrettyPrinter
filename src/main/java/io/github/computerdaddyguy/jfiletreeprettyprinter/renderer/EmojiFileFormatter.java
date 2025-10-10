@@ -1,6 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.EmojiMapping;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.EmojiMapping;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;

@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

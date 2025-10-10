@@ -3,6 +3,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

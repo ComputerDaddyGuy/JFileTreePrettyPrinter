@@ -1,6 +1,5 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
 import java.nio.file.PathMatcher;
 import org.jspecify.annotations.NullMarked;
 

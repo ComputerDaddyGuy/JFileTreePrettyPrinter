@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,15 +6,15 @@ import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class Depth {
+class Depth {
 
-	private final List<DepthSymbol> symbols;
+	private final List<TreeSymbol> symbols;
 
 	public static Depth createNewEmpty() {
 		return new Depth(List.of());
 	}
 
-	protected Depth(List<DepthSymbol> symbols) {
+	protected Depth(List<TreeSymbol> symbols) {
 		this.symbols = Objects.requireNonNull(symbols, "symbols is null");
 	}
 
@@ -30,8 +30,8 @@ public class Depth {
 		return getSize() == 0;
 	}
 
-	public Depth append(DepthSymbol symbol) {
-		var newList = new ArrayList<DepthSymbol>(symbols);
+	public Depth append(TreeSymbol symbol) {
+		var newList = new ArrayList<TreeSymbol>(symbols);
 		newList.add(symbol);
 		return new Depth(newList);
 	}
@@ -40,12 +40,12 @@ public class Depth {
 		if (symbols.isEmpty()) {
 			return this;
 		}
-		var newList = new ArrayList<DepthSymbol>(symbols);
+		var newList = new ArrayList<TreeSymbol>(symbols);
 		newList.removeLast();
 		return new Depth(newList);
 	}
 
-	public List<DepthSymbol> getSymbols() {
+	public List<TreeSymbol> getSymbols() {
 		return symbols;
 	}
 

@@ -4,12 +4,11 @@
 - [x] **Features**
   - [x] Option: filtering
   - [x] Option: ordering
-  - [x] Option: emojis
-  - [x] Option: custom emojis mapping
+  - [x] Option: emojis (+ custom mapping)
   - [x] Option: compact directories display
   - [x] Option: line extension (=additional text after the file name)
   - [x] Option: children limit (static & dynamic)
-  - [x] Option: tree format Unicode box drawing / classic ASCII
+  - [x] Option: tree format (+ custom mapping)
   - [x] Option: max directory depth
 - [x] **Helpers**
   - [x] Path matchers
@@ -29,10 +28,11 @@
   - [x] SonarCloud integration
 - [x] **Workflows**
   - [x] Github actions
-  - [x] Publish on Maven Central!
+  - [x] Publish `0.0.x` alpha on Maven Central!
 
 ## To do
-- [ ] Option: custom tree format
+- [ ] Gather feedback
+- [ ] Publish `0.x.0` beta on Maven Central!
 
 ## Backlog / To analyze / To implement if requested
 - [ ] Rework/fix Github wiki to be up to date

@@ -1,5 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.TreeEntryRenderer;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.PathToTreeScanner;
 import java.util.Objects;
