@@ -39,7 +39,6 @@ class PathExtensionEmojiFunction implements Function<Path, String> {
 	private static Map<String, String> toLowerCaseKeys(Map<String, String> mapping) {
 		Objects.requireNonNull(mapping, "mapping is null");
 		return mapping.entrySet().stream()
-			.peek(entry -> System.out.println("----- " + entry))
 			.collect(
 				Collectors.toMap(
 					entry -> entry.getKey().toLowerCase(),

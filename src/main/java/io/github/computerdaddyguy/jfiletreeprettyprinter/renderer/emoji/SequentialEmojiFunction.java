@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class SequentialEmojiFunction implements Function<Path, String> {
@@ -16,6 +17,7 @@ class SequentialEmojiFunction implements Function<Path, String> {
 	}
 
 	@Override
+	@Nullable
 	public String apply(Path path) {
 		String emoji = null;
 		for (var fn : functions) {

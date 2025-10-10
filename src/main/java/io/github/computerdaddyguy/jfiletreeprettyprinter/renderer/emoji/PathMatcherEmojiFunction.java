@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class PathMatcherEmojiFunction implements Function<Path, String> {
@@ -18,6 +19,7 @@ class PathMatcherEmojiFunction implements Function<Path, String> {
 	}
 
 	@Override
+	@Nullable
 	public String apply(Path path) {
 		return mapping.stream()
 			.filter(item -> item.matches(path))

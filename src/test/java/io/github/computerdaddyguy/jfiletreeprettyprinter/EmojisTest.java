@@ -19,9 +19,7 @@ class EmojisTest {
 	void emptyDir() {
 
 		var printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(
-				options -> options.withDefaultEmojis()
-			)
+			.customizeOptions(PrettyPrintOptions::withDefaultEmojis)
 			.build();
 
 		var path = FileStructures.emptyDirectory(root);
@@ -34,9 +32,7 @@ class EmojisTest {
 	void emojis() {
 
 		var printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(
-				options -> options.withDefaultEmojis()
-			)
+			.customizeOptions(PrettyPrintOptions::withDefaultEmojis)
 			.build();
 
 		var result = printer.prettyPrint("src/example/resources/emojis");
