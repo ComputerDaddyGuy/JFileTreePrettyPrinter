@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Emojis: option to use custom mapping
+- Tree format: option to use custom format
 
 ### Changed
 - Child limit: do not print skipped children count
