@@ -32,9 +32,7 @@ public class ProjectStructure {
 		 */
 		var dirFilter = PathMatchers.noneOf(
 			// Exclude these folders from traversal
-			PathMatchers.hasRelativePathMatchingGlob(projectFolder, ".git"),
-			PathMatchers.hasRelativePathMatchingGlob(projectFolder, ".github"),
-			PathMatchers.hasRelativePathMatchingGlob(projectFolder, ".settings"),
+			PathMatchers.hasNameStartingWith("."),
 			PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src/example"),
 			PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src/test"),
 			PathMatchers.hasRelativePathMatchingGlob(projectFolder, "target")
@@ -45,10 +43,10 @@ public class ProjectStructure {
 		 * Note: files for which the parent folder does not match the directory filter 
 		 * are obviously not displayed, even if they pass the file filter.
 		 */
-		var fileFilter = PathMatchers.allOf(
+		var fileFilter = PathMatchers.noneOf(
 
 			// Hide files with names starting with "."
-			PathMatchers.not(PathMatchers.hasNameStartingWith("."))
+			PathMatchers.hasNameStartingWith(".")
 		);
 
 		/*
