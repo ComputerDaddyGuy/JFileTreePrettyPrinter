@@ -2,9 +2,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji;
 
 import java.nio.file.Path;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -14,18 +12,7 @@ class PathNameEmojiFunction implements Function<Path, String> {
 	private final Map<String, String> mapping;
 
 	public PathNameEmojiFunction(Map<String, String> mapping) {
-		this.mapping = toLowerCaseKeys(mapping);
-	}
-
-	private static Map<String, String> toLowerCaseKeys(Map<String, String> mapping) {
-		Objects.requireNonNull(mapping, "mapping is null");
-		return mapping.entrySet().stream()
-			.collect(
-				Collectors.toMap(
-					entry -> entry.getKey().toLowerCase(),
-					entry -> entry.getValue()
-				)
-			);
+		this.mapping = MappingUtils.toLowerCaseKeys(mapping);
 	}
 
 	@Override
