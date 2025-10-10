@@ -1,7 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.TreeFormat;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.EmojiMapping;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.EmojiMapping;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.TreeFormat;
 import java.nio.file.Path;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;

@@ -2,7 +2,9 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.EmojiMapping;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.EmojiMapping;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructureCreator;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructures;
 import java.nio.file.Path;

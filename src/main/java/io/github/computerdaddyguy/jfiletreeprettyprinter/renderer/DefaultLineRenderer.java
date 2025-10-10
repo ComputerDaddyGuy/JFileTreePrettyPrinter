@@ -1,7 +1,5 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;
@@ -15,10 +13,10 @@ import org.jspecify.annotations.Nullable;
 @NullMarked
 class DefaultLineRenderer implements LineRenderer {
 
-	private final DepthFormatter treeFormatter;
+	private final TreeFormatter treeFormatter;
 	private final FileFormatter fileFormatter;
 
-	public DefaultLineRenderer(DepthFormatter treeFormatter, FileFormatter fileFormatter) {
+	public DefaultLineRenderer(TreeFormatter treeFormatter, FileFormatter fileFormatter) {
 		this.treeFormatter = Objects.requireNonNull(treeFormatter, "treeFormatter formatter is null");
 		this.fileFormatter = Objects.requireNonNull(fileFormatter, "fileFormatter formatter is null");
 	}

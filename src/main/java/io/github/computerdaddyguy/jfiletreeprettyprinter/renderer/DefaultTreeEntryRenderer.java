@@ -1,7 +1,5 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthSymbol;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
@@ -75,7 +73,7 @@ class DefaultTreeEntryRenderer implements TreeEntryRenderer {
 
 		while (childIt.hasNext()) {
 			var childEntry = childIt.next();
-			var childDepth = depth.append(childIt.hasNext() ? DepthSymbol.NON_LAST_FILE : DepthSymbol.LAST_FILE);
+			var childDepth = depth.append(childIt.hasNext() ? TreeSymbol.NON_LAST_FILE : TreeSymbol.LAST_FILE);
 			childLines.append(renderTree(childEntry, childDepth));
 			if (childIt.hasNext()) {
 				childLines.append('\n');

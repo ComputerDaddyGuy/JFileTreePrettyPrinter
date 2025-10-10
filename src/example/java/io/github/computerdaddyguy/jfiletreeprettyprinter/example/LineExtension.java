@@ -1,8 +1,8 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.LineExtensions;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.LineExtensions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 import java.nio.file.Path;
 import java.util.function.Function;
 

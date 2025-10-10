@@ -333,13 +333,13 @@ max_depth/
 ```
 
 ## Tree format
-Choose between different tree formats.
+Choose between different built-in tree formats, or create your own.
 The default is `UNICODE_BOX_DRAWING`, supported by all terminals, but you can also switch to use `CLASSIC_ASCII`.
 
 ```java
 // Example: FileTreeFormat.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withTreeFormat(TreeFormat.CLASSIC_ASCII))
+    .customizeOptions(options -> options.withTreeFormat(TreeFormats.CLASSIC_ASCII))
     .build();
 ```
 
@@ -351,9 +351,6 @@ tree_format/
     |-- subFile_1
     `-- subFile_2
 ```
-
-> [!TIP]
-> *Idea for a future version: option to allow usage of custom format*
 
 # Project Information
 

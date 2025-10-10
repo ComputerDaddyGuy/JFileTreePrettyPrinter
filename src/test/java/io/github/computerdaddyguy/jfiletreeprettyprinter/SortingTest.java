@@ -2,6 +2,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathSorts;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructureCreator;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;

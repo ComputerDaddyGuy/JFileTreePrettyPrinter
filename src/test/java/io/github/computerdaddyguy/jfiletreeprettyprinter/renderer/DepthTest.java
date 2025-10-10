@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,7 @@ class DepthTest {
 	@Test
 	void isEmpty_when_notEmpty() {
 		var depth = Depth.createNewEmpty();
-		depth = depth.append(DepthSymbol.LAST_FILE);
+		depth = depth.append(TreeSymbol.LAST_FILE);
 		assertThat(depth.isEmpty()).isFalse();
 	}
 
@@ -28,9 +28,9 @@ class DepthTest {
 	@Test
 	void getSize_when_notEmpty() {
 		var depth = Depth.createNewEmpty();
-		depth = depth.append(DepthSymbol.LAST_FILE);
-		depth = depth.append(DepthSymbol.LAST_FILE);
-		depth = depth.append(DepthSymbol.LAST_FILE);
+		depth = depth.append(TreeSymbol.LAST_FILE);
+		depth = depth.append(TreeSymbol.LAST_FILE);
+		depth = depth.append(TreeSymbol.LAST_FILE);
 		assertThat(depth.getSize()).isEqualTo(3);
 	}
 
@@ -44,7 +44,7 @@ class DepthTest {
 	@Test
 	void pop_when_single_item_then_empty() {
 		var depth = Depth.createNewEmpty();
-		depth = depth.append(DepthSymbol.LAST_FILE);
+		depth = depth.append(TreeSymbol.LAST_FILE);
 		var result = depth.pop();
 		assertThat(result.getSymbols()).isEmpty();
 	}
@@ -52,32 +52,32 @@ class DepthTest {
 	@Test
 	void toString_nominal() {
 		var depth = Depth.createNewEmpty();
-		depth = depth.append(DepthSymbol.LAST_FILE);
-		depth = depth.append(DepthSymbol.NON_LAST_FILE);
-		depth = depth.append(DepthSymbol.NONE);
-		depth = depth.append(DepthSymbol.SKIP);
+		depth = depth.append(TreeSymbol.LAST_FILE);
+		depth = depth.append(TreeSymbol.NON_LAST_FILE);
+		depth = depth.append(TreeSymbol.EMPTY);
+		depth = depth.append(TreeSymbol.CONTINUATION);
 		assertThat(depth).hasToString(depth.getSymbols().toString());
 	}
 
 	@Test
 	void equals_and_hashCode_nominal() {
 		var depth1 = Depth.createNewEmpty();
-		depth1 = depth1.append(DepthSymbol.LAST_FILE);
-		depth1 = depth1.append(DepthSymbol.NON_LAST_FILE);
-		depth1 = depth1.append(DepthSymbol.NONE);
-		depth1 = depth1.append(DepthSymbol.SKIP);
+		depth1 = depth1.append(TreeSymbol.LAST_FILE);
+		depth1 = depth1.append(TreeSymbol.NON_LAST_FILE);
+		depth1 = depth1.append(TreeSymbol.EMPTY);
+		depth1 = depth1.append(TreeSymbol.CONTINUATION);
 
 		var depth1Copy = Depth.createNewEmpty();
-		depth1Copy = depth1Copy.append(DepthSymbol.LAST_FILE);
-		depth1Copy = depth1Copy.append(DepthSymbol.NON_LAST_FILE);
-		depth1Copy = depth1Copy.append(DepthSymbol.NONE);
-		depth1Copy = depth1Copy.append(DepthSymbol.SKIP);
+		depth1Copy = depth1Copy.append(TreeSymbol.LAST_FILE);
+		depth1Copy = depth1Copy.append(TreeSymbol.NON_LAST_FILE);
+		depth1Copy = depth1Copy.append(TreeSymbol.EMPTY);
+		depth1Copy = depth1Copy.append(TreeSymbol.CONTINUATION);
 
 		var depth2 = Depth.createNewEmpty();
-		depth2 = depth2.append(DepthSymbol.LAST_FILE);
-		depth2 = depth2.append(DepthSymbol.NON_LAST_FILE);
-		depth2 = depth2.append(DepthSymbol.SKIP);
-		depth2 = depth2.append(DepthSymbol.NONE);
+		depth2 = depth2.append(TreeSymbol.LAST_FILE);
+		depth2 = depth2.append(TreeSymbol.NON_LAST_FILE);
+		depth2 = depth2.append(TreeSymbol.CONTINUATION);
+		depth2 = depth2.append(TreeSymbol.EMPTY);
 
 		assertThat(depth1)
 			.hasSameHashCodeAs(depth1)

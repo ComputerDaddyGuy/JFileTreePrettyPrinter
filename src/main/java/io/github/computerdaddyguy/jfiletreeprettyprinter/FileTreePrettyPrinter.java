@@ -1,5 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import org.jspecify.annotations.NullMarked;

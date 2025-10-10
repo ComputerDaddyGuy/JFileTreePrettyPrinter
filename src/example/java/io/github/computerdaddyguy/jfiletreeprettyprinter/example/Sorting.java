@@ -1,7 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathSorts;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathSorts;
 
 public class Sorting {
 

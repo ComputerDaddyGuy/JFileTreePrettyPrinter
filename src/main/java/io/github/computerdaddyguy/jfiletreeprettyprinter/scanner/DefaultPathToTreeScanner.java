@@ -1,6 +1,6 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.scanner;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;

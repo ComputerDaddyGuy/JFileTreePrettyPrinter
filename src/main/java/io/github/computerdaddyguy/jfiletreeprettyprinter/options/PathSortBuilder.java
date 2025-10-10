@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
 
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;

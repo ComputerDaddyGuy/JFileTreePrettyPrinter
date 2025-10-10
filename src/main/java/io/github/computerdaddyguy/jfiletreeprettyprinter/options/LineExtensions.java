@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.options;
 
 /**
  * Utility class providing constants and factory methods for creating

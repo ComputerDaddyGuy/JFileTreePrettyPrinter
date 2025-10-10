@@ -1,8 +1,8 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.ChildLimits;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.PathMatchers;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.ChildLimits;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 
 public class ChildLimitDynamic {
 
