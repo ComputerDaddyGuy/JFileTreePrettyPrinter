@@ -1,6 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.RenderingOptions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.EmojiMapping;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.ScanningOptions;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
@@ -95,21 +96,28 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 
 	// ---------- Emojis ----------
 
-	private boolean emojis = false;
+	private EmojiMapping emojiMapping = EmojiMapping.none();
 
 	@Override
-	public boolean areEmojisUsed() {
-		return emojis;
+	public EmojiMapping getEmojiMapping() {
+		return emojiMapping;
 	}
 
 	/**
-	 * Whether or not use emojis in directory/filename rendering. Not all terminals supports emojis.
-	 * Default is {@code false}.
-	 * 
-	 * @param useEmojis	{@code true} to use emojis, {@code false} otherwise.
+	 * Use default emojis for directory/filename rendering.
 	 */
-	public PrettyPrintOptions withEmojis(boolean useEmojis) {
-		this.emojis = useEmojis;
+	public PrettyPrintOptions withDefaultEmojis() {
+		this.emojiMapping = EmojiMapping.createDefault();
+		return this;
+	}
+
+	/**
+	 * Use the given emojis mapping for directory/filename rendering.
+	 * 
+	 * @see EmojiMapping
+	 */
+	public PrettyPrintOptions withEmojis(EmojiMapping mapping) {
+		this.emojiMapping = Objects.requireNonNull(mapping, "mapping is null");
 		return this;
 	}
 

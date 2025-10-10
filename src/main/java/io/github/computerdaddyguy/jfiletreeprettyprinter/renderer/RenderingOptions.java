@@ -1,6 +1,7 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.PrettyPrintOptions.TreeFormat;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.EmojiMapping;
 import java.nio.file.Path;
 import java.util.function.Function;
 import org.jspecify.annotations.NullMarked;
@@ -10,10 +11,10 @@ import org.jspecify.annotations.Nullable;
 public interface RenderingOptions {
 
 	/**
-	 * Are emojis used (filename, etc.)?
+	 * The emoji mapping to use
 	 * @return
 	 */
-	boolean areEmojisUsed();
+	EmojiMapping getEmojiMapping();
 
 	/**
 	 * Are directories compacted into one entry?

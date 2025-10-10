@@ -2,8 +2,11 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.EmojiMapping;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructureCreator;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.util.FileStructures;
 import java.nio.file.Path;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -12,14 +15,13 @@ class EmojisTest {
 	@TempDir
 	private Path root;
 
-	private FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-		.customizeOptions(
-			options -> options.withEmojis(true)
-		)
-		.build();
-
 	@Test
 	void emptyDir() {
+
+		var printer = FileTreePrettyPrinter.builder()
+			.customizeOptions(PrettyPrintOptions::withDefaultEmojis)
+			.build();
+
 		var path = FileStructures.emptyDirectory(root);
 		var result = printer.prettyPrint(path);
 		var expected = "📂 targetPath/";
@@ -29,6 +31,10 @@ class EmojisTest {
 	@Test
 	void emojis() {
 
+		var printer = FileTreePrettyPrinter.builder()
+			.customizeOptions(PrettyPrintOptions::withDefaultEmojis)
+			.build();
+
 		var result = printer.prettyPrint("src/example/resources/emojis");
 		var expected = """
 			📂 emojis/
@@ -36,6 +42,7 @@ class EmojisTest {
 			│  ├─ 📂 executables/
 			│  │  ├─ 📱 file.apk
 			│  │  ├─ 🖥️ file.app
+			│  │  ├─ ⚙️ file.bin
 			│  │  ├─ ⚙️ file.exe
 			│  │  ├─ 📦 file.msi
 			│  │  └─ 📱 file2.ipa
@@ -52,24 +59,15 @@ class EmojisTest {
 			│  ├─ 📦 file.tar
 			│  └─ 📦 file.zip
 			├─ 📂 code/
-			│  ├─ 🙈 .gitignore
+			│  ├─ 🚫 .gitignore
 			│  ├─ 🐳 Dockerfile
 			│  ├─ 🤵 Jenkinsfile
 			│  ├─ 📂 build_tools/
-			│  │  ├─ 🏗️ build.gradle
-			│  │  ├─ 🏗️ package.json
-			│  │  └─ 🏗️ pom.xml
-			│  ├─ 📂 github/
-			│  │  ├─ 🗺️ changelog
-			│  │  ├─ 🗺️ changelog.md
-			│  │  ├─ 🗺️ licence
-			│  │  ├─ 🗺️ licence.md
-			│  │  ├─ 📖 readme
-			│  │  ├─ 📖 readme.md
-			│  │  ├─ 🗺️ roadmap
-			│  │  ├─ 🗺️ roadmap.md
-			│  │  ├─ 🛡️ security
-			│  │  └─ 🛡️ security.md
+			│  │  ├─ 🛠️ build.gradle
+			│  │  ├─ 🛠️ makefile
+			│  │  ├─ 🛠️ package.json
+			│  │  └─ 🛠️ pom.xml
+			│  ├─ ⚙️ docker-compose.yml
 			│  ├─ 📂 lang/
 			│  │  ├─ 💠 file.c
 			│  │  ├─ ☕ file.class
@@ -105,28 +103,43 @@ class EmojisTest {
 			│  ├─ 📝 file.yaml
 			│  └─ 📝 file.yml
 			├─ 📂 doc/
-			│  ├─ 📃 file.doc
-			│  ├─ 📃 file.docx
+			│  ├─ 📝 file.doc
+			│  ├─ 📝 file.docx
 			│  ├─ 📚 file.epub
-			│  ├─ 📖 file.md
-			│  ├─ 📃 file.odt
+			│  ├─ 📝 file.md
+			│  ├─ 📝 file.odt
 			│  ├─ 📕 file.pdf
-			│  ├─ 📃 file.rtf
-			│  └─ 📄 file.txt
+			│  ├─ 📝 file.rtf
+			│  └─ 📝 file.txt
 			├─ 📄 file.unknown_extension
 			├─ 📄 file_without_extension
+			├─ 📂 internet/
+			│  ├─ 📂 github/
+			│  │  ├─ 🆕 changelog
+			│  │  ├─ 🆕 changelog.md
+			│  │  ├─ 🤝 contributing
+			│  │  ├─ 🤝 contributing.md
+			│  │  ├─ ⚖️ license
+			│  │  ├─ ⚖️ license.md
+			│  │  ├─ 📘 readme
+			│  │  ├─ 📘 readme.md
+			│  │  ├─ 🗺️ roadmap
+			│  │  ├─ 🗺️ roadmap.md
+			│  │  ├─ 🛡️ security
+			│  │  └─ 🛡️ security.md
+			│  └─ 🤖 robots.txt
 			├─ 📂 media/
 			│  ├─ 📂 audio/
-			│  │  ├─ 🎶 file.aac
-			│  │  ├─ 🎶 file.flac
+			│  │  ├─ 🎵 file.aac
+			│  │  ├─ 🎵 file.flac
 			│  │  ├─ 🎹 file.midi
 			│  │  ├─ 🎵 file.mp3
-			│  │  ├─ 🎶 file.ogg
+			│  │  ├─ 🎵 file.ogg
 			│  │  └─ 🎵 file.wav
 			│  ├─ 📂 images/
 			│  │  ├─ 🖼️ file.bmp
 			│  │  ├─ 🎞️ file.gif
-			│  │  ├─ 🔲 file.ico
+			│  │  ├─ 🖼️ file.ico
 			│  │  ├─ 🖼️ file.jpeg
 			│  │  ├─ 🖼️ file.jpg
 			│  │  ├─ 🖼️ file.png
@@ -148,6 +161,191 @@ class EmojisTest {
 			   └─ 🗑️ file.tmp""";
 
 		assertThat(result).isEqualTo(expected);
+	}
+
+	@Nested
+	class DirectoryEmojiMapping {
+
+		@Test
+		void dir_name() {
+
+			// @formatter:off
+			var path = FileStructureCreator
+				.forTargetPath(root)
+				.createDirectory("dirA")
+				.createDirectory("dirB")
+				.createDirectory("dirC")
+				.getPath();
+			// @formatter:on
+
+			var mapping = EmojiMapping.builderFromDefault()
+				.setDirectoryNameEmoji("dirA", "⭐") // add emoji 
+				.build();
+
+			var printer = FileTreePrettyPrinter.builder()
+				.customizeOptions(
+					options -> options.withEmojis(mapping)
+				)
+				.build();
+
+			var result = printer.prettyPrint(path);
+
+			var expected = """
+				📂 targetPath/
+				├─ ⭐ dirA/
+				├─ 📂 dirB/
+				└─ 📂 dirC/""";
+
+			assertThat(result).isEqualTo(expected);
+		}
+
+		@Test
+		void dir_match() {
+
+			// @formatter:off
+			var path = FileStructureCreator
+				.forTargetPath(root)
+				.createDirectory("dirA")
+				.createDirectory("dirB")
+				.createDirectory("dirC")
+				.getPath();
+			// @formatter:on
+
+			var mapping = EmojiMapping.builderFromDefault()
+				.addDirectoryEmoji(PathMatchers.hasName("dirA"), "⭐") // add emoji
+				.addDirectoryEmoji(PathMatchers.hasName("dirB"), "😊") // change existing emoji
+				.build();
+
+			var printer = FileTreePrettyPrinter.builder()
+				.customizeOptions(
+					options -> options.withEmojis(mapping)
+				)
+				.build();
+
+			var result = printer.prettyPrint(path);
+
+			var expected = """
+				📂 targetPath/
+				├─ ⭐ dirA/
+				├─ 😊 dirB/
+				└─ 📂 dirC/""";
+
+			assertThat(result).isEqualTo(expected);
+		}
+
+	}
+
+	@Nested
+	class FileEmojiMapping {
+
+		@Test
+		void file_name() {
+
+			// @formatter:off
+			var path = FileStructureCreator
+				.forTargetPath(root)
+				.createFile("aaa") 
+				.createFile("dockerfile") 
+				.createFile("jenkinsfile") 
+				.createFile("license") 
+				.getPath();
+			// @formatter:on
+
+			var mapping = EmojiMapping.builderFromDefault()
+				.setFileNameEmoji("aaa", "⭐") // add emoji 
+				.setFileNameEmoji("dockerfile", "😊") // change existing emoji
+				.build();
+
+			var printer = FileTreePrettyPrinter.builder()
+				.customizeOptions(
+					options -> options.withEmojis(mapping)
+				)
+				.build();
+
+			var result = printer.prettyPrint(path);
+
+			var expected = """
+				📂 targetPath/
+				├─ ⭐ aaa
+				├─ 😊 dockerfile
+				├─ 🤵 jenkinsfile
+				└─ ⚖️ license""";
+
+			assertThat(result).isEqualTo(expected);
+		}
+
+		@Test
+		void file_extension() {
+
+			// @formatter:off
+			var path = FileStructureCreator
+				.forTargetPath(root)
+				.createFile("file.plop") 
+				.createFile("file.avi") 
+				.createFile("file.gif") 
+				.createFile("license") 
+				.getPath();
+			// @formatter:on
+
+			var mapping = EmojiMapping.builderFromDefault()
+				.setFileExtensionEmoji("plop", "⭐") // add emoji
+				.setFileExtensionEmoji("avi", "😊") // change existing emoji
+				.build();
+
+			var printer = FileTreePrettyPrinter.builder()
+				.customizeOptions(
+					options -> options.withEmojis(mapping)
+				)
+				.build();
+
+			var result = printer.prettyPrint(path);
+
+			var expected = """
+				📂 targetPath/
+				├─ 😊 file.avi
+				├─ 🎞️ file.gif
+				├─ ⭐ file.plop
+				└─ ⚖️ license""";
+
+			assertThat(result).isEqualTo(expected);
+		}
+
+		@Test
+		void file_match() {
+
+			// @formatter:off
+			var path = FileStructureCreator
+				.forTargetPath(root)
+				.createFile("file.plop") 
+				.createFile("file.avi") 
+				.createFile("file.gif") 
+				.createFile("license") 
+				.getPath();
+			// @formatter:on
+
+			var mapping = EmojiMapping.builderFromDefault()
+				.addFileEmoji(PathMatchers.hasName("file.plop"), "⭐") // add emoji
+				.addFileEmoji(PathMatchers.hasName("file.avi"), "😊") // change existing emoji
+				.build();
+
+			var printer = FileTreePrettyPrinter.builder()
+				.customizeOptions(
+					options -> options.withEmojis(mapping)
+				)
+				.build();
+
+			var result = printer.prettyPrint(path);
+
+			var expected = """
+				📂 targetPath/
+				├─ 😊 file.avi
+				├─ 🎞️ file.gif
+				├─ ⭐ file.plop
+				└─ ⚖️ license""";
+
+			assertThat(result).isEqualTo(expected);
+		}
+
 	}
 
 }

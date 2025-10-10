@@ -5,6 +5,7 @@
   - [x] Option: filtering
   - [x] Option: ordering
   - [x] Option: emojis
+  - [x] Option: custom emojis mapping
   - [x] Option: compact directories display
   - [x] Option: line extension (=additional text after the file name)
   - [x] Option: children limit (static & dynamic)
@@ -31,8 +32,6 @@
   - [x] Publish on Maven Central!
 
 ## To do
-- [ ] Option: hide number of skipped files and folders for child limit
-- [ ] Option: custom emojis
 - [ ] Option: custom tree format
 
 ## Backlog / To analyze / To implement if requested

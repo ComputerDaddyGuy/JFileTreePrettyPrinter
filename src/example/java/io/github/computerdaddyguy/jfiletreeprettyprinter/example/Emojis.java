@@ -6,7 +6,7 @@ public class Emojis {
 
 	public static void main(String[] args) {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withEmojis(true))
+			.customizeOptions(options -> options.withDefaultEmojis()) // or withEmojis(EmojiMapping) for custom mapping
 			.build();
 		var tree = prettyPrinter.prettyPrint("src/example/resources/emojis");
 		System.out.println(tree);

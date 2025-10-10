@@ -1,0 +1,288 @@
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji;
+
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.PathMatcherEmojiFunction.EmojiMatch;
+import java.nio.file.PathMatcher;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import org.jspecify.annotations.NullMarked;
+
+@NullMarked
+class DefaultEmojiMappingBuilder implements EmojiMappingBuilder {
+
+	private static final Map<String, String> DEFAULT_FILENAME_EMOJIS = buildDefaultFileNamesEmojis();
+	private static final Map<String, String> DEFAULT_FILEEXTENSIONS_EMOJIS = buildDefaultFileExtensionsEmojis();
+
+	private String defaultDirEmoji = "📂";
+	private List<EmojiMatch> dirMatchersEmojis = new ArrayList<>();
+	private Map<String, String> dirNamesEmojis = new HashMap<>();
+
+	private String defaultFileEmoji = "📄";
+	private List<EmojiMatch> fileMatchersEmojis = new ArrayList<>();
+	private Map<String, String> fileNamesEmojis = new HashMap<>();
+	private Map<String, String> fileExtensionsEmojis = new HashMap<>();
+
+	public static DefaultEmojiMappingBuilder newBlankInstance() {
+		return new DefaultEmojiMappingBuilder();
+	}
+
+	public static DefaultEmojiMappingBuilder newDefaultInstance() {
+		var instance = newBlankInstance();
+		instance.fileNamesEmojis = new HashMap<>(DEFAULT_FILENAME_EMOJIS);
+		instance.fileExtensionsEmojis = new HashMap<>(DEFAULT_FILEEXTENSIONS_EMOJIS);
+		return instance;
+	}
+
+	@Override
+	public EmojiMapping build() {
+		return new DefaultEmojiMapping(
+			defaultDirEmoji,
+			new SequentialEmojiFunction(
+				List.of(
+					new PathMatcherEmojiFunction(dirMatchersEmojis),
+					new PathNameEmojiFunction(dirNamesEmojis)
+				)
+			),
+			defaultFileEmoji,
+			new SequentialEmojiFunction(
+				List.of(
+					new PathMatcherEmojiFunction(fileMatchersEmojis),
+					new PathNameEmojiFunction(fileNamesEmojis),
+					new PathExtensionEmojiFunction(fileExtensionsEmojis)
+				)
+			)
+		);
+	}
+
+	// ========================================================================================
+
+	// ---------- Directories -----------
+
+	@Override
+	public EmojiMappingBuilder setDefaultDirectoryEmoji(String emoji) {
+		this.defaultDirEmoji = Objects.requireNonNull(emoji, "emoji is null");
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder setDirectoryNameEmoji(String dirName, String emoji) {
+		Objects.requireNonNull(dirName, "dirName is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.dirNamesEmojis.put(dirName, emoji);
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder addDirectoryEmoji(PathMatcher matcher, String emoji) {
+		Objects.requireNonNull(matcher, "matcher is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.dirMatchersEmojis.add(new EmojiMatch(matcher, emoji));
+		return this;
+	}
+
+	// ---------- Files -----------
+
+	@Override
+	public EmojiMappingBuilder setDefaultFileEmoji(String emoji) {
+		this.defaultFileEmoji = Objects.requireNonNull(emoji, "emoji is null");
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder setFileNameEmoji(String fileName, String emoji) {
+		Objects.requireNonNull(fileName, "fileName is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.fileNamesEmojis.put(fileName, emoji);
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder setFileExtensionEmoji(String fileExtension, String emoji) {
+		Objects.requireNonNull(fileExtension, "fileExtension is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.fileExtensionsEmojis.put(fileExtension, emoji);
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder addFileEmoji(PathMatcher matcher, String emoji) {
+		Objects.requireNonNull(matcher, "matcher is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.fileMatchersEmojis.add(new EmojiMatch(matcher, emoji));
+		return this;
+	}
+
+	// ========================================================================================
+
+	private static Map<String, String> buildDefaultFileNamesEmojis() {
+		Map<String, String> map = new HashMap<>();
+
+		// ---------- Applications ----------
+
+		// ---------- Archives ----------
+
+		// ---------- Code ----------
+		map.put(".gitignore", "🚫");
+		map.put("dockerfile", "🐳");
+		map.put("docker-compose.yaml", "⚙️");
+		map.put("docker-compose.yml", "⚙️");
+		map.put("jenkinsfile", "🤵");
+
+		// Code - build tools
+		map.put("makefile", "🛠️");
+		map.put("pom.xml", "🛠️");
+		map.put("build.gradle", "🛠️");
+		map.put("package.json", "🛠️");
+
+		// ---------- Data ----------
+
+		// ---------- Doc ----------
+
+		// ---------- Internet ----------
+		map.put("robots.txt", "🤖");
+
+		// Internet - github
+		map.put("readme", "📘");
+		map.put("readme.md", "📘");
+		map.put("roadmap", "🗺️");
+		map.put("roadmap.md", "🗺️");
+		map.put("license", "⚖️");
+		map.put("license.md", "⚖️");
+		map.put("changelog", "🆕");
+		map.put("changelog.md", "🆕");
+		map.put("security", "🛡️");
+		map.put("security.md", "🛡️");
+		map.put("todo", "✅");
+		map.put("todo.md", "✅");
+		map.put("contributing", "🤝");
+		map.put("contributing.md", "🤝");
+
+		// ---------- Media ----------
+
+		return map;
+	}
+
+	private static Map<String, String> buildDefaultFileExtensionsEmojis() {
+		Map<String, String> map = new HashMap<>();
+
+		// ---------- Applications ----------
+
+		// Applications - executables
+		map.put("exe", "⚙️");
+		map.put("bin", "⚙️");
+		map.put("msi", "📦");
+		map.put("apk", "📱");
+		map.put("ipa", "📱");
+		map.put("app", "🖥️");
+
+		// Applications - libs
+		map.put("dll", "🧩");
+		map.put("lib", "🧩");
+		map.put("so", "🧩");
+
+		// ---------- Archives ----------
+		map.put("7z", "📦");
+		map.put("gz", "📦");
+		map.put("img", "💿");
+		map.put("iso", "💿");
+		map.put("tar", "📦");
+		map.put("rar", "📦");
+		map.put("zip", "📦");
+
+		// ---------- Code ----------
+
+		// Code - build tools
+
+		// Code - lang
+		map.put("java", "☕");
+		map.put("class", "☕");
+		map.put("jar", "📦");
+		map.put("py", "🐍");
+		map.put("js", "⚡");
+		map.put("ts", "🔷");
+		map.put("c", "💠");
+		map.put("cpp", "💠");
+		map.put("cs", "💠");
+		map.put("css", "🎨");
+		map.put("scss", "🎨");
+		map.put("less", "🎨");
+		map.put("html", "🌐");
+		map.put("htm", "🌐");
+		map.put("htmx", "🌐");
+		map.put("php", "🐘");
+		map.put("sql", "🗄️");
+		map.put("vue", "🟩");
+
+		// Code - scripting
+		map.put("sh", "📜");
+		map.put("bash", "📜");
+		map.put("bat", "📜");
+
+		// ---------- Data ----------
+		map.put("cfg", "⚙️");
+		map.put("conf", "⚙️");
+		map.put("csv", "📊");
+		map.put("ini", "⚙️");
+		map.put("properties", "⚙️");
+		map.put("json", "📝");
+		map.put("ods", "📊");
+		map.put("xls", "📊");
+		map.put("xlsx", "📊");
+		map.put("xml", "📝");
+		map.put("yaml", "📝");
+		map.put("yml", "📝");
+
+		// ---------- Doc ----------
+		map.put("doc", "📝");
+		map.put("docx", "📝");
+		map.put("epub", "📚");
+		map.put("md", "📝");
+		map.put("odt", "📝");
+		map.put("pdf", "📕");
+		map.put("rtf", "📝");
+		map.put("txt", "📝");
+
+		// ---------- Internet ----------
+
+		// ---------- Media ----------
+		// Media - Audio
+		map.put("aac", "🎵");
+		map.put("flac", "🎵");
+		map.put("midi", "🎹");
+		map.put("mp3", "🎵");
+		map.put("ogg", "🎵");
+		map.put("wav", "🎵");
+
+		// Media - Images
+		map.put("bmp", "🖼️");
+		map.put("gif", "🎞️");
+		map.put("jpeg", "🖼️");
+		map.put("jpg", "🖼️");
+		map.put("png", "🖼️");
+		map.put("svg", "✒️");
+		map.put("ico", "🖼️");
+
+		// Media - Video
+		map.put("avi", "🎬");
+		map.put("mkv", "🎬");
+		map.put("mov", "🎬");
+		map.put("mp4", "🎬");
+		map.put("webm", "🎬");
+		map.put("wmv", "🎬");
+
+		// ---------- System ----------
+		map.put("bak", "💾");
+		map.put("log", "📜");
+		map.put("tmp", "🗑️");
+		map.put("key", "🔑");
+		map.put("pem", "🔐");
+		map.put("crt", "🔐");
+		map.put("pub", "🔓");
+
+		return map;
+
+	}
+
+}

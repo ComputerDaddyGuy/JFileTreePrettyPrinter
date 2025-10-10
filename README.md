@@ -167,13 +167,13 @@ sorting/
 ```
 
 ## Emojis ❤️
-If your terminal supports them, you can choose to use emojis.
+You can choose to use default built-in emojis, or define your own emoji mapping.
 Folders use the 📂 emoji, and files will have an emoji depending on their extension (when applicable).
 
 ```java
 // Example: Emojis.java
 var prettyPrinter = FileTreePrettyPrinter.builder()
-    .customizeOptions(options -> options.withEmojis(true))
+    .customizeOptions(options -> options.withDefaultEmojis()) // or withEmojis(EmojiMapping) for custom mapping
     .build();
 ```
 
@@ -193,9 +193,6 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 ├─ 🖼️ file.jpeg
 └─ 🎬 file.avi
 ```
-
-> [!TIP]
-> *Idea for a future version: option to allow custom emoji mapping*
 
 ## Child limit
 You can set a fixed limit to the number of children displayed for each directory. Each directory and file that pass the filter (if set) counts for one.
