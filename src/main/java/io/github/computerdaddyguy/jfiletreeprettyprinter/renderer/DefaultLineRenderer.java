@@ -2,7 +2,6 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.Depth;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.depth.DepthFormatter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file.FileFormatter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.DirectoryEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.FileEntry;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.scanner.TreeEntry.MaxDepthReachEntry;

@@ -1,22 +1,122 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.file;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.renderer.emoji.PathMatcherEmojiFunction.EmojiMatch;
+import java.nio.file.PathMatcher;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-class DefaultEmojiMappingBuilder {
+class DefaultEmojiMappingBuilder implements EmojiMappingBuilder {
 
-	private String directoryEmoji = "📂";
+	private static final Map<String, String> DEFAULT_FILENAME_EMOJIS = buildDefaultFileNamesEmojis();
+	private static final Map<String, String> DEFAULT_FILEEXTENSIONS_EMOJIS = buildDefaultFileExtensionsEmojis();
+
+	private String defaultDirEmoji = "📂";
+	private List<EmojiMatch> dirMatchersEmojis = new ArrayList<>();
+	private Map<String, String> dirNamesEmojis = new HashMap<>();
+
 	private String defaultFileEmoji = "📄";
-	private Map<String, String> exactFileNamesEmojis = buildDefaultExactFileNamesEmojis();
-	private Map<String, String> fileExtensionsEmojis = buildDefaultFileExtensionsEmojis();
+	private List<EmojiMatch> fileMatchersEmojis = new ArrayList<>();
+	private Map<String, String> fileNamesEmojis = new HashMap<>();
+	private Map<String, String> fileExtensionsEmojis = new HashMap<>();
 
-	EmojiMapping build() {
-		return new DefaultEmojiMapping(directoryEmoji, defaultFileEmoji, exactFileNamesEmojis, fileExtensionsEmojis);
+	public static DefaultEmojiMappingBuilder newBlankInstance() {
+		return new DefaultEmojiMappingBuilder();
 	}
 
-	private Map<String, String> buildDefaultExactFileNamesEmojis() {
+	public static DefaultEmojiMappingBuilder newDefaultInstance() {
+		var instance = newBlankInstance();
+		instance.fileNamesEmojis = new HashMap<>(DEFAULT_FILENAME_EMOJIS);
+		instance.fileExtensionsEmojis = new HashMap<>(DEFAULT_FILEEXTENSIONS_EMOJIS);
+		return instance;
+	}
+
+	@Override
+	public EmojiMapping build() {
+		return new DefaultEmojiMapping(
+			defaultDirEmoji,
+			new SequentialEmojiFunction(
+				List.of(
+					new PathMatcherEmojiFunction(dirMatchersEmojis),
+					new PathNameEmojiFunction(dirNamesEmojis)
+				)
+			),
+			defaultFileEmoji,
+			new SequentialEmojiFunction(
+				List.of(
+					new PathMatcherEmojiFunction(fileMatchersEmojis),
+					new PathNameEmojiFunction(fileNamesEmojis),
+					new PathExtensionEmojiFunction(fileExtensionsEmojis)
+				)
+			)
+		);
+	}
+
+	// ========================================================================================
+
+	// ---------- Directories -----------
+
+	@Override
+	public EmojiMappingBuilder setDefaultDirectoryEmoji(String emoji) {
+		this.defaultDirEmoji = Objects.requireNonNull(emoji, "emoji is null");
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder setDirectoryNameEmoji(String dirName, String emoji) {
+		Objects.requireNonNull(dirName, "dirName is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.dirNamesEmojis.put(dirName, emoji);
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder addDirectoryEmoji(PathMatcher matcher, String emoji) {
+		Objects.requireNonNull(matcher, "matcher is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.dirMatchersEmojis.add(new EmojiMatch(matcher, emoji));
+		return this;
+	}
+
+	// ---------- Files -----------
+
+	@Override
+	public EmojiMappingBuilder setDefaultFileEmoji(String emoji) {
+		this.defaultFileEmoji = Objects.requireNonNull(emoji, "emoji is null");
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder setFileNameEmoji(String fileName, String emoji) {
+		Objects.requireNonNull(fileName, "fileName is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.fileNamesEmojis.put(fileName, emoji);
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder setFileExtensionEmoji(String fileExtension, String emoji) {
+		Objects.requireNonNull(fileExtension, "fileExtension is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.fileExtensionsEmojis.put(fileExtension, emoji);
+		return this;
+	}
+
+	@Override
+	public EmojiMappingBuilder addFileEmoji(PathMatcher matcher, String emoji) {
+		Objects.requireNonNull(matcher, "matcher is null");
+		Objects.requireNonNull(emoji, "emoji is null");
+		this.fileMatchersEmojis.add(new EmojiMatch(matcher, emoji));
+		return this;
+	}
+
+	// ========================================================================================
+
+	private static Map<String, String> buildDefaultFileNamesEmojis() {
 		Map<String, String> map = new HashMap<>();
 
 		// ---------- Applications ----------
@@ -64,7 +164,7 @@ class DefaultEmojiMappingBuilder {
 		return map;
 	}
 
-	private Map<String, String> buildDefaultFileExtensionsEmojis() {
+	private static Map<String, String> buildDefaultFileExtensionsEmojis() {
 		Map<String, String> map = new HashMap<>();
 
 		// ---------- Applications ----------

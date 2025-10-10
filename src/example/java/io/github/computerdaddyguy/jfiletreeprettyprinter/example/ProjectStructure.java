@@ -87,7 +87,7 @@ public class ProjectStructure {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
 			.customizeOptions(
 				options -> options
-					.withEmojis(true) // Use emojis!
+					.withDefaultEmojis() // Use emojis!
 					.withCompactDirectories(true) // Inline directory chains: "src/main/java/..."
 					.filterDirectories(dirFilter)
 					.filterFiles(fileFilter)
