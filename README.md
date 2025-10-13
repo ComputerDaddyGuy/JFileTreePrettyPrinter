@@ -55,13 +55,13 @@ For Maven, import this dependency to your `pom.xml`:
 <dependency>
   <groupId>io.github.computerdaddyguy</groupId>
   <artifactId>jfiletreeprettyprinter</artifactId>
-  <version>0.0.5</version>
+  <version>0.1.0</version>
 </dependency>
 ```
 
 For Gradle:
 ```groovy
-implementation "io.github.computerdaddyguy:jfiletreeprettyprinter:0.0.5"
+implementation "io.github.computerdaddyguy:jfiletreeprettyprinter:0.1.0"
 ```
 
 # Basic usage

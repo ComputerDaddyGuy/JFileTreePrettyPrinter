@@ -26,18 +26,18 @@
   - [x] Jacoco coverage report
   - [x] Mutation testing
   - [x] SonarCloud integration
-- [x] **Workflows**
+- [x] **Workflows & lifecycle**
   - [x] Github actions
   - [x] Publish `0.0.x` alpha on Maven Central!
+  - [x] Publish `0.x.0` beta on Maven Central!
 
 ## To do
 - [ ] Gather feedback
-- [ ] Publish `0.x.0` beta on Maven Central!
 
 ## Backlog / To analyze / To implement if requested
 - [ ] Rework/fix Github wiki to be up to date
 - [ ] Refactor unit tests (custom assert?)
-- [ ] Option: color
-- [ ] Option: Filename decorator
 - [ ] Option: Follow symlink
-- [ ] Advanced line extension function (file size, author, timestamps, etc. )
+- [ ] Export/import options in external file?
+- [ ] Maven plugin? (configurable)
+- [ ] Automate image creation? Which API/service?

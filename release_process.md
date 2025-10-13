@@ -12,6 +12,7 @@
   - Update `README.md` (with new `X.Y.Z` dependency version)
   - Update `CHANGELOG.md` with changes
   - Update `ROADMAP.md` if necessary
+  - Update `SECURITY.md` if necessary
   - Commit locally
   - Tag with appropriate `vX.Y.Z`
   - Push code & tags
