@@ -36,8 +36,9 @@
 
 ## Backlog / To analyze / To implement if requested
 - [ ] Rework/fix Github wiki to be up to date
-- [ ] Refactor unit tests (custom assert?)
-- [ ] Option: Follow symlink
 - [ ] Export/import options in external file?
 - [ ] Maven plugin? (configurable)
-- [ ] Automate image creation? Which API/service?
+- [ ] CLI? (configurable)
+- [ ] Refactor unit tests (custom assert?)
+- [ ] Option: Follow symlink
+- [ ] Automate image creation? Which API/service? (https://www.ray.so/)
