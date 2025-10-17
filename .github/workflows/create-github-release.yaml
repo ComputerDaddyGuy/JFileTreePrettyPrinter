@@ -47,7 +47,7 @@ jobs:
           ZIP_NAME="jfiletreeprettyprinter-${VERSION}-${SAFE_OS_NAME}.zip"
 
           cd dist
-          zip "$ZIP_NAME" * > /dev/null
+          tar -a -c -f "$ZIP_NAME" *
           echo "zip_path=$(pwd)/$ZIP_NAME" >> $GITHUB_OUTPUT
           cd ..
 
