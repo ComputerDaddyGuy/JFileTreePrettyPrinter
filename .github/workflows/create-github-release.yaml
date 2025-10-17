@@ -22,7 +22,7 @@ jobs:
             echo "Tag is on main"
           else
             echo "Tag is NOT on main, skipping"
-            exit 0
+            exit 1
           fi
 
   build-native:
