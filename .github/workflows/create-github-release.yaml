@@ -1,0 +1,105 @@
+name: Create Github release
+
+on:
+  push:
+    tags:
+      - "v*.*.*" # triggers on tags like vX.Y.Z
+
+jobs:
+  build-native:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: "21"
+          distribution: "graalvm"
+          components: "native-image"
+
+      - name: Build native image
+        run: mvn -B clean package -Pnative
+
+      - name: Locate built executable
+        id: find_exe
+        shell: bash
+        run: |
+          mkdir dist
+          BIN_PATH=$(find target -type f \( -name "*.exe" -o -perm -111 \) | head -n 1)
+          echo "Found binary: $BIN_PATH"
+          cp "$BIN_PATH" dist/
+          echo "bin_path=$BIN_PATH" >> $GITHUB_OUTPUT
+
+      - name: Zip executable
+        id: zip_exe
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF_NAME}
+          OS_NAME=${{ matrix.os }}
+          SAFE_OS_NAME=$(echo "$OS_NAME" | sed 's/-latest//')
+          ZIP_NAME="jfiletreeprettyprinter-${VERSION}-${SAFE_OS_NAME}.zip"
+
+          cd dist
+          zip "$ZIP_NAME" * > /dev/null
+          echo "zip_path=$(pwd)/$ZIP_NAME" >> $GITHUB_OUTPUT
+          cd ..
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-zips-${{ matrix.os }}
+          path: ${{ steps.zip_exe.outputs.zip_path }}
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build-native
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_zips
+
+      - name: Extract changelog for current version
+        id: changelog
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"  # Remove leading "v" (e.g. vX.Y.Z → X.Y.Z)
+          echo "Extracting changelog for version $TAG"
+
+          # Extract section for this version up to the next version header
+          awk "/## \\[$TAG\\]/,/^---/" CHANGELOG.md > release_notes.tmp
+
+          # Clean up formatting (remove trailing ---)
+          sed -i '/^---/d' release_notes.tmp
+
+          # Verify
+          echo "==== Extracted release notes ===="
+          cat release_notes.tmp
+          echo "================================"
+
+          echo "body_path=release_notes.tmp" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "JFileTreePrettyPrinter v${{ github.ref_name }}"
+          body_path: ${{ steps.changelog.outputs.body_path }}
+          files: release_zips/**/*.zip
+          draft: true
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
