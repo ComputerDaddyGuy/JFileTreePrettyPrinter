@@ -1,4 +1,4 @@
-# JFileTreePrettyPrinter release flow
+# JFileTreePrettyPrinter release process
 
 - **In `develop` branch:**
   - Run tests
@@ -15,13 +15,17 @@
   - Update `SECURITY.md` if necessary
   - Commit locally
   - Tag with appropriate `vX.Y.Z`
-  - Push code & tags
+  - Push code & tag
 
 - **In Github:**
   - Action `create-github-release` triggers automatically on tag push `vX.Y.Z` on `main` branch
-    - Content matching of `CHANGELOG.md` for this version is used
-  - Github `release` workflow will run automatically
-  - Few minutes later, artifact is available on Maven Central 🎉
+    - Builds native executables for Linux/Windows/MacOS
+    - Creates a **draft** Github release with:
+      - Executables as attached zipped files
+      - Appropriate section of `CHANGELOG.md` for this version
+  - Review the Github release and **publish it manually**
+  - Github `publish-maven-release` workflow will run automatically
+    - Few minutes later, artifact is available on Maven Central 🎉
   - Update wiki if required
 
 - **Merge `main` back into `develop` branch**

@@ -28,15 +28,15 @@
   - [x] SonarCloud integration
 - [x] **Workflows & lifecycle**
   - [x] Github actions
-  - [x] Publish `0.0.x` alpha on Maven Central!
-  - [x] Publish `0.x.0` beta on Maven Central!
+  - [x] Publish `0.0.x` **alpha** on Maven Central!
+  - [x] Publish `0.x.0` **beta** on Maven Central!
 
 ## To do
 - [ ] Gather feedback
+- [ ] Use as command line (options as arguments of provided in external file)
+- [x] Executable file distributed with release files in Github
 
 ## Backlog / To analyze / To implement if requested
-- [ ] Export options to/import options from external file
-- [ ] Executable file distributed with release files in Github
 - [ ] Rework/fix Github wiki to be up to date
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Option: Follow symlink
