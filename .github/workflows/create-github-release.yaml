@@ -33,7 +33,7 @@ jobs:
           mkdir dist
           
           if [[ "$SAFE_OS_NAME" == "windows" ]]; then
-            BIN_PATH=$(find target -type f -name "jfiletreeprettyprinter.exe")
+            BIN_PATH=$(find target -type f -name "*.exe" | head -n 1)
           else
             BIN_PATH=$(find target -type f -name "jfiletreeprettyprinter")
           fi
