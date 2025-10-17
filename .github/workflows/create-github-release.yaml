@@ -32,12 +32,10 @@ jobs:
         run: |
           mkdir dist
           
-          # Linux/macOS binaries may have no extension, Windows has .exe
-          BIN_PATH=$(find target -type f \( -name "*.exe" -o -perm -111 \) | head -n 1)
-          
-          # MacOS fallback: if not found, pick any file in target
-          if [[ -z "$BIN_PATH" ]]; then
-            BIN_PATH=$(find target -type f | head -n 1)
+          if [[ "$SAFE_OS_NAME" == "windows" ]]; then
+            BIN_PATH=$(find target -type f -name "jfiletreeprettyprinter.exe")
+          else
+            BIN_PATH=$(find target -type f -name "jfiletreeprettyprinter")
           fi
           
           echo "Found binary: $BIN_PATH"
