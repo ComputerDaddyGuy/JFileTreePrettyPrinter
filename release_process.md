@@ -10,7 +10,7 @@
 - **In `main` branch:**
   - Set project version in `pom.xml` to `X.Y.Z` (remove the `-SNAPSHOT`)
   - Update `README.md` (with new `X.Y.Z` dependency version)
-  - Update `CHANGELOG.md` with changes
+  - Update `CHANGELOG.md` with changes **!IMPORTANT: Respect format!**
   - Update `ROADMAP.md` if necessary
   - Update `SECURITY.md` if necessary
   - Commit locally
@@ -18,7 +18,8 @@
   - Push code & tags
 
 - **In Github:**
-  - Create new release based on `vX.Y.Z` tag: copy content of `CHANGELOG.md` for this version
+  - Action `create-github-release` triggers automatically on tag push `vX.Y.Z` on `main` branch
+    - Content matching of `CHANGELOG.md` for this version is used
   - Github `release` workflow will run automatically
   - Few minutes later, artifact is available on Maven Central 🎉
   - Update wiki if required

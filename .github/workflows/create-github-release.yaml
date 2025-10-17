@@ -31,7 +31,15 @@ jobs:
         shell: bash
         run: |
           mkdir dist
+          
+          # Linux/macOS binaries may have no extension, Windows has .exe
           BIN_PATH=$(find target -type f \( -name "*.exe" -o -perm -111 \) | head -n 1)
+          
+          # MacOS fallback: if not found, pick any file in target
+          if [[ -z "$BIN_PATH" ]]; then
+            BIN_PATH=$(find target -type f | head -n 1)
+          fi
+          
           echo "Found binary: $BIN_PATH"
           cp "$BIN_PATH" dist/
           echo "bin_path=$BIN_PATH" >> $GITHUB_OUTPUT
