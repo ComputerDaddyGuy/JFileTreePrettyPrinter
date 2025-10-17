@@ -35,9 +35,9 @@
 - [ ] Gather feedback
 
 ## Backlog / To analyze / To implement if requested
+- [ ] Export options to/import options from external file
+- [ ] Executable file distributed with release files in Github
 - [ ] Rework/fix Github wiki to be up to date
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Option: Follow symlink
-- [ ] Export/import options in external file?
-- [ ] Maven plugin? (configurable)
-- [ ] Automate image creation? Which API/service?
+- [ ] Automate image creation? Which API/service? (https://www.ray.so/)
