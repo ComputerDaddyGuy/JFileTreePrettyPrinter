@@ -32,8 +32,8 @@ jobs:
         run: |
           mkdir dist
           
-          if [[ "$SAFE_OS_NAME" == "windows" ]]; then
-            BIN_PATH=$(find target -type f -name "*.exe" | head -n 1)
+          if [[ "$OS_NAME" == "windows-latest" ]]; then
+            BIN_PATH=$(find target -type f -name "jfiletreeprettyprinter.exe")
           else
             BIN_PATH=$(find target -type f -name "jfiletreeprettyprinter")
           fi
