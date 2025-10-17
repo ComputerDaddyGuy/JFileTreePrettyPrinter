@@ -51,7 +51,11 @@ jobs:
           ZIP_NAME="jfiletreeprettyprinter-${VERSION}-${SAFE_OS_NAME}.zip"
 
           cd dist
-          tar -a -c -f "$ZIP_NAME" *
+          if [[ "$SAFE_OS_NAME" == "windows" ]]; then
+            powershell Compress-Archive -Path * -DestinationPath "$ZIP_NAME"
+          else
+            tar -a -c -f "$ZIP_NAME" *
+          fi
           echo "zip_path=dist/$ZIP_NAME" >> $GITHUB_OUTPUT
           cd ..
 
@@ -100,7 +104,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "JFileTreePrettyPrinter v${{ github.ref_name }}"
+          name: "JFileTreePrettyPrinter ${{ github.ref_name }}"
           body_path: ${{ steps.changelog.outputs.body_path }}
           files: release_zips/**/*.zip
           draft: true
