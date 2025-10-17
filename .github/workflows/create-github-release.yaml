@@ -28,6 +28,7 @@ jobs:
   build-native:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    needs: run-only-on-main-branch
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
