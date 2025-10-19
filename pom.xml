@@ -39,6 +39,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Dependencies versions -->
+		<jackson.version>3.0.0</jackson.version>
+		<hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
+		<picocli.version>4.7.7</picocli.version>
 		<jspecify.version>1.0.0</jspecify.version>
 		<junit.version>5.13.4</junit.version>
 		<assertj.version>3.27.4</assertj.version>
@@ -59,7 +62,23 @@
 
 	</properties>
 
+
 	<dependencies>
+		<dependency>
+			<groupId>tools.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.jspecify</groupId>
 			<artifactId>jspecify</artifactId>
@@ -134,6 +153,7 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 
