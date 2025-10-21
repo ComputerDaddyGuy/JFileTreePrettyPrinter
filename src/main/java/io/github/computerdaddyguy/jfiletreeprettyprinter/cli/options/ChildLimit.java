@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-public sealed interface ChildLimit {
+sealed interface ChildLimit {
 
 	/**
 	 * 

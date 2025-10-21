@@ -2,10 +2,11 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.cli;
 
 import picocli.CommandLine;
 
-public class FileTreePrettyPrinterCommandLine {
+class FileTreePrettyPrinterCommandLine {
 
 	public static void main(String[] args) {
-		int exitCode = new CommandLine(new PrettyPrintCommand()).execute(args);
+		var cmd = new CommandLine(new PrettyPrintCommand());
+		int exitCode = cmd.execute(args);
 		System.exit(exitCode);
 	}
 

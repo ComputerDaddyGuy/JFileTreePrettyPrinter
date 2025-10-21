@@ -1,8 +1,8 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
 
 import jakarta.validation.Valid;
 
-public record ExternalOptions(
+record ExternalOptions(
 	Boolean emojis,
 	@Valid ChildLimit childLimit
 ) {

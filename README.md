@@ -8,7 +8,7 @@
 [![Javadoc](https://javadoc.io/badge2/io.github.computerdaddyguy/jfiletreeprettyprinter/javadoc.svg?color=blue)](https://javadoc.io/doc/io.github.computerdaddyguy/jfiletreeprettyprinter)
 [![Apache License 2.0](https://img.shields.io/:license-Apache%20License%202.0-blue.svg)](https://github.com/computerdaddyguy/jfiletreeprettyprinter/blob/main/LICENSE)
 
-**A lightweight and flexible Java library to pretty-print directory structures — ideal for documentation, project overviews, or CLI tools.** 
+**A lightweight and flexible Java library with a native CLI to pretty-print directory structures - ideal for documentation, project overviews, or CLI tools.** 
 
 Supports various [options](#customization-options) to customize the directories scanning and rendering:
 - Filtering & sorting files and folders

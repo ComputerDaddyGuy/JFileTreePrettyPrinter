@@ -2,13 +2,13 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.cli;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ExternalOptionsReader;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -17,51 +17,83 @@ import picocli.CommandLine.Parameters;
 @Command(
 	name = "prettyprint", 
 	mixinStandardHelpOptions = true, 
-	version = "checksum 4.0", 
-	description = "Prints the checksum (SHA-256 by default) of a file to STDOUT."
+	versionProvider = ManifestVersionProvider.class,
+	description = "Pretty-prints directory structure"
 )
 // @formatter:on
-public class PrettyPrintCommand implements Callable<Integer> {
+@NullMarked
+class PrettyPrintCommand implements Callable<Integer> {
 
-	@Parameters(index = "0", description = "The path to pretty print", arity = "0")
-	private File file;
+	@Nullable
+	@Parameters(index = "0", description = "The path to pretty print", arity = "0..1")
+	private File target;
 
+	@Nullable
 	@Option(names = { "-o", "--options" }, paramLabel = "OPTIONS", description = "the options file", arity = "0")
 	private File optionsFile;
+
+	@Option(names = { "-d", "--debug" }, description = "debug mode")
+	private boolean debug;
 
 	@Override
 	public Integer call() throws Exception {
 
-		LogManager.getLogManager().reset();
-		Logger.getLogger("org.hibernate.validator").setLevel(Level.OFF);
+		var output = new ConsoleOutput(debug);
 
-		var reader = new ExternalOptionsReader();
-		reader.readOptions();
-
-		Path path = detectPathToPrint();
-		if (optionsFile != null) {
-			path = optionsFile.toPath();
-		}
-		try {
-			var printer = FileTreePrettyPrinter.createDefault();
-			var result = printer.prettyPrint(path);
-			System.out.println(result);
-		} catch (Exception e) {
-			System.err.print("Error while pretty printing: " + e.getMessage());
+		var targetPath = detectTargetPath(output);
+		if (!targetPath.toFile().exists()) {
+			output.printError("Path not found: %s", targetPath);
 			return 1;
 		}
 
-		return 0;
+		var options = detectOptions(targetPath, output);
+
+		try {
+			var printer = FileTreePrettyPrinter.builder().withOptions(options).build();
+			var result = printer.prettyPrint(targetPath);
+			output.print(result);
+			return 0;
+		} catch (Exception e) {
+			output.printError("Error while pretty printing: " + e.getMessage());
+			return 1;
+		}
 	}
 
-	private static Path detectPathToPrint() {
-		for (var p : List.of("tmp", "target/tmp")) {
-			var path = Path.of(p);
-			if (path.toFile().exists()) {
-				return path;
-			}
+	private Path detectTargetPath(ConsoleOutput output) {
+		Path path = null;
+		if (target != null) {
+			path = target.toPath();
+		} else {
+			output.printDebug("No target provided: use current directory");
+			path = Path.of(".");
 		}
-		return Path.of(".");
+		path = path.toAbsolutePath().normalize();
+		output.printDebug("Target path: %s", path);
+		return path;
+	}
+
+	private PrettyPrintOptions detectOptions(Path targetPath, ConsoleOutput output) {
+
+		var reader = new ExternalOptionsReader(output);
+		if (optionsFile != null) {
+			var path = optionsFile.toPath().toAbsolutePath().normalize();
+			var options = reader.readOptions(path);
+			if (options == null) {
+				System.exit(1);
+			}
+			return options;
+		} else {
+			var potentialOptions = new ArrayList<Path>();
+			potentialOptions.add(targetPath.resolve(".prettyprint"));
+			potentialOptions.add(Path.of(".").resolve(".prettyprint"));
+			potentialOptions.add(Path.of(System.getProperty("user.home")).resolve(".prettyprint"));
+			var options = reader.readOptions(potentialOptions);
+			if (options != null) {
+				return options;
+			}
+			output.printDebug("No options file provided/found!");
+			return PrettyPrintOptions.createDefault();
+		}
 
 	}
 

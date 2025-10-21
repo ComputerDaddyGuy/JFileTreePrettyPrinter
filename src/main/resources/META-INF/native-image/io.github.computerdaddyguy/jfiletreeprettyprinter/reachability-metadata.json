@@ -21,7 +21,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ExternalOptions",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.ManifestVersionProvider",
 	    "allDeclaredConstructors": true,
 	    "allPublicConstructors": true,
 	    "allDeclaredMethods": true,
@@ -30,7 +30,16 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ChildLimit",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ExternalOptions",
+	    "allDeclaredConstructors": true,
+	    "allPublicConstructors": true,
+	    "allDeclaredMethods": true,
+	    "allPublicMethods": true,
+	    "allDeclaredFields": true,
+		"allPublicFields": true
+	  },
+	  {
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ChildLimit",
 	    "allDeclaredConstructors": true,
 	    "allPublicConstructors": true,
 	    "allDeclaredMethods": true,
@@ -39,7 +48,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ChildLimit$StaticLimit",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ChildLimit$StaticLimit",
 	    "allDeclaredConstructors": true,
 	    "allPublicConstructors": true,
 	    "allDeclaredMethods": true,
@@ -48,7 +57,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ChildLimit$DynamicLimit",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ChildLimit$DynamicLimit",
 	    "allDeclaredConstructors": true,
 	    "allPublicConstructors": true,
 	    "allDeclaredMethods": true,
@@ -57,7 +66,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ChildLimit$DynamicLimitItem",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ChildLimit$DynamicLimitItem",
 	    "allDeclaredConstructors": true,
 	    "allPublicConstructors": true,
 	    "allDeclaredMethods": true,
@@ -66,7 +75,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -75,7 +84,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher$AlwaysTrue",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher$AlwaysTrue",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -84,7 +93,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher$AlwaysFalse",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher$AlwaysFalse",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -93,7 +102,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher$AllOf",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher$AllOf",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -102,7 +111,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher$AnyOf",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher$AnyOf",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -111,7 +120,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher$NoneOf",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher$NoneOf",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -120,7 +129,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher$NameGlob",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher$NameGlob",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -129,7 +138,7 @@
 		"allPublicFields": true
 	  },
 	  {
-	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher$PathGlob",
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.Matcher$PathGlob",
 		"allDeclaredConstructors": true,
 		"allPublicConstructors": true,
 		"allDeclaredMethods": true,
@@ -137,6 +146,13 @@
 		"allDeclaredFields": true,
 		"allPublicFields": true
 	  }
+	],
+	
+	"resources": [
+      {
+        "glob": "/META-INF/MANIFEST.MF"
+      }
 	]
+  
 }
   
