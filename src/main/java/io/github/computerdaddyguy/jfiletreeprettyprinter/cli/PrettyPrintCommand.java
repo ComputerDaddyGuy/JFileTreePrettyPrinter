@@ -79,7 +79,7 @@ class PrettyPrintCommand implements Callable<Integer> {
 		var reader = new ExternalOptionsReader(output);
 		if (optionsFile != null) {
 			var path = optionsFile.toPath().toAbsolutePath().normalize();
-			var options = reader.readOptions(path);
+			var options = reader.readOptions(targetPath, path);
 			if (options == null) {
 				System.exit(1);
 			}
@@ -89,7 +89,7 @@ class PrettyPrintCommand implements Callable<Integer> {
 			potentialOptions.add(targetPath.resolve(DEFAULT_OPTION_FILENAME));
 			potentialOptions.add(Path.of(".").resolve(DEFAULT_OPTION_FILENAME));
 			potentialOptions.add(Path.of(System.getProperty("user.home")).resolve(DEFAULT_OPTION_FILENAME));
-			var options = reader.readOptions(potentialOptions);
+			var options = reader.readOptions(targetPath, potentialOptions);
 			if (options != null) {
 				return options;
 			}

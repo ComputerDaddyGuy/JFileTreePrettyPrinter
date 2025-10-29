@@ -1,10 +1,13 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.ConsoleOutput;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.ChildLimits;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -20,19 +23,19 @@ public class ExternalOptionsReader {
 	}
 
 	@Nullable
-	public PrettyPrintOptions readOptions(Path optionsPath) {
+	public PrettyPrintOptions readOptions(Path targetPath, Path optionsPath) {
 		optionsPath = optionsPath.toAbsolutePath().normalize();
-		return tryCandidate(optionsPath, true);
+		return tryCandidate(targetPath, optionsPath, true);
 	}
 
 	@Nullable
-	public PrettyPrintOptions readOptions(Iterable<Path> potentialOptions) {
+	public PrettyPrintOptions readOptions(Path targetPath, Iterable<Path> potentialOptions) {
 
 		PrettyPrintOptions options = null;
 
 		for (var candidateOptionPath : potentialOptions) {
 			candidateOptionPath = candidateOptionPath.toAbsolutePath().normalize();
-			options = tryCandidate(candidateOptionPath, false);
+			options = tryCandidate(targetPath, candidateOptionPath, false);
 			if (options != null) {
 				break;
 			}
@@ -51,7 +54,7 @@ public class ExternalOptionsReader {
 	}
 
 	@Nullable
-	private PrettyPrintOptions tryCandidate(Path optionsPath, boolean required) {
+	private PrettyPrintOptions tryCandidate(Path targetPath, Path optionsPath, boolean required) {
 
 		var optionsFile = optionsPath.toFile();
 		if (!optionsFile.exists()) {
@@ -74,7 +77,7 @@ public class ExternalOptionsReader {
 		ExternalOptions externalOptions = load(optionsPath, required);
 		validate(optionsPath, externalOptions, required);
 
-		return mapToOptions(externalOptions);
+		return mapToOptions(targetPath, externalOptions);
 	}
 
 	private ExternalOptions load(Path optionsPath, boolean required) {
@@ -106,14 +109,47 @@ public class ExternalOptionsReader {
 		}
 	}
 
-	private PrettyPrintOptions mapToOptions(ExternalOptions externalOptions) {
+	private PrettyPrintOptions mapToOptions(Path targetPath, ExternalOptions externalOptions) {
 		var options = PrettyPrintOptions.createDefault();
-
-		if (Boolean.TRUE.equals(externalOptions.emojis())) {
-			options = options.withDefaultEmojis();
-		}
-
+		options = mapEmojis(options, externalOptions);
+		options = mapChildLimit(options, externalOptions, targetPath);
 		return options;
+	}
+
+	private PrettyPrintOptions mapEmojis(PrettyPrintOptions options, ExternalOptions externalOptions) {
+		if (Boolean.TRUE.equals(externalOptions.emojis())) {
+			return options.withDefaultEmojis();
+		}
+		return options;
+	}
+
+	private PrettyPrintOptions mapChildLimit(PrettyPrintOptions options, ExternalOptions externalOptions, Path targetPath) {
+		if (externalOptions.childLimit() == null) {
+			return options;
+		}
+		return switch (externalOptions.childLimit()) {
+			case ChildLimit.StaticLimit staticLimit -> options.withChildLimit(staticLimit.limit());
+			case ChildLimit.DynamicLimit dynLimit -> {
+				var limitBuilder = ChildLimits.builder();
+				for (var limit : dynLimit.limits()) {
+					limitBuilder.add(mapMatcher(limit.matcher(), targetPath), limit.limit());
+				}
+				options.withChildLimit(limitBuilder.build());
+				yield options;
+			}
+		};
+	}
+
+	private PathMatcher mapMatcher(Matcher matcher, Path targetPath) {
+		return switch (matcher) {
+			case Matcher.AlwaysTrue alwaysTrue -> (p) -> true;
+			case Matcher.AlwaysFalse alwaysFalse -> (p) -> false;
+			case Matcher.AllOf allOf -> PathMatchers.allOf(allOf.matchers().stream().map(subMatcher -> mapMatcher(subMatcher, targetPath)).toList());
+			case Matcher.AnyOf anyOf -> PathMatchers.anyOf(anyOf.matchers().stream().map(subMatcher -> mapMatcher(subMatcher, targetPath)).toList());
+			case Matcher.NoneOf noneOf -> PathMatchers.noneOf(noneOf.matchers().stream().map(subMatcher -> mapMatcher(subMatcher, targetPath)).toList());
+			case Matcher.NameGlob nameGlob -> PathMatchers.hasNameMatchingGlob(nameGlob.glob());
+			case Matcher.PathGlob pathGlob -> PathMatchers.hasRelativePathMatchingGlob(targetPath, pathGlob.glob());
+		};
 	}
 
 }
