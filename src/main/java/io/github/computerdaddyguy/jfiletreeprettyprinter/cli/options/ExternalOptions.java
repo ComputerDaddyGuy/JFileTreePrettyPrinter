@@ -1,14 +1,15 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
 
 import jakarta.validation.Valid;
+import org.jspecify.annotations.Nullable;
 
 record ExternalOptions(
-	Boolean emojis,
-	@Valid ChildLimit childLimit
+	@Nullable Boolean emojis,
+	@Valid @Nullable ChildLimit childLimit
 ) {
 
 	public ExternalOptions(Boolean emojis, ChildLimit childLimit) {
-		this.emojis = emojis == null ? false : emojis;
+		this.emojis = emojis;
 		this.childLimit = childLimit;
 	}
 

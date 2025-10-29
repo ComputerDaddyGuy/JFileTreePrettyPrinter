@@ -4,20 +4,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class RecordUtils {
 
+	private RecordUtils() {
+		// Helper class
+	}
+
 	/**
 	 * Inspired from: https://sormuras.github.io/blog/2020-05-06-records-to-text-block.html
 	 */
-	static String toTextBlock(Record rec) {
+	static String toTextBlock(@Nullable Record rec) {
+		if (rec == null) {
+			return "null";
+		}
 		var lines = new ArrayList<String>();
 		toTextBlock(lines, "", null, rec, "  ");
 		return String.join(System.lineSeparator(), lines);
 	}
 
-	private static void toTextBlock(List<String> lines, String shift, String attrName, Object value, String indent) {
+	private static void toTextBlock(List<String> lines, String shift, @Nullable String attrName, Object value, String indent) {
 		var nested = value.getClass();
 		if (nested.isRecord()) {
 			toTextBlockRecord(lines, shift, attrName, (Record) value, indent);
@@ -28,7 +36,7 @@ class RecordUtils {
 		}
 	}
 
-	private static void toTextBlockRecord(List<String> lines, String shift, String attrName, Record rec, String indent) {
+	private static void toTextBlockRecord(List<String> lines, String shift, @Nullable String attrName, Record rec, String indent) {
 		if (attrName == null) {
 			lines.add(String.format("%s%s", shift, rec.getClass().getSimpleName()));
 		} else {
@@ -48,7 +56,7 @@ class RecordUtils {
 		}
 	}
 
-	private static void toTextBlockCollection(List<String> lines, String shift, String attrName, Collection<?> coll, String indent) {
+	private static void toTextBlockCollection(List<String> lines, String shift, @Nullable String attrName, Collection<?> coll, String indent) {
 		if (attrName == null) {
 			lines.add(String.format("%s[", shift));
 		} else {

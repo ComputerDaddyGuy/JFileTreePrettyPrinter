@@ -23,21 +23,21 @@ public class ConsoleOutput {
 	}
 
 	private void printOut(String msg, Object... args) {
-		printf(System.out, msg, args);
+		printfln(System.out, msg, args);
 	}
 
 	private void printErr(String msg, Object... args) {
-		printf(System.err, msg, args);
+		printfln(System.err, msg, args);
 	}
 
-	private void printf(PrintStream dest, String msg, Object... args) {
+	private void printfln(PrintStream dest, String msg, Object... args) {
 		dest.printf(msg, args);
 		dest.println(); // Because "printf" does not print line return
 	}
 
 	public void printDebug(String msg, Object... args) {
 		// Could not (yet) make Logger level work within native image, so fallback to plain console output (for now)
-		if (debug && msg != null) {
+		if (debug) {
 			printOut(msg, args);
 		}
 	}

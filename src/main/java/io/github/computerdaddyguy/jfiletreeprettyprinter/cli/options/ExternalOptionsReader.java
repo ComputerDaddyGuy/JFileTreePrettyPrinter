@@ -113,7 +113,7 @@ public class ExternalOptionsReader {
 	private PrettyPrintOptions mapToOptions(ExternalOptions externalOptions) {
 		var options = PrettyPrintOptions.createDefault();
 
-		if (externalOptions.emojis()) {
+		if (Boolean.TRUE.equals(externalOptions.emojis())) {
 			options = options.withDefaultEmojis();
 		}
 

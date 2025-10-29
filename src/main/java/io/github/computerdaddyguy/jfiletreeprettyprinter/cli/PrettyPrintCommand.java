@@ -24,6 +24,8 @@ import picocli.CommandLine.Parameters;
 @NullMarked
 class PrettyPrintCommand implements Callable<Integer> {
 
+	private static final String DEFAULT_OPTION_FILENAME = ".prettyprint";
+
 	@Nullable
 	@Parameters(index = "0", description = "The path to pretty print", arity = "0..1")
 	private File target;
@@ -84,9 +86,9 @@ class PrettyPrintCommand implements Callable<Integer> {
 			return options;
 		} else {
 			var potentialOptions = new ArrayList<Path>();
-			potentialOptions.add(targetPath.resolve(".prettyprint"));
-			potentialOptions.add(Path.of(".").resolve(".prettyprint"));
-			potentialOptions.add(Path.of(System.getProperty("user.home")).resolve(".prettyprint"));
+			potentialOptions.add(targetPath.resolve(DEFAULT_OPTION_FILENAME));
+			potentialOptions.add(Path.of(".").resolve(DEFAULT_OPTION_FILENAME));
+			potentialOptions.add(Path.of(System.getProperty("user.home")).resolve(DEFAULT_OPTION_FILENAME));
 			var options = reader.readOptions(potentialOptions);
 			if (options != null) {
 				return options;

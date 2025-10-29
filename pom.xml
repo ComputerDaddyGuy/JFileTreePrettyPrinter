@@ -151,7 +151,6 @@
 				</executions>
 				<configuration>
 					<generateGitPropertiesFile>false</generateGitPropertiesFile>
-<!--					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>-->
 					<commitIdGenerationMode>full</commitIdGenerationMode>
 				</configuration>
 			</plugin>
