@@ -8,9 +8,4 @@ record ExternalOptions(
 	@Valid @Nullable ChildLimit childLimit
 ) {
 
-	public ExternalOptions(Boolean emojis, ChildLimit childLimit) {
-		this.emojis = emojis;
-		this.childLimit = childLimit;
-	}
-
 }

@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up GraalVM
-        uses: graalvm/setup-graalvm@v1
+        uses: graalvm/setup-graalvm@eec48106e0bf45f2976c2ff0c3e22395cced8243
         with:
           java-version: "21"
           distribution: "graalvm"
@@ -130,7 +130,7 @@ jobs:
           echo "body_path=release_notes.tmp" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090
         with:
           name: "JFileTreePrettyPrinter ${{ github.ref_name }}"
           body_path: ${{ steps.changelog.outputs.body_path }}
