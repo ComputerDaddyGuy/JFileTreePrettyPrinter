@@ -31,14 +31,13 @@ public class ConsoleOutput {
 	}
 
 	private void printfln(PrintStream dest, String msg, Object... args) {
-		dest.printf(msg, args);
-		dest.println(); // Because "printf" does not print line return
+		dest.printf(msg + "\n", args);// Because "printf" does not print line return
 	}
 
 	public void printDebug(String msg, Object... args) {
 		// Could not (yet) make Logger level work within native image, so fallback to plain console output (for now)
 		if (debug) {
-			printOut(msg, args);
+			printOut("[DEBUG] " + msg, args);
 		}
 	}
 
@@ -47,7 +46,7 @@ public class ConsoleOutput {
 	}
 
 	public void printError(String msg, Object... args) {
-		printErr(msg, args);
+		printErr("[ERROR] " + msg, args);
 	}
 
 }
