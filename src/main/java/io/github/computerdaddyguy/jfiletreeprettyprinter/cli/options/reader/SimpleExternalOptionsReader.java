@@ -1,20 +1,30 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.reader;
 
-import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.ConsoleOutput;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.RecordUtils;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.exception.ExternalOptionsException;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.io.ConsoleOutput;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ExternalOptions;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import java.nio.file.Path;
+import java.util.Objects;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 @NullMarked
-public class SimpleExternalOptionsReader implements ExternalOptionsReader {
+class SimpleExternalOptionsReader implements ExternalOptionsReader {
+
+	private final ConsoleOutput output;
+
+	public SimpleExternalOptionsReader(ConsoleOutput output) {
+		this.output = Objects.requireNonNull(output, "output is null");
+	}
 
 	@Override
 	@Nullable
-	public ExternalOptions readExternalOptions(ConsoleOutput output, Path targetPath, Path optionsPath) {
+	public ExternalOptions readExternalOptions(Path targetPath, @Nullable Path optionsPath) {
 
 		if (optionsPath == null) {
 			throw new ExternalOptionsException(optionsPath, "null options path");
@@ -41,9 +51,12 @@ public class SimpleExternalOptionsReader implements ExternalOptionsReader {
 
 	private ExternalOptions load(ConsoleOutput output, Path optionsPath) {
 		try {
-			var mapper = JsonMapper.builder().build();
+			var mapper = YAMLMapper.builder().build();
 			ExternalOptions externalOptions = mapper.readValue(optionsPath, ExternalOptions.class);
-			output.printDebug("%s", RecordUtils.toTextBlock(externalOptions));
+
+			if (output.isDebugEnabled()) { // Trick to avoid RecordUtils.toTextBlock() to evaluate if not needed
+				output.printDebug("%s", RecordUtils.toTextBlock(externalOptions));
+			}
 			return externalOptions;
 		} catch (RuntimeException e) {
 			throw new ExternalOptionsException(optionsPath, "IO error or malformed options file", e);

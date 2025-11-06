@@ -1,0 +1,19 @@
+childLimit:
+  type: dynamic
+  limits:
+  - limit: 2
+    matcher:
+      type: noneOf
+      matchers:
+      - type: name
+        glob: "*a"
+      - type: name
+        glob: "folder*"
+  - limit: 3
+    matcher:
+      type: noneOf
+      matchers:
+      - type: name
+        glob: "*a"
+      - type: name
+        glob: "*xxx*"

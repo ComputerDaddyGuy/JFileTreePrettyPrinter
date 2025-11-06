@@ -1,21 +1,21 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.mapper;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ChildLimit;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ExternalOptions;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.ChildLimits;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
-import org.jspecify.annotations.Nullable;
 
 class DefaultExternalOptionsMapper implements ExternalOptionsMapper {
 
 	@Override
-	public PrettyPrintOptions mapToOptions(Path targetPath, @Nullable ExternalOptions externalOptions) {
+	public PrettyPrintOptions mapToOptions(Path targetPath, ExternalOptions externalOptions) {
 		var options = PrettyPrintOptions.createDefault();
-		if (externalOptions != null) {
-			options = mapEmojis(options, externalOptions);
-			options = mapChildLimit(options, externalOptions, targetPath);
-		}
+		options = mapEmojis(options, externalOptions);
+		options = mapChildLimit(options, externalOptions, targetPath);
 		return options;
 	}
 
@@ -45,8 +45,8 @@ class DefaultExternalOptionsMapper implements ExternalOptionsMapper {
 
 	private PathMatcher mapMatcher(Matcher matcher, Path targetPath) {
 		return switch (matcher) {
-			case Matcher.AlwaysTrue() -> (p) -> true;
-			case Matcher.AlwaysFalse() -> (p) -> false;
+			case Matcher.AlwaysTrue() -> p -> true;
+			case Matcher.AlwaysFalse() -> p -> false;
 			case Matcher.AllOf(var matchers) -> PathMatchers.allOf(matchers.stream().map(subMatcher -> mapMatcher(subMatcher, targetPath)).toList());
 			case Matcher.AnyOf(var matchers) -> PathMatchers.anyOf(matchers.stream().map(subMatcher -> mapMatcher(subMatcher, targetPath)).toList());
 			case Matcher.NoneOf(var matchers) -> PathMatchers.noneOf(matchers.stream().map(subMatcher -> mapMatcher(subMatcher, targetPath)).toList());

@@ -1,14 +1,14 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.mapper;
 
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ExternalOptions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import java.nio.file.Path;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public interface ExternalOptionsMapper {
 
-	PrettyPrintOptions mapToOptions(Path targetPath, @Nullable ExternalOptions externalOptions);
+	PrettyPrintOptions mapToOptions(Path targetPath, ExternalOptions externalOptions);
 
 	static ExternalOptionsMapper createDefault() {
 		return new DefaultExternalOptionsMapper();

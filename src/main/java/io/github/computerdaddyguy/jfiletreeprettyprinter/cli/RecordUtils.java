@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.cli;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 @NullMarked
-class RecordUtils {
+public class RecordUtils {
 
 	private RecordUtils() {
 		// Helper class
@@ -16,7 +16,7 @@ class RecordUtils {
 	/**
 	 * Inspired from: https://sormuras.github.io/blog/2020-05-06-records-to-text-block.html
 	 */
-	static String toTextBlock(@Nullable Record rec) {
+	public static String toTextBlock(@Nullable Record rec) {
 		if (rec == null) {
 			return "null";
 		}
@@ -26,6 +26,9 @@ class RecordUtils {
 	}
 
 	private static void toTextBlock(List<String> lines, String shift, @Nullable String attrName, Object value, String indent) {
+		if (value == null) {
+			return;
+		}
 		var nested = value.getClass();
 		if (nested.isRecord()) {
 			toTextBlockRecord(lines, shift, attrName, (Record) value, indent);

@@ -1,0 +1,3 @@
+childLimit:
+  type: static
+  limit: 2

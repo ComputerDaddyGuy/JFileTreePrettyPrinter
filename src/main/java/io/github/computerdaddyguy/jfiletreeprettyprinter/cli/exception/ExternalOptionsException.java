@@ -1,4 +1,4 @@
-package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options;
+package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.exception;
 
 import java.nio.file.Path;
 import org.jspecify.annotations.NullMarked;
@@ -6,7 +6,7 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class ExternalOptionsException extends RuntimeException {
 
-	private final Path optionsPath;
+	private final transient Path optionsPath;
 
 	public ExternalOptionsException(Path optionsPath, String message, Throwable cause) {
 		super(message, cause);

@@ -1,11 +1,9 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.cli;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ExternalOptionsException;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ExternalOptionsMapper;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.ExternalOptionsReader;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.io.ConsoleOutput;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.OptionsLoader;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
-import jakarta.validation.ConstraintViolationException;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -27,12 +25,12 @@ import picocli.CommandLine.Parameters;
 @NullMarked
 class PrettyPrintCommand implements Callable<Integer> {
 
-	private final ExternalOptionsReader reader;
-	private final ExternalOptionsMapper mapper;
+	private final ConsoleOutput output;
+	private final OptionsLoader optionsLoader;
 
-	public PrettyPrintCommand(ExternalOptionsReader reader, ExternalOptionsMapper mapper) {
-		this.reader = Objects.requireNonNull(reader, "reader is null");
-		this.mapper = Objects.requireNonNull(mapper, "mapper is null");
+	public PrettyPrintCommand(ConsoleOutput output, OptionsLoader optionsLoader) {
+		this.output = Objects.requireNonNull(output, "output is null");
+		this.optionsLoader = Objects.requireNonNull(optionsLoader, "optionsLoader is null");
 	}
 
 	// ---------- CLI args ----------
@@ -53,7 +51,7 @@ class PrettyPrintCommand implements Callable<Integer> {
 	@Override
 	public Integer call() throws Exception {
 
-		var output = new ConsoleOutput(debug);
+		output.enableDebug(this.debug);
 
 		var targetPath = detectTargetPath(output);
 		if (!targetPath.toFile().exists()) {
@@ -61,28 +59,14 @@ class PrettyPrintCommand implements Callable<Integer> {
 			return 1;
 		}
 
-		PrettyPrintOptions options;
-		try {
-			Path optionsPath = optionsFile == null ? null : optionsFile.toPath().toAbsolutePath().normalize();
-			var externalOptions = reader.readExternalOptions(output, targetPath, optionsPath);
-			options = mapper.mapToOptions(targetPath, externalOptions);
-		} catch (ExternalOptionsException e) {
-			output.printError(e.getMessage() + ": " + optionsFile.toString());
-			return 1;
-		} catch (ConstraintViolationException e) {
-			output.printError(e.getMessage() + ": " + optionsFile.toString());
-			return 1;
-		}
+		Path optionsPath = optionsFile == null ? null : optionsFile.toPath().toAbsolutePath().normalize();
+		PrettyPrintOptions options = optionsLoader.loadOptions(targetPath, optionsPath);
 
-		try {
-			var printer = FileTreePrettyPrinter.builder().withOptions(options).build();
-			var result = printer.prettyPrint(targetPath);
-			output.print(result);
-			return 0;
-		} catch (Exception e) {
-			output.printError("Error while pretty printing: " + e.getMessage());
-			return 1;
-		}
+		var printer = FileTreePrettyPrinter.builder().withOptions(options).build();
+		var result = printer.prettyPrint(targetPath);
+		output.print(result);
+
+		return 0;
 	}
 
 	private Path detectTargetPath(ConsoleOutput output) {
