@@ -4,6 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Child
 import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ExternalOptions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Matcher;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.ChildLimits;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.LineExtensions;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import java.nio.file.Path;
@@ -15,13 +16,31 @@ class DefaultExternalOptionsMapper implements ExternalOptionsMapper {
 	public PrettyPrintOptions mapToOptions(Path targetPath, ExternalOptions externalOptions) {
 		var options = PrettyPrintOptions.createDefault();
 		options = mapEmojis(options, externalOptions);
+		options = mapCompactDirectories(options, externalOptions);
+		options = mapMaxDepth(options, externalOptions);
 		options = mapChildLimit(options, externalOptions, targetPath);
+		options = mapFilter(options, externalOptions, targetPath);
+		options = mapLineExtensions(options, externalOptions, targetPath);
 		return options;
 	}
 
 	private PrettyPrintOptions mapEmojis(PrettyPrintOptions options, ExternalOptions externalOptions) {
 		if (Boolean.TRUE.equals(externalOptions.emojis())) {
 			return options.withDefaultEmojis();
+		}
+		return options;
+	}
+
+	private PrettyPrintOptions mapCompactDirectories(PrettyPrintOptions options, ExternalOptions externalOptions) {
+		if (Boolean.TRUE.equals(externalOptions.compactDirectories())) {
+			return options.withCompactDirectories(true);
+		}
+		return options;
+	}
+
+	private PrettyPrintOptions mapMaxDepth(PrettyPrintOptions options, ExternalOptions externalOptions) {
+		if (externalOptions.maxDepth() != null) {
+			return options.withMaxDepth(externalOptions.maxDepth());
 		}
 		return options;
 	}
@@ -41,6 +60,30 @@ class DefaultExternalOptionsMapper implements ExternalOptionsMapper {
 				yield options;
 			}
 		};
+	}
+
+	private PrettyPrintOptions mapFilter(PrettyPrintOptions options, ExternalOptions externalOptions, Path targetPath) {
+		if (externalOptions.filter() == null) {
+			return options;
+		}
+		if (externalOptions.filter().dir() != null) {
+			options = options.filterDirectories(mapMatcher(externalOptions.filter().dir(), targetPath));
+		}
+		if (externalOptions.filter().file() != null) {
+			options = options.filterFiles(mapMatcher(externalOptions.filter().file(), targetPath));
+		}
+		return options;
+	}
+
+	private PrettyPrintOptions mapLineExtensions(PrettyPrintOptions options, ExternalOptions externalOptions, Path targetPath) {
+		if (externalOptions.lineExtensions() == null) {
+			return options;
+		}
+		var builder = LineExtensions.builder();
+		for (var extension : externalOptions.lineExtensions()) {
+			builder.add(mapMatcher(extension.matcher(), targetPath), extension.extension());
+		}
+		return options.withLineExtension(builder.build());
 	}
 
 	private PathMatcher mapMatcher(Matcher matcher, Path targetPath) {

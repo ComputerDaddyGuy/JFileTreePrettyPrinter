@@ -25,17 +25,15 @@ public class RecordUtils {
 		return String.join(System.lineSeparator(), lines);
 	}
 
-	private static void toTextBlock(List<String> lines, String shift, @Nullable String attrName, Object value, String indent) {
+	private static void toTextBlock(List<String> lines, String shift, @Nullable String attrName, @Nullable Object value, String indent) {
 		if (value == null) {
-			return;
-		}
-		var nested = value.getClass();
-		if (nested.isRecord()) {
+			return; // do not print null objects, just ignore them
+		} else if (value.getClass().isRecord()) {
 			toTextBlockRecord(lines, shift, attrName, (Record) value, indent);
 		} else if (value instanceof Collection<?> coll) {
 			toTextBlockCollection(lines, shift, attrName, coll, indent);
 		} else {
-			lines.add(String.format("%s%s = %s", shift, attrName, value));
+			lines.add(String.format("%s%s: %s", shift, attrName, toSingleValue(value)));
 		}
 	}
 
@@ -63,7 +61,7 @@ public class RecordUtils {
 		if (attrName == null) {
 			lines.add(String.format("%s[", shift));
 		} else {
-			lines.add(String.format("%s%s = [", shift, attrName));
+			lines.add(String.format("%s%s: [", shift, attrName));
 		}
 		int i = 0;
 		for (var item : coll) {
@@ -71,6 +69,13 @@ public class RecordUtils {
 			i++;
 		}
 		lines.add(String.format("%s]", shift));
+	}
+
+	private static String toSingleValue(Object value) {
+		if (value instanceof String str) {
+			return String.format("\"%s\"", str);
+		}
+		return String.format("%s", value);
 	}
 
 }

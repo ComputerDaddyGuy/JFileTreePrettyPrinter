@@ -48,6 +48,24 @@
 		"allPublicFields": true
 	  },
 	  {
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.Filter",
+	    "allDeclaredConstructors": true,
+	    "allPublicConstructors": true,
+	    "allDeclaredMethods": true,
+	    "allPublicMethods": true,
+		"allDeclaredFields": true,
+		"allPublicFields": true
+	  },
+	  {
+	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.LineExtension",
+	    "allDeclaredConstructors": true,
+	    "allPublicConstructors": true,
+	    "allDeclaredMethods": true,
+	    "allPublicMethods": true,
+		"allDeclaredFields": true,
+		"allPublicFields": true
+	  },
+	  {
 	    "type": "io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.model.ChildLimit$StaticLimit",
 	    "allDeclaredConstructors": true,
 	    "allPublicConstructors": true,
