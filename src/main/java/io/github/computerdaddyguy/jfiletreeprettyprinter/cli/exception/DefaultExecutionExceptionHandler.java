@@ -3,6 +3,7 @@ package io.github.computerdaddyguy.jfiletreeprettyprinter.cli.exception;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.io.ConsoleOutput;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.jspecify.annotations.NullMarked;
 import picocli.CommandLine;
 import picocli.CommandLine.IExecutionExceptionHandler;
@@ -28,12 +29,16 @@ public class DefaultExecutionExceptionHandler implements IExecutionExceptionHand
 
 	private int handleExternalOptionsException(ExternalOptionsException e) {
 		output.printError(e.getMessage() + ": " + e.getOptionsPath().toString());
-		e.printStackTrace();
 		return 1;
 	}
 
 	private int handleConstraintViolationException(ConstraintViolationException e) {
-		output.printError(e.getMessage() + ": TODO");
+		output.printError(
+			"Invalid options file:" + System.lineSeparator() +
+				e.getConstraintViolations().stream()
+					.map(violation -> "  -> " + violation.getPropertyPath() + ": " + violation.getMessage())
+					.collect(Collectors.joining(System.lineSeparator()))
+		);
 		return 1;
 	}
 

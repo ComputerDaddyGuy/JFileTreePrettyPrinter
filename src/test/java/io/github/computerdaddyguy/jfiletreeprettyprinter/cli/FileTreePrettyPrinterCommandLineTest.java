@@ -105,7 +105,10 @@ class FileTreePrettyPrinterCommandLineTest {
 		var exHandler = new DefaultExecutionExceptionHandler(output);
 		var cli = new FileTreePrettyPrinterCommandLine(output, optionsLoader, exHandler);
 
-		Consumer<String> outputAssertor = out -> assertThat(out).startsWith("[ERROR] Invalid options file:").contains("invalid.yaml");
+		Consumer<String> outputAssertor = out -> assertThat(out)
+			.startsWith("[ERROR] Invalid options file:")
+			.contains("childLimit.limits[0].matcher.glob:")
+			.contains("childLimit.limits[1].matcher.glob:");
 		runErrorTest(cli, args, outputAssertor);
 	}
 

@@ -1,2 +1,11 @@
 childLimit:
-  type: static
+  type: dynamic
+  limits:
+  - limit: 2
+    matcher:
+      type: "name"
+      glob: ""
+  - limit: 3
+    matcher:
+      type: "name"
+      glob: ""

@@ -45,7 +45,8 @@ class SimpleExternalOptionsReader implements ExternalOptionsReader {
 		output.printDebug("Options file found: %s", optionsPath);
 
 		var externalOptions = load(output, optionsPath);
-		validate(output, optionsPath, externalOptions);
+		validate(externalOptions);
+		output.printDebug("Options file is valid");
 		return externalOptions;
 	}
 
@@ -63,23 +64,18 @@ class SimpleExternalOptionsReader implements ExternalOptionsReader {
 		}
 	}
 
-	private void validate(ConsoleOutput output, Path optionsPath, ExternalOptions externalOptions) {
-		try {
-			var validatorFactory = Validation.byDefaultProvider()
-				.configure()
-				.messageInterpolator(new ParameterMessageInterpolator())
-				.buildValidatorFactory();
-			var validator = validatorFactory.getValidator();
+	private void validate(ExternalOptions externalOptions) {
+		var validatorFactory = Validation.byDefaultProvider()
+			.configure()
+			.messageInterpolator(new ParameterMessageInterpolator())
+			.buildValidatorFactory();
+		var validator = validatorFactory.getValidator();
 
-			var violations = validator.validate(externalOptions);
-			if (!violations.isEmpty()) {
-				throw new ConstraintViolationException(violations);
-			}
-
-			output.printDebug("Options file is valid");
-		} catch (ConstraintViolationException e) {
-			throw new ExternalOptionsException(optionsPath, "Invalid options file", e);
+		var violations = validator.validate(externalOptions);
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException(violations);
 		}
+
 	}
 
 }
