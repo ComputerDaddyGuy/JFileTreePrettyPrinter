@@ -28,7 +28,8 @@ public class RecordUtils {
 	private static void toTextBlock(List<String> lines, String shift, @Nullable String attrName, @Nullable Object value, String indent) {
 		if (value == null) {
 			return; // do not print null objects, just ignore them
-		} else if (value.getClass().isRecord()) {
+		}
+		if (value.getClass().isRecord()) {
 			toTextBlockRecord(lines, shift, attrName, (Record) value, indent);
 		} else if (value instanceof Collection<?> coll) {
 			toTextBlockCollection(lines, shift, attrName, coll, indent);

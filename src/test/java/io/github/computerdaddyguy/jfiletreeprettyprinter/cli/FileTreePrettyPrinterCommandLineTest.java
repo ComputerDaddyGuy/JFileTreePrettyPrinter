@@ -9,8 +9,8 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.io.DefaultConsoleOu
 import io.github.computerdaddyguy.jfiletreeprettyprinter.cli.options.OptionsLoader;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.ChildLimits;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PrettyPrintOptions;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.function.Consumer;
@@ -53,7 +53,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	}
 
 	@Test
-	void no_options() throws IOException {
+	void no_options() {
 		String targetPath = "src/test/resources/cli/base";
 		String optionsPath = null;
 		String[] args = buildCliArgs(targetPath, optionsPath);
@@ -68,7 +68,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	}
 
 	@Test
-	void unexisting_options() throws IOException {
+	void unexisting_options() {
 		String targetPath = "src/test/resources/cli/base";
 		String optionsPath = "not_existing";
 		String[] args = buildCliArgs(targetPath, optionsPath);
@@ -82,7 +82,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	}
 
 	@Test
-	void malformed_options() throws IOException {
+	void malformed_options() {
 		String targetPath = "src/test/resources/cli/base";
 		String optionsPath = "src/test/resources/cli/options/malformed.yaml";
 		String[] args = buildCliArgs(targetPath, optionsPath);
@@ -96,7 +96,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	}
 
 	@Test
-	void invalid_options() throws IOException {
+	void invalid_options() {
 		String targetPath = "src/test/resources/cli/base";
 		String optionsPath = "src/test/resources/cli/options/invalid.yaml";
 		String[] args = buildCliArgs(targetPath, optionsPath);
@@ -116,7 +116,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	class Emojis {
 
 		@Test
-		void emojis() throws IOException {
+		void nominal() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/emojis.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -126,7 +126,7 @@ class FileTreePrettyPrinterCommandLineTest {
 			var cli = new FileTreePrettyPrinterCommandLine(output, optionsLoader, exHandler);
 
 			var ref = FileTreePrettyPrinter.builder()
-				.customizeOptions(options -> options.withDefaultEmojis())
+				.customizeOptions(PrettyPrintOptions::withDefaultEmojis)
 				.build();
 
 			runSuccessTest(cli, args, ref, targetPath);
@@ -138,7 +138,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	class CompactDirectories {
 
 		@Test
-		void emojis() throws IOException {
+		void nominal() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/compactDirectories.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -160,7 +160,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	class MaxDepth {
 
 		@Test
-		void emojis() throws IOException {
+		void nominal() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/maxDepth.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -182,7 +182,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	class ChildLimit {
 
 		@Test
-		void static_limit() throws IOException {
+		void static_limit() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/childLimit_static.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -199,7 +199,7 @@ class FileTreePrettyPrinterCommandLineTest {
 		}
 
 		@Test
-		void dynamic_limit_glob() throws IOException {
+		void dynamic_limit_glob() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/childLimit_dynamic_glob.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -220,7 +220,7 @@ class FileTreePrettyPrinterCommandLineTest {
 		}
 
 		@Test
-		void dynamic_limit_everything() throws IOException {
+		void dynamic_limit_everything() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/childLimit_dynamic_everything.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -240,7 +240,7 @@ class FileTreePrettyPrinterCommandLineTest {
 		}
 
 		@Test
-		void dynamic_limit_allOf() throws IOException {
+		void dynamic_limit_allOf() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/childLimit_dynamic_allOf.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -261,7 +261,7 @@ class FileTreePrettyPrinterCommandLineTest {
 		}
 
 		@Test
-		void dynamic_limit_anyOf() throws IOException {
+		void dynamic_limit_anyOf() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/childLimit_dynamic_anyOf.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -282,7 +282,7 @@ class FileTreePrettyPrinterCommandLineTest {
 		}
 
 		@Test
-		void dynamic_limit_noneOf() throws IOException {
+		void dynamic_limit_noneOf() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/childLimit_dynamic_noneOf.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -308,7 +308,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	class Filter {
 
 		@Test
-		void nominal() throws IOException {
+		void nominal() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/filter.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);
@@ -331,7 +331,7 @@ class FileTreePrettyPrinterCommandLineTest {
 	class LineExtensions {
 
 		@Test
-		void nominal() throws IOException {
+		void nominal() {
 			String targetPath = "src/test/resources/cli/base";
 			String optionsPath = "src/test/resources/cli/options/lineExtensions.yaml";
 			String[] args = buildCliArgs(targetPath, optionsPath);

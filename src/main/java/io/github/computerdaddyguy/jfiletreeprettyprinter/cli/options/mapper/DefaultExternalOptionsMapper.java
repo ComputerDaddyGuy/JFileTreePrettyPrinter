@@ -39,8 +39,9 @@ class DefaultExternalOptionsMapper implements ExternalOptionsMapper {
 	}
 
 	private PrettyPrintOptions mapMaxDepth(PrettyPrintOptions options, ExternalOptions externalOptions) {
-		if (externalOptions.maxDepth() != null) {
-			return options.withMaxDepth(externalOptions.maxDepth());
+		var max = externalOptions.maxDepth();
+		if (max != null) {
+			return options.withMaxDepth(max);
 		}
 		return options;
 	}
