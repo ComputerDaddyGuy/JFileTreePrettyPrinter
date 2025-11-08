@@ -52,14 +52,10 @@
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.sensor.cache.project.enable>false</sonar.sensor.cache.project.enable>
 		<sonar.sources>
-			/jfiletreeprettyprinter-core/src/main/java,
-			/jfiletreeprettyprinter-cli/src/main/java,
-			/jfiletreeprettyprinter-examples/src/main/java
+			**/src/main/java
 		</sonar.sources>
 		<sonar.tests>
-			/jfiletreeprettyprinter-core/src/test/java,
-			/jfiletreeprettyprinter-cli/src/test/java,
-			/jfiletreeprettyprinter-examples/src/test/java
+			**/src/test/java
 		</sonar.tests>
 		<sonar.exclusions>
 			**/src/test/**
