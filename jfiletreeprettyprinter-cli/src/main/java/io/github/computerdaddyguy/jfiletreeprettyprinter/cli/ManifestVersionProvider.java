@@ -8,7 +8,6 @@ class ManifestVersionProvider implements IVersionProvider {
 
 	@Override
 	public String[] getVersion() throws Exception {
-		String implTitle = null;
 		String implVersion = null;
 		String projectDesc = null;
 		String commitId = null;
@@ -19,7 +18,6 @@ class ManifestVersionProvider implements IVersionProvider {
 		try (InputStream is = getClass().getResourceAsStream("/META-INF/MANIFEST.MF")) {
 			if (is != null) {
 				Manifest manifest = new Manifest(is);
-				implTitle = manifest.getMainAttributes().getValue("Implementation-Title");
 				implVersion = manifest.getMainAttributes().getValue("Implementation-Version");
 				projectDesc = manifest.getMainAttributes().getValue("Project-Desc");
 				commitId = manifest.getMainAttributes().getValue("Commit-Id");
@@ -30,7 +28,7 @@ class ManifestVersionProvider implements IVersionProvider {
 		}
 
 		return new String[] {
-			valueOrUnknown(implTitle) + " " + valueOrUnknown(implVersion),
+			"JFileTreePrettyPrinter " + valueOrUnknown(implVersion),
 			valueOrUnknown(projectDesc),
 			"Repository: " + valueOrUnknown(scmUrl),
 			"Commit: " + valueOrUnknown(commitId) + " (" + valueOrUnknown(commitTime) + ")",

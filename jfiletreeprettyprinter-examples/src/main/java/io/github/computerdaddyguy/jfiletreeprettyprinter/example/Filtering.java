@@ -17,7 +17,7 @@ public class Filtering {
 			)
 			.build();
 
-		var tree = prettyPrinter.prettyPrint("src/example/resources/filtering");
+		var tree = prettyPrinter.prettyPrint("src/main/resources/filtering");
 		System.out.println(tree);
 	}
 

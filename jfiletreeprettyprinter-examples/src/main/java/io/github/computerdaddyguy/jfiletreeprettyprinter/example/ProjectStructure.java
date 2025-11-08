@@ -25,28 +25,44 @@ public class ProjectStructure {
 		/*
 		 * The folder to pretty print (= the JFileTreePrettyPrint project root)
 		 */
-		var projectFolder = Path.of(".");
+		var projectFolder = Path.of("..");
 
 		/*
 		 * Filter for directories (visit and display only folders that pass this filter)
 		 */
-		var dirFilter = PathMatchers.noneOf(
-			// Exclude these folders from traversal
-			PathMatchers.hasNameStartingWith("."),
-			PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src/example"),
-			PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src/test"),
-			PathMatchers.hasRelativePathMatchingGlob(projectFolder, "target")
+		var dirFilter = PathMatchers.anyOf(
+			PathMatchers.hasAnyDescendantMatching(PathMatchers.hasName("FileTreePrettyPrinter.java")),
+			PathMatchers.noneOf(
+				// Exclude these folders from traversal
+				PathMatchers.hasNameStartingWith("."),
+				PathMatchers.hasRelativePathMatchingGlob(projectFolder, "target"),
+				PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src"),
+				PathMatchers.hasRelativePathMatchingGlob(projectFolder, "*/src/**")
+			)
 		);
-
 		/*
 		 * Filter for files (display only files that pass this filter)
 		 * Note: files for which the parent folder does not match the directory filter 
 		 * are obviously not displayed, even if they pass the file filter.
 		 */
-		var fileFilter = PathMatchers.noneOf(
+//		var fileFilter = PathMatchers.noneOf(
+//			PathMatchers.hasNameStartingWith(".")
+//		);
 
-			// Hide files with names starting with "."
-			PathMatchers.hasNameStartingWith(".")
+		var fileFilter = PathMatchers.anyOf(
+			PathMatchers.hasAbsolutePathMatchingGlob("**/jfiletreeprettyprinter-core/**/FileTreePrettyPrinter.java"),
+			PathMatchers.noneOf(
+				PathMatchers.hasAbsolutePathMatchingGlob("**/jfiletreeprettyprinter-core/**"),
+				PathMatchers.hasNameStartingWith(".")
+			)
+		);
+
+		PathMatchers.ifMatchesThenElse(
+			PathMatchers.hasAbsolutePathMatchingGlob("**/jfiletreeprettyprinter-core/src/main/java/io/github/computerdaddyguy/jfiletreeprettyprinter"),
+			PathMatchers.hasName("FileTreePrettyPrinter.java"),
+			PathMatchers.noneOf(
+				PathMatchers.hasNameStartingWith(".")
+			)
 		);
 
 		/*
@@ -54,10 +70,9 @@ public class ProjectStructure {
 		 */
 		var childLimitFunction = ChildLimits.builder()
 			// Hide all files under renderer and scanner packages
-			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/options"), 0)
-			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/renderer"), 0)
-			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter/scanner"), 0)
-			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/io/github/computerdaddyguy/jfiletreeprettyprinter"), 4)
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/jfiletreeprettyprinter-cli"), 0)
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/jfiletreeprettyprinter-examples"), 0)
+			.add(PathMatchers.hasAbsolutePathMatchingGlob("**/jfiletreeprettyprinter-core"), 1)
 			.build();
 
 		/*
@@ -65,19 +80,26 @@ public class ProjectStructure {
 		 */
 		Function<Path, String> lineExtension = LineExtensions.builder()
 			.add(PathMatchers.hasName("project-structure.png"), "\t// This image")
-			.add(PathMatchers.hasName("FileTreePrettyPrinter.java"), "\t// Main entry point")
 			.add(PathMatchers.hasName("README.md"), "\t\t// You're reading at this!")
+			.add(PathMatchers.hasName("FileTreePrettyPrinter.java"), "\t// Lib main entry point")
+			.add(PathMatchers.hasName("jfiletreeprettyprinter-cli"), "\t// Everything to build the executable")
+			.add(PathMatchers.hasName("jfiletreeprettyprinter-core"), "\t// The Java lib")
+			.add(PathMatchers.hasName("jfiletreeprettyprinter-examples"), "\t// Some examples")
 			.addLineBreak(PathMatchers.hasRelativePathMatchingGlob(projectFolder, "src/main/java"))
 			.build();
 
 		/*
-		 * Sort all paths by directory first (with highest precedence),
-		 * then "FileTreePrettyPrinter.java" has precedence "-100".
-		 * All other files have default precedence "0", and are then sorted alphabetically by default.
+		 * Sort all paths setting a precedence value. Default precedence is "0", lower values have higher precedence.
+		 * Items having the same precedence value are then sorted alphabetically by default.
 		 */
 		Comparator<Path> pathComparator = PathSorts.builder()
-			.addFirst(PathMatchers.isDirectory())
-			.add(PathMatchers.hasName("FileTreePrettyPrinter.java"), -100) // Default precedence is "0"
+			// 
+			.add(PathMatchers.hasName("jfiletreeprettyprinter-core"), -100)
+			.add(PathMatchers.hasName("jfiletreeprettyprinter-examples"), -90)
+			.add(PathMatchers.hasName("jfiletreeprettyprinter-cli"), -80)
+			.add(PathMatchers.hasName("assets"), -70)
+			.add(PathMatchers.hasName("docs"), -60)
+			.add(PathMatchers.isDirectory(), -1)
 			.build();
 
 		/*
@@ -108,18 +130,19 @@ public class ProjectStructure {
 		 ================================
 		 
 		📂 JFileTreePrettyPrinter/
+		├─ 📂 jfiletreeprettyprinter-core/	// The Java lib
+		│  ├─ 📂 src/main/java/io/github/computerdaddyguy/jfiletreeprettyprinter/
+		│  │  └─ ☕ FileTreePrettyPrinter.java	// Lib main entry point
+		│  └─ ...
+		├─ 📂 jfiletreeprettyprinter-examples/	// Some examples
+		│  └─ ...
+		├─ 📂 jfiletreeprettyprinter-cli/	// Everything to build the executable
+		│  └─ ...
 		├─ 📂 assets/
 		│  └─ 🖼️ project-structure.png	// This image
-		├─ 📂 src/main/java/
-		│  └─ 📂 io/github/computerdaddyguy/jfiletreeprettyprinter/
-		│     ├─ 📂 options/
-		│     │  └─ ...
-		│     ├─ 📂 renderer/
-		│     │  └─ ...
-		│     ├─ 📂 scanner/
-		│     │  └─ ...
-		│     ├─ ☕ FileTreePrettyPrinter.java	// Main entry point
-		│     └─ ...
+		├─ 📂 docs/
+		│  ├─ 📝 How-to-build-a-native-executable-locally.md
+		│  └─ 📝 Release-process.md
 		├─ 🆕 CHANGELOG.md
 		├─ 🤝 CONTRIBUTING.md
 		├─ ⚖️ LICENSE
@@ -127,9 +150,7 @@ public class ProjectStructure {
 		├─ 🗺️ ROADMAP.md
 		├─ 🛡️ SECURITY.md
 		├─ 🛠️ pom.xml
-		├─ 📝 release_process.md
 		└─ 📜 runMutationTests.sh
-		
 		
 		 */
 	}

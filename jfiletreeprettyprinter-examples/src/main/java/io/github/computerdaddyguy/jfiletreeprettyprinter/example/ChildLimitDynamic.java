@@ -14,7 +14,7 @@ public class ChildLimitDynamic {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withChildLimit(childLimit))
 			.build();
-		var tree = prettyPrinter.prettyPrint("src/example/resources/child_limit_dynamic");
+		var tree = prettyPrinter.prettyPrint("src/main/resources/child_limit_dynamic");
 		System.out.println(tree);
 	}
 

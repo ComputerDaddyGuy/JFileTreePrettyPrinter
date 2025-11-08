@@ -1,15 +1,14 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
-import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathSorts;
 
-public class Sorting {
+public class ChildLimitStatic {
 
 	public static void main(String[] args) {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.sort(PathSorts.DIRECTORY_FIRST))
+			.customizeOptions(options -> options.withChildLimit(3))
 			.build();
-		var tree = prettyPrinter.prettyPrint("src/example/resources/sorting");
+		var tree = prettyPrinter.prettyPrint("src/main/resources/child_limit_static");
 		System.out.println(tree);
 	}
 

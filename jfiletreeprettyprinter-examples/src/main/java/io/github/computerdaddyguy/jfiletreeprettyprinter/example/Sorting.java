@@ -1,14 +1,15 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathSorts;
 
-public class Emojis {
+public class Sorting {
 
 	public static void main(String[] args) {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withDefaultEmojis()) // or withEmojis(EmojiMapping) for custom mapping
+			.customizeOptions(options -> options.sort(PathSorts.DIRECTORY_FIRST))
 			.build();
-		var tree = prettyPrinter.prettyPrint("src/example/resources/emojis");
+		var tree = prettyPrinter.prettyPrint("src/main/resources/sorting");
 		System.out.println(tree);
 	}
 

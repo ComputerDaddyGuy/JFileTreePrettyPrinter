@@ -1,14 +1,15 @@
 package io.github.computerdaddyguy.jfiletreeprettyprinter.example;
 
 import io.github.computerdaddyguy.jfiletreeprettyprinter.FileTreePrettyPrinter;
+import io.github.computerdaddyguy.jfiletreeprettyprinter.options.TreeFormats;
 
-public class MaxDepth {
+public class FileTreeFormat {
 
 	public static void main(String[] args) {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withMaxDepth(3))
+			.customizeOptions(options -> options.withTreeFormat(TreeFormats.CLASSIC_ASCII))
 			.build();
-		var tree = prettyPrinter.prettyPrint("src/example/resources/max_depth");
+		var tree = prettyPrinter.prettyPrint("src/main/resources/tree_format");
 		System.out.println(tree);
 	}
 

@@ -7,7 +7,7 @@
 		<version>${revision}</version>
 	</parent>
 
-	<artifactId>jfiletreeprettyprinter-example</artifactId>
+	<artifactId>jfiletreeprettyprinter-examples</artifactId>
 
 
 	<dependencies>

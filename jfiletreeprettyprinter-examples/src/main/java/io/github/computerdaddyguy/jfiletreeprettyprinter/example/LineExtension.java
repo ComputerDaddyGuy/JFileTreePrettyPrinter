@@ -9,7 +9,7 @@ import java.util.function.Function;
 public class LineExtension {
 
 	public static void main(String[] args) {
-		var printedPath = Path.of("src/example/resources/line_extension");
+		var printedPath = Path.of("src/main/resources/line_extension");
 
 		Function<Path, String> lineExtension = LineExtensions.builder()
 			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
