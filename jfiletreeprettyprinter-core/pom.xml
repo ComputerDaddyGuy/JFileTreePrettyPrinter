@@ -11,6 +11,12 @@
 
 	<packaging>jar</packaging>
 
+	<url>https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter</url>
+	<scm>
+		<connection>scm:git:git://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter.git</connection>
+		<developerConnection>scm:git:ssh://github.com:ComputerDaddyGuy/JFileTreePrettyPrinter.git</developerConnection>
+		<url>https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter</url>
+	</scm>
 
 	<dependencies>
 		<dependency>
@@ -37,6 +43,7 @@
 				<artifactId>flatten-maven-plugin</artifactId>
 				<configuration>
 					<flattenMode>ossrh</flattenMode>
+					<updatePomFile>true</updatePomFile>
 				</configuration>
 				<executions>
 					<execution>
