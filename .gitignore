@@ -62,4 +62,4 @@ target/failsafe-reports/
 
 # Specific
 .flattened-pom.xml
-!/src/example/resources/emojis/**
+!**/src/*/resources/emojis/**
