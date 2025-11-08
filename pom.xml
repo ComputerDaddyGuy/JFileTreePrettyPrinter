@@ -46,6 +46,17 @@
 		<git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
 		<flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
 		
+		<!-- Sonar -->
+		<sonar.organization>computerdaddyguy</sonar.organization>
+		<sonar.projectKey>ComputerDaddyGuy_JFileTreePrettyPrinter</sonar.projectKey>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.exclusions>
+			*/src/test/java/**
+		</sonar.exclusions>
+		<sonar.coverage.exclusions>
+			*/src/test/java/**
+		</sonar.coverage.exclusions>
+		
 	</properties>
 
 	<dependencyManagement>
