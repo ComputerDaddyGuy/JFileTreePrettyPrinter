@@ -11,7 +11,21 @@
 
 	<packaging>jar</packaging>
 
+	<name>JFileTreePrettyPrinter</name>
+	<description>A lightweight and flexible Java library with a native CLI to pretty-print directory structures - ideal for documentation, project overviews, or CLI tools.</description>
 	<url>https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter</url>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Samuel SCHNEGG</name>
+			<email>samuel.schnegg@gmail.com</email>
+		</developer>
+	</developers>
 	<scm>
 		<connection>scm:git:git://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter.git</connection>
 		<developerConnection>scm:git:ssh://github.com:ComputerDaddyGuy/JFileTreePrettyPrinter.git</developerConnection>
@@ -34,7 +48,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
