@@ -33,7 +33,7 @@
 
 ## To do
 - [ ] Gather feedback
-- [ ] Use as command line (options as arguments of provided in external file)
+- [x] Use as command line (options as arguments of provided in external file)
 - [x] Executable file distributed with release files in Github
 
 ## Backlog / To analyze / To implement if requested

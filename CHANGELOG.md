@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.1] - 2025-10-17 - Native executable
 
 ### Added
-- Work in progress: run JFileTreePrettyPrinter using command line /!\ not yet fully functional /!\
+- Run JFileTreePrettyPrinter using command line (options in external file)
 - Native executable attachment to the Github release
 
 ---
