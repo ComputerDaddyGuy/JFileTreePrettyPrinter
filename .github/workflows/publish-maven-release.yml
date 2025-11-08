@@ -50,7 +50,7 @@ jobs:
 
       - name: Update pom.xml to release version
         run: |
-          mvn versions:set -DnewVersion=${{ env.RELEASE_VERSION }} -B -q
+          mvn versions:set-property -Dproperty=revision -DnewVersion=${{ env.RELEASE_VERSION }} -B -q
           git commit -am "Set version to ${{ env.RELEASE_VERSION }}" || echo "No changes"
           git push origin HEAD:main
         env:
@@ -60,7 +60,7 @@ jobs:
         run: mvn clean verify -B
 
       - name: Publish RELEASE to Maven Central
-        run: mvn deploy -P release -B -DskipTests
+        run: mvn deploy -pl jfiletreeprettyprinter-core -P release -B -DskipTests
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
@@ -73,6 +73,6 @@ jobs:
           NEXT_PATCH=$((PATCH+1))
           NEXT_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-SNAPSHOT"
           echo "NEXT_VERSION=$NEXT_VERSION" >> $GITHUB_ENV
-          mvn versions:set -DnewVersion=$NEXT_VERSION -B -q
+          mvn versions:set-property -Dproperty=revision -DnewVersion=$NEXT_VERSION -B -q
           git commit -am "Set version to $NEXT_VERSION" || echo "No changes"
           git push origin HEAD:main
