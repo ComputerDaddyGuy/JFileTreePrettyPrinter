@@ -50,6 +50,7 @@
 		<sonar.organization>computerdaddyguy</sonar.organization>
 		<sonar.projectKey>ComputerDaddyGuy_JFileTreePrettyPrinter</sonar.projectKey>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.sensor.cache.project.enable>false</sonar.sensor.cache.project.enable>
 		<sonar.sources>
 			/jfiletreeprettyprinter-core/src/main/java,
 			/jfiletreeprettyprinter-cli/src/main/java,
