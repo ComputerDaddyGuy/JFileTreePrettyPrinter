@@ -21,10 +21,10 @@ Supports various [options](#customization-options) to customize the directories 
 
 > [!NOTE]
 > JFileTreePrettyPrinter is perfect to explain your project structure!  
-> See <a href="https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/blob/develop/src/example/java/io/github/computerdaddyguy/jfiletreeprettyprinter/example/ProjectStructure.java">ProjectStructure.java</a> to read the code that generated the tree from the below picture.
+> See <a href="jfiletreeprettyprinter-examples/src/main/java/io/github/computerdaddyguy/jfiletreeprettyprinter/example/ProjectStructure.java">ProjectStructure.java</a> to read the code that generated the tree from the below picture.
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/ComputerDaddyGuy/JFileTreePrettyPrinter/refs/heads/develop/assets/project-structure.png" alt="JFileTreePrettyPrint project structure, using JFileTreePrettyPrint"/>
+	<img src="assets/project-structure.png" alt="JFileTreePrettyPrint project structure, using JFileTreePrettyPrint"/>
 </p>
 
 > [!IMPORTANT]
