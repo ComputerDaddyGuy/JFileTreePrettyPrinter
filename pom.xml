@@ -50,15 +50,21 @@
 		<sonar.organization>computerdaddyguy</sonar.organization>
 		<sonar.projectKey>ComputerDaddyGuy_JFileTreePrettyPrinter</sonar.projectKey>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.sources>
+			/jfiletreeprettyprinter-core/src/main/java,
+			/jfiletreeprettyprinter-cli/src/main/java,
+			/jfiletreeprettyprinter-examples/src/main/java
+		</sonar.sources>
+		<sonar.tests>
+			/jfiletreeprettyprinter-core/src/test/java,
+			/jfiletreeprettyprinter-cli/src/test/java,
+			/jfiletreeprettyprinter-examples/src/test/java
+		</sonar.tests>
 		<sonar.exclusions>
-			/jfiletreeprettyprinter-core/src/test/**,
-			/jfiletreeprettyprinter-cli/src/test/**,
-			/jfiletreeprettyprinter-examples/src/test/**
+			**/src/test/**
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
-			/jfiletreeprettyprinter-core/src/test/**,
-			/jfiletreeprettyprinter-cli/src/test/**,
-			/jfiletreeprettyprinter-examples/src/test/**
+			**/src/test/**
 		</sonar.coverage.exclusions>
 		
 	</properties>
