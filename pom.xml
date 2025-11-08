@@ -45,14 +45,6 @@
 		<native.maven.plugin.version>0.11.1</native.maven.plugin.version>
 		<git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
 		<flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
-
-		<!-- Sonar -->
-		<sonar.exclusions>
-			**/src/test/**
-		</sonar.exclusions>
-		<sonar.coverage.exclusions>
-			**/src/test/**
-		</sonar.coverage.exclusions>
 		
 	</properties>
 

@@ -44,4 +44,4 @@ jobs:
     - name: Build and analyze
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.host.url="https://sonarcloud.io" -Dsonar.organization=computerdaddyguy -Dsonar.projectKey=ComputerDaddyGuy_JFileTreePrettyPrinter
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.host.url="https://sonarcloud.io" -Dsonar.exclusions=**/src/test/** -Dsonar.coverage.exclusions=**/src/test/** -Dsonar.organization=computerdaddyguy -Dsonar.projectKey=ComputerDaddyGuy_JFileTreePrettyPrinter
