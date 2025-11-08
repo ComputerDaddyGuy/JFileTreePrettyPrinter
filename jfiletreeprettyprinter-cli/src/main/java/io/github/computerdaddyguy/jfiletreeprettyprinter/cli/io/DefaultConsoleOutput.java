@@ -70,7 +70,7 @@ public class DefaultConsoleOutput implements ConsoleOutput {
 	}
 
 	private void printfln(PrintStream dest, String msg, Object... args) {
-		dest.printf("%s%s", msg, System.lineSeparator(), args);// Because "printf" does not print line return
+		dest.printf(msg + System.lineSeparator(), args);// Because "printf" does not print line return
 	}
 
 }
