@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -213,11 +214,11 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	// ---------- Line extension ----------
 
 	@Nullable
-	private Function<Path, String> lineExtension;
+	private Function<@NonNull Path, @Nullable String> lineExtension;
 
 	@Override
 	@Nullable
-	public Function<Path, String> getLineExtension() {
+	public Function<@NonNull Path, @Nullable String> getLineExtension() {
 		return lineExtension;
 	}
 
@@ -237,7 +238,7 @@ public class PrettyPrintOptions implements ScanningOptions, RenderingOptions {
 	 * @see LineExtensions
 	 * @see LineExtensionBuilder
 	 */
-	public PrettyPrintOptions withLineExtension(@Nullable Function<Path, String> lineExtension) {
+	public PrettyPrintOptions withLineExtension(@Nullable Function<@NonNull Path, @Nullable String> lineExtension) {
 		this.lineExtension = lineExtension;
 		return this;
 	}

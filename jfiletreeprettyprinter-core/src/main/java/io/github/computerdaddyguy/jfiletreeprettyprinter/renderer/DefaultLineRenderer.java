@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 @NullMarked
 class DefaultLineRenderer implements LineRenderer {
@@ -32,12 +31,12 @@ class DefaultLineRenderer implements LineRenderer {
 	}
 
 	@Override
-	public @Nullable String renderChildLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry) {
+	public String renderChildLimitReached(Depth depth, SkippedChildrenEntry skippedChildrenEntry) {
 		return treeFormatter.format(depth) + fileFormatter.formatChildLimitReached(skippedChildrenEntry);
 	}
 
 	@Override
-	public @Nullable String renderMaxDepthReached(Depth depth, MaxDepthReachEntry maxDepthReachEntry) {
+	public String renderMaxDepthReached(Depth depth, MaxDepthReachEntry maxDepthReachEntry) {
 		return treeFormatter.format(depth) + fileFormatter.formatMaxDepthReached(maxDepthReachEntry);
 	}
 
