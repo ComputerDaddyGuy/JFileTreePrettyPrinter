@@ -74,15 +74,12 @@ public class ProjectStructure {
 				PathMatchers.hasRelativePathMatchingGlob(projectFolder, "*/src/**")
 			)
 		);
+
 		/*
 		 * Filter for files (display only files that pass this filter)
 		 * Note: files for which the parent folder does not match the directory filter 
 		 * are obviously not displayed, even if they pass the file filter.
 		 */
-//		var fileFilter = PathMatchers.noneOf(
-//			PathMatchers.hasNameStartingWith(".")
-//		);
-
 		var fileFilter = PathMatchers.anyOf(
 			PathMatchers.hasAbsolutePathMatchingGlob("**/jfiletreeprettyprinter-core/**/FileTreePrettyPrinter.java"),
 			PathMatchers.noneOf(
