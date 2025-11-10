@@ -13,29 +13,6 @@ class SortingTest {
 	@TempDir
 	private Path root;
 
-	@Test
-	void example() {
-
-		FileTreePrettyPrinter printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.sort(PathSorts.DIRECTORY_FIRST))
-			.build();
-
-		var result = printer.prettyPrint("src/test/resources/sorting");
-		var expected = """
-			sorting/
-			├─ c_dir/
-			│  └─ c_file
-			├─ d_dir/
-			│  ├─ d_b_dir/
-			│  │  └─ d_b_file
-			│  └─ d_a_file
-			├─ a_file
-			├─ b_file
-			├─ x_file
-			└─ y_file""";
-		assertThat(result).isEqualTo(expected);
-	}
-
 	// ---------- Alphabetical ----------
 
 	private Path buildDefaultPath() {
@@ -111,19 +88,14 @@ class SortingTest {
 			.customizeOptions(options -> options.sort(PathSorts.BY_FILE_SIZE))
 			.build();
 
-		var result = printer.prettyPrint("src/test/resources/sorting");
+		var result = printer.prettyPrint("src/test/resources/sorting/by_file_size");
 		var expected = """
-			sorting/
-			├─ c_dir/
-			│  └─ c_file
-			├─ d_dir/
-			│  ├─ d_b_dir/
-			│  │  └─ d_b_file
-			│  └─ d_a_file
-			├─ y_file
-			├─ x_file
-			├─ a_file
-			└─ b_file""";
+			by_file_size/
+			├─ file_3
+			├─ file_1
+			├─ file_4
+			├─ file_2
+			└─ file_5""";
 		assertThat(result).isEqualTo(expected);
 	}
 

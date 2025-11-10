@@ -9,6 +9,10 @@ import java.util.function.Function;
 public class LineExtension {
 
 	public static void main(String[] args) {
+		System.out.println(run());
+	}
+
+	public static String run() {
 		var printedPath = Path.of("src/main/resources/line_extension");
 
 		Function<Path, String> lineExtension = LineExtensions.builder()
@@ -22,8 +26,8 @@ public class LineExtension {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withLineExtension(lineExtension))
 			.build();
-		var tree = prettyPrinter.prettyPrint(printedPath);
-		System.out.println(tree);
+
+		return prettyPrinter.prettyPrint(printedPath);
 	}
 
 }

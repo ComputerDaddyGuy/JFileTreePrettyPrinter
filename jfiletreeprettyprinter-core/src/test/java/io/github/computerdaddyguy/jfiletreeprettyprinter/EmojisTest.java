@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class EmojisTest {
 
@@ -30,137 +32,176 @@ class EmojisTest {
 		assertThat(result).isEqualTo(expected);
 	}
 
-	@Test
-	void emojis() {
+	@ParameterizedTest
+	@CsvSource(delimiter = ' ', textBlock = """
+
+		📄 file.unknown_extension
+		📄 file_without_extension
+
+		# ------------------------------
+		# Application
+
+		# Executables
+		📱 file.apk
+		🖥️ file.app
+		⚙️ file.bin
+		⚙️ file.exe
+		📦 file.msi
+		📱 file.ipa
+
+		# Libs
+		🧩 file.dll
+		🧩 file.lib
+		🧩 file.so
+
+		# ------------------------------
+		# Archives
+
+		📦 file.7z
+		📦 file.gz
+		💿 file.img
+		💿 file.iso
+		📦 file.rar
+		📦 file.tar
+		📦 file.zip
+
+		# ------------------------------
+		# Code
+
+		🚫 .gitignore
+		🐳 Dockerfile
+		🤵 Jenkinsfile
+		⚙️ docker-compose.yml
+
+		# Build tools
+		🛠️ build.gradle
+		🛠️ makefile
+		🛠️ package.json
+		🛠️ pom.xml
+
+		# Lang
+		💠 file.c
+		☕ file.class
+		💠 file.cpp
+		💠 file.cs
+		🎨 file.css
+		🌐 file.htm
+		🌐 file.html
+		🌐 file.htmx
+		📦 file.jar
+		☕ file.java
+		🎨 file.less
+		🐘 file.php
+		🐍 file.py
+		🎨 file.scss
+		🗄️ file.sql
+		🔷 file.ts
+
+		# Scripting
+		📜 file.bash
+		📜 file.bat
+		📜 file.sh
+
+		# ------------------------------
+		# Data
+
+		⚙️ file.cfg
+		⚙️ file.conf
+		📊 file.csv
+		⚙️ file.ini
+		📝 file.json
+		📊 file.ods
+		⚙️ file.properties
+		📊 file.xls
+		📊 file.xlsx
+		📝 file.xml
+		📝 file.yaml
+		📝 file.yml
+
+		# ------------------------------
+		# Doc
+
+		📝 file.doc
+		📝 file.docx
+		📚 file.epub
+		📝 file.md
+		📝 file.odt
+		📕 file.pdf
+		📝 file.rtf
+		📝 file.txt
+
+		# ------------------------------
+		# Internet
+
+		🤖 robots.txt
+
+		# Github
+		🆕 changelog
+		🆕 changelog.md
+		🤝 contributing
+		🤝 contributing.md
+		⚖️ license
+		⚖️ license.md
+		📘 readme
+		📘 readme.md
+		🗺️ roadmap
+		🗺️ roadmap.md
+		🛡️ security
+		🛡️ security.md
+
+		# ------------------------------
+		# Media
+
+		# Audio
+		🎵 file.aac
+		🎵 file.flac
+		🎹 file.midi
+		🎵 file.mp3
+		🎵 file.ogg
+		🎵 file.wav
+
+		# Images
+		🖼️ file.bmp
+		🎞️ file.gif
+		🖼️ file.ico
+		🖼️ file.jpeg
+		🖼️ file.jpg
+		🖼️ file.png
+		✒️ file.svg
+
+		# Video
+		🎬 file.avi
+		🎬 file.mkv
+		🎬 file.mov
+		🎬 file.mp4
+		🎬 file.webm
+		🎬 file.wmv
+
+		# ------------------------------
+		# System
+
+		💾 file.bak
+		🔐 file.crt
+		🔑 file.key
+		📜 file.log
+		🔐 file.pem
+		🔓 file.pub
+		🗑️ file.tmp
+
+		""")
+	void emojis(String expectedEmoji, String fileName) {
 
 		var printer = FileTreePrettyPrinter.builder()
 			.customizeOptions(PrettyPrintOptions::withDefaultEmojis)
 			.build();
 
-		var result = printer.prettyPrint("src/test/resources/emojis");
-		var expected = """
-			📂 emojis/
-			├─ 📂 applications/
-			│  ├─ 📂 executables/
-			│  │  ├─ 📱 file.apk
-			│  │  ├─ 🖥️ file.app
-			│  │  ├─ ⚙️ file.bin
-			│  │  ├─ ⚙️ file.exe
-			│  │  ├─ 📦 file.msi
-			│  │  └─ 📱 file2.ipa
-			│  └─ 📂 libs/
-			│     ├─ 🧩 file.dll
-			│     ├─ 🧩 file.lib
-			│     └─ 🧩 file.so
-			├─ 📂 archives/
-			│  ├─ 📦 file.7z
-			│  ├─ 📦 file.gz
-			│  ├─ 💿 file.img
-			│  ├─ 💿 file.iso
-			│  ├─ 📦 file.rar
-			│  ├─ 📦 file.tar
-			│  └─ 📦 file.zip
-			├─ 📂 code/
-			│  ├─ 🚫 .gitignore
-			│  ├─ 🐳 Dockerfile
-			│  ├─ 🤵 Jenkinsfile
-			│  ├─ 📂 build_tools/
-			│  │  ├─ 🛠️ build.gradle
-			│  │  ├─ 🛠️ makefile
-			│  │  ├─ 🛠️ package.json
-			│  │  └─ 🛠️ pom.xml
-			│  ├─ ⚙️ docker-compose.yml
-			│  ├─ 📂 lang/
-			│  │  ├─ 💠 file.c
-			│  │  ├─ ☕ file.class
-			│  │  ├─ 💠 file.cpp
-			│  │  ├─ 💠 file.cs
-			│  │  ├─ 🎨 file.css
-			│  │  ├─ 🌐 file.htm
-			│  │  ├─ 🌐 file.html
-			│  │  ├─ 🌐 file.htmx
-			│  │  ├─ 📦 file.jar
-			│  │  ├─ ☕ file.java
-			│  │  ├─ 🎨 file.less
-			│  │  ├─ 🐘 file.php
-			│  │  ├─ 🐍 file.py
-			│  │  ├─ 🎨 file.scss
-			│  │  ├─ 🗄️ file.sql
-			│  │  └─ 🔷 file.ts
-			│  └─ 📂 scripting/
-			│     ├─ 📜 file.bash
-			│     ├─ 📜 file.bat
-			│     └─ 📜 file.sh
-			├─ 📂 data/
-			│  ├─ ⚙️ file.cfg
-			│  ├─ ⚙️ file.conf
-			│  ├─ 📊 file.csv
-			│  ├─ ⚙️ file.ini
-			│  ├─ 📝 file.json
-			│  ├─ 📊 file.ods
-			│  ├─ ⚙️ file.properties
-			│  ├─ 📊 file.xls
-			│  ├─ 📊 file.xlsx
-			│  ├─ 📝 file.xml
-			│  ├─ 📝 file.yaml
-			│  └─ 📝 file.yml
-			├─ 📂 doc/
-			│  ├─ 📝 file.doc
-			│  ├─ 📝 file.docx
-			│  ├─ 📚 file.epub
-			│  ├─ 📝 file.md
-			│  ├─ 📝 file.odt
-			│  ├─ 📕 file.pdf
-			│  ├─ 📝 file.rtf
-			│  └─ 📝 file.txt
-			├─ 📄 file.unknown_extension
-			├─ 📄 file_without_extension
-			├─ 📂 internet/
-			│  ├─ 📂 github/
-			│  │  ├─ 🆕 changelog
-			│  │  ├─ 🆕 changelog.md
-			│  │  ├─ 🤝 contributing
-			│  │  ├─ 🤝 contributing.md
-			│  │  ├─ ⚖️ license
-			│  │  ├─ ⚖️ license.md
-			│  │  ├─ 📘 readme
-			│  │  ├─ 📘 readme.md
-			│  │  ├─ 🗺️ roadmap
-			│  │  ├─ 🗺️ roadmap.md
-			│  │  ├─ 🛡️ security
-			│  │  └─ 🛡️ security.md
-			│  └─ 🤖 robots.txt
-			├─ 📂 media/
-			│  ├─ 📂 audio/
-			│  │  ├─ 🎵 file.aac
-			│  │  ├─ 🎵 file.flac
-			│  │  ├─ 🎹 file.midi
-			│  │  ├─ 🎵 file.mp3
-			│  │  ├─ 🎵 file.ogg
-			│  │  └─ 🎵 file.wav
-			│  ├─ 📂 images/
-			│  │  ├─ 🖼️ file.bmp
-			│  │  ├─ 🎞️ file.gif
-			│  │  ├─ 🖼️ file.ico
-			│  │  ├─ 🖼️ file.jpeg
-			│  │  ├─ 🖼️ file.jpg
-			│  │  ├─ 🖼️ file.png
-			│  │  └─ ✒️ file.svg
-			│  └─ 📂 video/
-			│     ├─ 🎬 file.avi
-			│     ├─ 🎬 file.mkv
-			│     ├─ 🎬 file.mov
-			│     ├─ 🎬 file.mp4
-			│     ├─ 🎬 file.webm
-			│     └─ 🎬 file.wmv
-			└─ 📂 system/
-			   ├─ 💾 file.bak
-			   ├─ 🔐 file.crt
-			   ├─ 🔑 file.key
-			   ├─ 📜 file.log
-			   ├─ 🔐 file.pem
-			   ├─ 🔓 file.pub
-			   └─ 🗑️ file.tmp""";
+		var path = FileStructureCreator.forTargetPath(root)
+			.createFile(fileName)
+			.getPath();
+
+		var result = printer.prettyPrint(path);
+
+		var expected = "📂 targetPath/\n└─ " + expectedEmoji + " " + fileName;
 
 		assertThat(result).isEqualTo(expected);
 	}

@@ -6,11 +6,14 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.options.TreeFormats;
 public class FileTreeFormat {
 
 	public static void main(String[] args) {
+		System.out.println(run());
+	}
+
+	public static String run() {
 		var prettyPrinter = FileTreePrettyPrinter.builder()
 			.customizeOptions(options -> options.withTreeFormat(TreeFormats.CLASSIC_ASCII))
 			.build();
-		var tree = prettyPrinter.prettyPrint("src/main/resources/tree_format");
-		System.out.println(tree);
+		return prettyPrinter.prettyPrint("src/main/resources/tree_format");
 	}
 
 }

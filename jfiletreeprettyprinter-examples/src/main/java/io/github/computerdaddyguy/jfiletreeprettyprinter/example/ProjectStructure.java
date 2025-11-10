@@ -11,7 +11,41 @@ import java.util.function.Function;
 
 public class ProjectStructure {
 
+	/*
+	 ================================
+	        Expected result
+	 ================================
+	 
+	📂 JFileTreePrettyPrinter/
+	├─ 📂 jfiletreeprettyprinter-core/	// The Java lib
+	│  ├─ 📂 src/main/java/io/github/computerdaddyguy/jfiletreeprettyprinter/
+	│  │  └─ ☕ FileTreePrettyPrinter.java	// Lib main entry point
+	│  └─ ...
+	├─ 📂 jfiletreeprettyprinter-examples/	// Some examples
+	│  └─ ...
+	├─ 📂 jfiletreeprettyprinter-cli/	// Everything to build the executable
+	│  └─ ...
+	├─ 📂 assets/
+	│  └─ 🖼️ project-structure.png	// This image
+	├─ 📂 docs/
+	│  ├─ 📝 How-to-build-a-native-executable-locally.md
+	│  └─ 📝 Release-process.md
+	├─ 🆕 CHANGELOG.md
+	├─ 🤝 CONTRIBUTING.md
+	├─ ⚖️ LICENSE
+	├─ 📘 README.md		// You're reading at this!
+	├─ 🗺️ ROADMAP.md
+	├─ 🛡️ SECURITY.md
+	├─ 🛠️ pom.xml
+	└─ 📜 runMutationTests.sh
+	
+	 */
+
 	public static void main(String[] args) {
+		System.out.println(run());
+	}
+
+	public static String run() {
 
 		/*
 		 * ==========================================================================================
@@ -121,38 +155,7 @@ public class ProjectStructure {
 		/*
 		 * Pretty print and display the result!
 		 */
-		var tree = prettyPrinter.prettyPrint(projectFolder);
-		System.out.println(tree);
-
-		/*
-		 ================================
-		        Expected result
-		 ================================
-		 
-		📂 JFileTreePrettyPrinter/
-		├─ 📂 jfiletreeprettyprinter-core/	// The Java lib
-		│  ├─ 📂 src/main/java/io/github/computerdaddyguy/jfiletreeprettyprinter/
-		│  │  └─ ☕ FileTreePrettyPrinter.java	// Lib main entry point
-		│  └─ ...
-		├─ 📂 jfiletreeprettyprinter-examples/	// Some examples
-		│  └─ ...
-		├─ 📂 jfiletreeprettyprinter-cli/	// Everything to build the executable
-		│  └─ ...
-		├─ 📂 assets/
-		│  └─ 🖼️ project-structure.png	// This image
-		├─ 📂 docs/
-		│  ├─ 📝 How-to-build-a-native-executable-locally.md
-		│  └─ 📝 Release-process.md
-		├─ 🆕 CHANGELOG.md
-		├─ 🤝 CONTRIBUTING.md
-		├─ ⚖️ LICENSE
-		├─ 📘 README.md		// You're reading at this!
-		├─ 🗺️ ROADMAP.md
-		├─ 🛡️ SECURITY.md
-		├─ 🛠️ pom.xml
-		└─ 📜 runMutationTests.sh
-		
-		 */
+		return prettyPrinter.prettyPrint(projectFolder);
 	}
 
 }
