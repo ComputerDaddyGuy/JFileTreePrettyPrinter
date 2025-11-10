@@ -21,15 +21,15 @@ import org.junit.jupiter.api.Test;
 
 class FileTreePrettyPrinterCommandLineTest {
 
-	private ByteArrayOutputStream out_and_err;
+	private ByteArrayOutputStream outAndErrStream;
 
 	private ConsoleOutput output;
 
 	@BeforeEach
 	void prepareSystemOut() {
-		out_and_err = new ByteArrayOutputStream();
+		outAndErrStream = new ByteArrayOutputStream();
 
-		output = new DefaultConsoleOutput(new PrintStream(out_and_err), new PrintStream(out_and_err));
+		output = new DefaultConsoleOutput(new PrintStream(outAndErrStream), new PrintStream(outAndErrStream));
 	}
 
 	private String[] buildCliArgs(String targetPath, @Nullable String optionsPath) {
@@ -42,13 +42,13 @@ class FileTreePrettyPrinterCommandLineTest {
 
 	private void runSuccessTest(FileTreePrettyPrinterCommandLine cli, String[] args, FileTreePrettyPrinter ref, String targetPath) {
 		cli.executeCommand(args);
-		var allWrittenLines = new String(out_and_err.toByteArray());
+		var allWrittenLines = new String(outAndErrStream.toByteArray());
 		assertThat(allWrittenLines).isEqualToNormalizingNewlines(ref.prettyPrint(targetPath) + System.lineSeparator());
 	}
 
 	private void runErrorTest(FileTreePrettyPrinterCommandLine cli, String[] args, Consumer<String> outputAssertor) {
 		cli.executeCommand(args);
-		var allWrittenLines = new String(out_and_err.toByteArray());
+		var allWrittenLines = new String(outAndErrStream.toByteArray());
 		outputAssertor.accept(allWrittenLines);
 	}
 
