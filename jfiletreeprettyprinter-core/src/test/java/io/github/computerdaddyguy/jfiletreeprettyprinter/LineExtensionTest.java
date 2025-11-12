@@ -29,39 +29,6 @@ class LineExtensionTest {
 	}
 
 	@Test
-	void example_dir_match() {
-
-		var printedPath = Path.of("src/test/resources/line_extension");
-
-		Function<Path, String> lineExtension = LineExtensions.builder()
-			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/api"), "\t\t\t// All API code: controllers, etc.")
-			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/domain"), "\t\t\t// All domain code: value objects, etc.")
-			.add(PathMatchers.hasRelativePathMatchingGlob(printedPath, "src/main/java/infra"), "\t\t\t// All infra code: database, email service, etc.")
-			.add(PathMatchers.hasNameMatchingGlob("*.properties"), "\t// Config file")
-			.build();
-
-		var printer = FileTreePrettyPrinter.builder()
-			.customizeOptions(options -> options.withLineExtension(lineExtension))
-			.build();
-
-		var result = printer.prettyPrint(printedPath);
-		var expected = """
-			line_extension/
-			└─ src/
-			   └─ main/
-			      ├─ java/
-			      │  ├─ api/			// All API code: controllers, etc.
-			      │  │  └─ Controller.java
-			      │  ├─ domain/			// All domain code: value objects, etc.
-			      │  │  └─ ValueObject.java
-			      │  └─ infra/			// All infra code: database, email service, etc.
-			      │     └─ Repository.java
-			      └─ resources/
-			         └─ application.properties	// Config file""";
-		assertThat(result).isEqualTo(expected);
-	}
-
-	@Test
 	void compact_dir_first_dir() {
 
 		Function<Path, String> lineExtension = LineExtensions.builder()

@@ -4,6 +4,7 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.options.EmojiMapping;
 import io.github.computerdaddyguy.jfiletreeprettyprinter.options.TreeFormat;
 import java.nio.file.Path;
 import java.util.function.Function;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -33,6 +34,6 @@ public interface RenderingOptions {
 	 * @return
 	 */
 	@Nullable
-	Function<Path, String> getLineExtension();
+	Function<@NonNull Path, @Nullable String> getLineExtension();
 
 }

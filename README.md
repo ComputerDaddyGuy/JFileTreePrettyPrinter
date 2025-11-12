@@ -27,14 +27,16 @@ Supports various [options](#customization-options) to customize the directories 
 	<img src="assets/project-structure.png" alt="JFileTreePrettyPrint project structure, using JFileTreePrettyPrint"/>
 </p>
 
-> [!IMPORTANT]
-> Complete documentation available in [wiki](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/wiki).
-
 * [Why use JFileTreePrettyPrinter?](#why-use-jfiletreeprettyprinter)
-* [Requirements](#requirements)
-* [Import dependency](#import-dependency)
-* [Basic usage](#basic-usage)  
-* [Customization options](#customization-options)
+* [Java lib](#java-lib)
+  * [Requirements](#requirements)
+  * [Import dependency](#import-dependency)
+  * [Basic usage](#basic-usage)  
+  * [Customization options](#customization-options)
+* [Native CLI](#native-cli)
+  * [Download and install](#download-and-install)
+  * [Usage](#cli-usage)
+  * [Options](#cli-options)  
 * [Project Information](#project-information) 
 
 # Why use JFileTreePrettyPrinter?
@@ -44,11 +46,13 @@ Unlike a plain recursive `Files.walk()`, this library:
 - Supports **dynamic child limits** and **custom extensions** per line.
 - Is **dependency-free** (on runtime) and compatible with **Java 21+**.
 
-# Requirements
-- **Java 21 or later**
-- No runtime dependencies
+# Java lib
 
-# Import dependency
+## Requirements
+- **Java 21 or later**
+- No runtime dependencies!
+
+## Import dependency
 For Maven, import this dependency to your `pom.xml`:
 
 ```xml
@@ -64,7 +68,7 @@ For Gradle:
 implementation "io.github.computerdaddyguy:jfiletreeprettyprinter-core:0.1.1"
 ```
 
-# Basic usage
+## Basic usage
 ```java
 // Example: BasicUsage.java
 var printer = FileTreePrettyPrinter.createDefault(); // Create a printer with default options
@@ -94,7 +98,9 @@ base/
 > [!NOTE]
 > In case of error while reading directories or files, an [UncheckedIOException](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/UncheckedIOException.html) is thrown. 
 
-# Customization options
+## Customization options
+> [!NOTE]
+> All code below is availabe in [jfiletreeprettyprinter-examples] submodule.(jfiletreeprettyprinter-examples\src\main\java\io\github\computerdaddyguy\jfiletreeprettyprinter\example)
 
 * [Filtering](#filtering)
 * [Sorting](#sorting)
@@ -105,7 +111,7 @@ base/
 * [Max depth](#max-depth)
 * [Tree format](#tree-format)
   
-## Filtering
+### Filtering
 Files and directories can be selectively included or excluded using a custom `PathMatcher`.
 
 Filtering applies independently to files and directories. Files are filtered only if their parent directory passes the directory filter.
@@ -139,7 +145,7 @@ filtering/
 └─ file_A.java
 ```
 
-## Sorting
+### Sorting
 Files and directories can be sorted using a custom comparator (default is alphabetical order).
 If the provided comparator considers two paths equal (i.e., returns `0`), an alphabetical comparator is applied as a tie-breaker to ensure consistent results across all systems.  
 
@@ -166,9 +172,10 @@ sorting/
 └─ y_file
 ```
 
-## Emojis ❤️
+### Emojis ❤️
 You can choose to use default built-in emojis, or define your own emoji mapping.
-Folders use the 📂 emoji, and files will have an emoji depending on their extension (when applicable).
+Folders use the 📂 emoji, and files will have an emoji depending on their name or extension (when applicable).  
+Define your own emoji mappings with the `EmojiMapping` class!
 
 ```java
 // Example: Emojis.java
@@ -194,7 +201,7 @@ var prettyPrinter = FileTreePrettyPrinter.builder()
 └─ 🎬 file.avi
 ```
 
-## Child limit
+### Child limit
 You can set a fixed limit to the number of children displayed for each directory. Each directory and file that pass the filter (if set) counts for one.
 
 ```java
@@ -250,7 +257,7 @@ child_limit_dynamic/
    └─ ...
 ```
 
-## Line extension
+### Line extension
 You can extend each displayed path with additional information by providing a custom `Function<Path, String>`.
 This is useful to annotate your tree with comments, display file sizes, or add domain-specific notes.
 
@@ -290,7 +297,7 @@ line_extension/
          └─ application.properties	// Config file
 ```
 
-## Compact directories
+### Compact directories
 Directory chains with a single child directory are fully expanded by default, but you can inline them into a single tree entry.
 
 ```java
@@ -310,7 +317,7 @@ single_directory_child/
    └─ file3
 ```
 
-## Max depth
+### Max depth
 You can customize the default max depth (default is 20).
 
 ```java
@@ -332,7 +339,7 @@ max_depth/
          └─ ... (max depth reached)
 ```
 
-## Tree format
+### Tree format
 Choose between different built-in tree formats, or create your own.
 The default is `UNICODE_BOX_DRAWING`, supported by all terminals, but you can also switch to use `CLASSIC_ASCII`.
 
@@ -351,6 +358,90 @@ tree_format/
     |-- subFile_1
     `-- subFile_2
 ```
+# Native CLI
+
+## Download and install
+You can download the latest CLI release directly from https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/releases/latest.  
+Choose the archive for your platform (Windows, Linux, or macOS), download it, and unzip it anywhere on your system.
+
+> [!NOTE]
+> If desired, add the executable’s folder to your system’s `PATH` variable to run it from any directory.
+
+## CLI usage
+To pretty-print a folder and its contents, simply run:
+```bash
+$ jfiletreeprettyprinter <folderName>
+```
+Example:
+```bash
+$ jfiletreeprettyprinter jfiletreeprettyprinter-examples/src/main/resources/base/
+base/
+├─ businessPlan.pdf
+├─ businessProject.pdf
+├─ cars/
+│  ├─ Ferrari.doc
+│  └─ Porsche.doc
+├─ diyIdeas.docx
+├─ giftIdeas.txt
+└─ images/
+   ├─ funnyCat.gif
+   ├─ holidays/
+   │  ├─ meAtTheBeach.jpeg
+   │  └─ meAtTheZoo.jpeg
+   └─ landscape.jpeg
+```
+
+To get an overview of the CLI’s capabilities and available options:
+```bash
+$ jfiletreeprettyprinter --help
+Usage: prettyprint [-dhV] [-o] [<target>]
+Pretty-prints directory structure
+      [<target>]   The path to pretty print
+  -d, --debug      debug mode
+  -h, --help       Show this help message and exit.
+  -o, --options    the options file
+  -V, --version    Print version information and exit.
+```
+
+### UTF-8 console
+If the tree symbols appear as garbled characters (e.g., Ôöé instead of ├─), your console is likely not using UTF-8 encoding.
+
+**Set UTF-8 Encoding**
+```
+# Windows
+> chcp 65001
+
+# Linux (bash, zsh)
+$ export LANG=en_US.UTF-8
+
+# macOS (bash, zsh)
+$ export LC_CTYPE=UTF-8
+```
+
+## CLI options
+The native CLI supports (almost all) pretty print options through an external JSON or YAML configuration file provided as an argument.
+ 
+This configuration file must comply with the [CLI options file schema](jfiletreeprettyprinter-cli/src/main/resources/schemas/jfiletreeprettyprinter-options.schema.json).
+```bash
+$ jfiletreeprettyprinter myFolder --options myOptions.json
+```
+
+See an [example file](jfiletreeprettyprinter-examples/src/main/resources/cli/options/full-options.yaml).
+
+### Options lookup order
+If no options file is explicitly provided as argument, the CLI automatically searches for one in the following order:
+1. **Inside the target path:**  
+A `.prettyprint` file located within the directory being printed.
+1. **Beside the executable:**  
+A `.prettyprint` file in the same folder as the native executable.
+1. **In the user’s home directory:**  
+A `.prettyprint` file located in the user’s home folder.
+1. **Fallback:**  
+If no configuration file is found, default options are used —
+equivalent to `PrettyPrintOptions.createDefault()`.
+
+> [!TIP]
+> Using a `.prettyprint` file allows each project or directory to define its own display style — no need to pass extra parameters each time.
 
 # Project Information
 

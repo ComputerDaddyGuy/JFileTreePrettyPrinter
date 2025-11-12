@@ -30,11 +30,12 @@
   - [x] Github actions
   - [x] Publish `0.0.x` **alpha** on Maven Central!
   - [x] Publish `0.x.0` **beta** on Maven Central!
+- [x] **Native CLI**
+  - [x] Options in external file
+  - [x] Distribute executable file with release in Github
 
 ## To do
 - [ ] Gather feedback
-- [x] Use as command line (options as arguments of provided in external file)
-- [x] Executable file distributed with release files in Github
 
 ## Backlog / To analyze / To implement if requested
 - [ ] Rework/fix Github wiki to be up to date

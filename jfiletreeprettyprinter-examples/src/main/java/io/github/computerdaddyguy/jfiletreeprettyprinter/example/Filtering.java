@@ -6,6 +6,10 @@ import io.github.computerdaddyguy.jfiletreeprettyprinter.options.PathMatchers;
 public class Filtering {
 
 	public static void main(String[] args) {
+		System.out.println(run());
+	}
+
+	public static String run() {
 		var excludeDirWithNoJavaFiles = PathMatchers.not(PathMatchers.hasNameEndingWith("no_java_file"));
 		var hasJavaExtension = PathMatchers.hasExtension("java");
 
@@ -17,8 +21,7 @@ public class Filtering {
 			)
 			.build();
 
-		var tree = prettyPrinter.prettyPrint("src/main/resources/filtering");
-		System.out.println(tree);
+		return prettyPrinter.prettyPrint("src/main/resources/filtering");
 	}
 
 }

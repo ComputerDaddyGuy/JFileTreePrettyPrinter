@@ -16,7 +16,7 @@
 	</modules>
 
 	<properties>
-		<revision>0.1.2-SNAPSHOT</revision>
+		<revision>0.1.1</revision>
 
 		<java.version>21</java.version>
 		<maven.compiler.source>21</maven.compiler.source>
@@ -47,13 +47,11 @@
 		<flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
 
 		<!-- Sonar -->
-		<sonar.exclusions>
-			**/src/test/**
-		</sonar.exclusions>
-		<sonar.coverage.exclusions>
-			**/src/test/**
-		</sonar.coverage.exclusions>
-		
+		<sonar.organization>computerdaddyguy</sonar.organization>
+		<sonar.projectKey>ComputerDaddyGuy_JFileTreePrettyPrinter</sonar.projectKey>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.sensor.cache.project.enable>false</sonar.sensor.cache.project.enable>
+
 	</properties>
 
 	<dependencyManagement>
@@ -66,6 +64,12 @@
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-params</artifactId>
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
@@ -208,7 +212,7 @@
 			</plugin>
 
 		</plugins>
-		
+
 	</build>
 
 	<reporting>
