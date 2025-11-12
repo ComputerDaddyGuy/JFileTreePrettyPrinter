@@ -1,0 +1,181 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter/tree/main/jfiletreeprettyprinter-cli/src/main/resources/schemas/jfiletreeprettyprinter-options.schema.json",
+	"title": "JFileTreePrettyPrinter options",
+	"description": "Options file for JFileTreePrettyPrinter, JSON/YAML-based settings.",
+	"type": "object",
+	"properties": {
+	
+		"emojis": {
+			"type": "boolean",
+			"description": "Whether to display emojis next to files and directories."
+		},
+		
+		"compactDirectories": {
+			"type": "boolean",
+			"description": "Whether to compact directories with a single directory child into one line."
+		},
+		
+		"maxDepth": {
+			"type": "integer",
+			"description": "Maximum depth of directories to print. Negative value means unlimited."
+		},
+	
+		"childLimit": {
+			"oneOf": [
+				{
+					"properties": {
+						"type": { "const": "static" },
+						"limit": { 
+					"type": "integer",
+					"description": "Global limit rule to apply to all paths. Negative value means unlimited."
+					}
+					},
+					"required": ["type", "limit"],
+					"additionalProperties": false
+				},
+				{
+					"properties": {
+						"type": { "const": "dynamic" },
+						"limits": {
+							"type": "array",
+					"description": "Dynamic list of limit rules based on path matchers. Negative value means unlimited.",
+					"items": {
+						"type": "object",
+						"properties": {
+							"limit": {
+								"type": "integer",
+								"minimum": -1,
+								"description": "Number of allowed children. Negative value means unlimited."
+							},
+							"matcher": { "$ref": "#/$defs/matcher" }
+						},
+						"required": ["limit", "matcher"],
+						"additionalProperties": false
+					}
+						}
+					},
+					"required": ["type", "limits"],
+					"additionalProperties": false
+				}
+			]
+		},
+		
+		"filter": {
+			"type": "object",
+			"description": "Optional filters for including or excluding paths.",
+			"properties": {
+				"dir": { "$ref": "#/$defs/matcher" },
+				"file": { "$ref": "#/$defs/matcher" }
+			},
+			"additionalProperties": false
+		},
+		
+		"lineExtensions": {
+			"type": "array",
+			"description": "Custom text or comments appended to matching file lines.",
+			"items": {
+				"type": "object",
+				"properties": {
+					"extension": {
+						"type": "string",
+						"description": "The string appended after the path (e.g., file comment)."
+					},
+					"matcher": { "$ref": "#/$defs/matcher" }
+				},
+				"required": ["extension", "matcher"],
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false,
+
+	"$defs": {
+	
+		"matcher": {
+			"type": "object",
+			"description": "Defines a path matching rule.",
+			"oneOf": [
+				{
+					"description": "Matches everything.",
+					"properties": {
+						"type": { "const": "everything" },
+					},
+					"required": ["type"],
+					"additionalProperties": false
+				},
+				{
+		 			"description": "Matches nothing.",
+					"properties": {
+						"type": { "const": "nothing" },
+					},
+					"required": ["type"],
+					"additionalProperties": false
+				},
+				{
+					"description": "Matches all of nested matchers.",
+					"properties": {
+						"type": { "const": "allOf" },
+						"matchers": {
+							"type": "array",
+							"description": "Nested matchers.",
+							"items": { "$ref": "#/$defs/matcher" }
+						}
+					},
+					"required": ["type", "matchers"],
+					"additionalProperties": false
+				},
+				{
+					"description": "Matches any of nested matchers.",
+					"properties": {
+						"type": { "const": "anyOf" },
+						"matchers": {
+							"type": "array",
+							"description": "Nested matchers.",
+							"items": { "$ref": "#/$defs/matcher" }
+						}
+					},
+					"required": ["type", "matchers"],
+					"additionalProperties": false
+				},
+				{
+					"description": "Matches none of nested matchers.",
+					"properties": {
+						"type": { "const": "noneOf" },
+						"matchers": {
+							"type": "array",
+							"description": "Nested matchers.",
+							"items": { "$ref": "#/$defs/matcher" }
+						}
+					},
+					"required": ["type", "matchers"],
+					"additionalProperties": false
+				},
+				{
+					"description": "File or directory name glob matcher",
+					"properties": {
+						"type": { "const": "name" },
+						"glob": {
+							"type": "string",
+							"description": "Glob pattern to match file or directory name."
+						},
+					},
+					"required": ["type", "glob"],
+					"additionalProperties": false
+				},
+				{
+					"description": "File or directory path glob matcher, relative to pretty printed root dir",
+					"properties": {
+						"type": { "const": "path" },
+						"glob": {
+							"type": "string",
+							"description": "Glob pattern to match file or directory path."
+						},
+					},
+					"required": ["type", "glob"],
+					"additionalProperties": false
+				}
+			]
+		}
+	}
+}

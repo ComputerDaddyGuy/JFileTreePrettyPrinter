@@ -1,0 +1,19 @@
+childLimit:
+  type: dynamic
+  limits:
+  - limit: 2
+    matcher:
+      type: allOf
+      matchers:
+      - type: name
+        glob: "*3"
+      - type: name
+        glob: "*xxx*"
+  - limit: 3
+    matcher:
+      type: allOf
+      matchers:
+      - type: name
+        glob: "*3"
+      - type: name
+        glob: "*z*"

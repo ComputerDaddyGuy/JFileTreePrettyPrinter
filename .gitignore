@@ -61,4 +61,5 @@ target/failsafe-reports/
 .github/workflows/cache/
 
 # Specific
-!/src/example/resources/emojis/**
+.flattened-pom.xml
+!**/src/*/resources/emojis/**

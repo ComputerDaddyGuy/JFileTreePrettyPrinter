@@ -1,0 +1,7 @@
+filter:
+  dir:
+    type: name
+    glob: "*a"
+  file:
+    type: name
+    glob: "*.java"

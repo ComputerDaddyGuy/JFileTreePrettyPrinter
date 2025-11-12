@@ -1,0 +1,141 @@
+name: Create Github release
+
+on:
+  push:
+    tags:
+      - "v*.*.*" # triggers on tags like vX.Y.Z
+
+jobs:
+
+  run-only-on-main-branch:
+    name: Verify main branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if tag is on main
+        run: |
+          git fetch origin main
+          if git merge-base --is-ancestor $GITHUB_SHA origin/main; then
+            echo "Tag is on main"
+          else
+            echo "Tag is NOT on main, skipping"
+            #exit 1
+          fi
+
+  build-native:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: run-only-on-main-branch
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@eec48106e0bf45f2976c2ff0c3e22395cced8243
+        with:
+          java-version: "21"
+          distribution: "graalvm"
+
+      - name: Build native image
+        run: mvn -B clean package -Pnative
+
+      - name: Locate built executable
+        id: find_exe
+        shell: bash
+        run: |
+          mkdir dist
+
+          OS_NAME=${{ matrix.os }}
+          if [[ "$OS_NAME" == "windows-latest" ]]; then
+            BIN_PATH=$(find jfiletreeprettyprinter-cli/target -type f -name "jfiletreeprettyprinter.exe")
+          else
+            BIN_PATH=$(find jfiletreeprettyprinter-cli/target -type f -name "jfiletreeprettyprinter")
+          fi
+          
+          echo "Found binary: $BIN_PATH"
+          cp "$BIN_PATH" dist/
+          echo "bin_path=$BIN_PATH" >> $GITHUB_OUTPUT
+
+      - name: Zip executable
+        id: zip_exe
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF_NAME}
+          OS_NAME=${{ matrix.os }}
+          case "$OS_NAME" in
+            ubuntu-latest) SAFE_OS_NAME="linux" ;;
+            windows-latest) SAFE_OS_NAME="windows" ;;
+            macos-latest)   SAFE_OS_NAME="macos" ;;
+            *) SAFE_OS_NAME="$OS_NAME" ;;
+          esac
+          ZIP_NAME="jfiletreeprettyprinter-${VERSION}-${SAFE_OS_NAME}.zip"
+          echo "Zip to create: $ZIP_NAME"
+
+          cd dist
+          if [[ "$SAFE_OS_NAME" == "windows" ]]; then
+            powershell Compress-Archive -Path * -DestinationPath "$ZIP_NAME"
+          else
+            tar -a -c -f "$ZIP_NAME" *
+          fi
+          echo "zip_path=dist/$ZIP_NAME" >> $GITHUB_OUTPUT
+          cd ..
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-zips-${{ matrix.os }}
+          path: ${{ steps.zip_exe.outputs.zip_path }}
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build-native
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_zips
+
+      - name: Extract changelog for current version
+        id: changelog
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"  # Remove leading "v" (e.g. vX.Y.Z → X.Y.Z)
+          echo "Extracting changelog for version $TAG"
+
+          # Extract section for this version up to the next version header
+          awk "/## \\[$TAG\\]/,/^---/" CHANGELOG.md > release_notes.tmp
+
+          # Clean up formatting (remove trailing ---)
+          sed -i '/^---/d' release_notes.tmp
+
+          # Verify
+          echo "==== Extracted release notes ===="
+          cat release_notes.tmp
+          echo "================================"
+
+          echo "body_path=release_notes.tmp" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090
+        with:
+          name: "JFileTreePrettyPrinter ${{ github.ref_name }}"
+          body_path: ${{ steps.changelog.outputs.body_path }}
+          files: release_zips/**/*.zip
+          draft: true
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

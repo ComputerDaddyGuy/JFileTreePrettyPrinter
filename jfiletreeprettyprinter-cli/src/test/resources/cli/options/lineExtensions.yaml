@@ -1,0 +1,9 @@
+lineExtensions:
+  - extension: " // This is java file"
+    matcher:
+      type: name
+      glob: "*.java"
+  - extension: " // This is php file"
+    matcher:
+      type: name
+      glob: "*.php"

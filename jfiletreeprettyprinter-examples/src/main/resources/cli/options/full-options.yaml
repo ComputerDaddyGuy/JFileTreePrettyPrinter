@@ -1,0 +1,38 @@
+emojis: true
+maxDepth: 2
+compactDirectories: true
+childLimit:
+  type: dynamic
+  limits:
+  - limit: 2
+    matcher:
+      type: noneOf
+      matchers:
+      - type: name
+        glob: "*a"
+      - type: name
+        glob: "folder*"
+  - limit: 3
+    matcher:
+      type: noneOf
+      matchers:
+      - type: name
+        glob: "*a"
+      - type: name
+        glob: "*xxx*"
+lineExtensions:
+  - extension: " // This is java file"
+    matcher:
+      type: name
+      glob: "*.java"
+  - extension: " // This is php file"
+    matcher:
+      type: name
+      glob: "*.php"
+filter:
+  dir:
+    type: name
+    glob: "*a"
+  file:
+    type: name
+    glob: "*.java"
