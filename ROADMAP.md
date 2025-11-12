@@ -36,6 +36,7 @@
 
 ## To do
 - [ ] Gather feedback
+- [ ] CLI: custom emojis mapping
 
 ## Backlog / To analyze / To implement if requested
 - [ ] Rework/fix Github wiki to be up to date
