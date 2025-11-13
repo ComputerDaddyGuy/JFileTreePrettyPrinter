@@ -10,24 +10,46 @@
 
 **A lightweight and flexible Java library with a native CLI to pretty-print directory structures - ideal for documentation, project overviews, or CLI tools.** 
 
-Supports various [options](#customization-options) to customize the directories scanning and rendering:
-- Filtering & sorting files and folders
-- Emojis as file icons 🎉
-- Limit displayed children of a folder (fixed value or dynamically)
-- Custom line extension (comment, file details, etc.)
-- Compact directory chains
-- Maximum scanning depth
-- Various styles for tree rendering
-
-> [!NOTE]
-> JFileTreePrettyPrinter is perfect to explain your project structure!  
-> See <a href="jfiletreeprettyprinter-examples/src/main/java/io/github/computerdaddyguy/jfiletreeprettyprinter/example/ProjectStructure.java">ProjectStructure.java</a> to read the code that generated the tree from the below picture.
-
 <p align="center">
 	<img src="assets/project-structure.png" alt="JFileTreePrettyPrint project structure, using JFileTreePrettyPrint"/>
+	<i>JFileTreePrettyPrint project structure, using JFileTreePrettyPrint</i>
 </p>
 
-* [Why use JFileTreePrettyPrinter?](#why-use-jfiletreeprettyprinter)
+### ⚙️ Options compatibility matrix
+Supports various [options](#customization-options) to customize the directories scanning and rendering:
+| Option                     | Description                                                  | Supported in CLI   | Supported in Library API |
+|-----------------------------|--------------------------------------------------------------|--------------------|---------------------------|
+| `filter - dir`              | Include/exclude specific directories                        | ✅ Yes             | ✅ Yes                    |
+| `filter - file`             | Include/exclude specific files                              | ✅ Yes             | ✅ Yes                    |
+| `sorting`                   | Custom sorting of files/directories                         | ❌ No              | ✅ Yes                    |
+| `emojis`                    | Display emojis as 📂 folders and 📄files icons             | ✅ Yes             | ✅ Yes                    |
+| `emoji - custom mapping`    | Custom emoji mapping                                        | ❌ No              | ✅ Yes                    |
+| `compactDirectories`        | Compact single-child directories into one line              | ✅ Yes             | ✅ Yes                    |
+| `childLimit - static`       | Static limit number of displayed children per directory     | ✅ Yes             | ✅ Yes                    |
+| `childLimit - dynamic`      | Dynamic limit number of displayed children per directory    | ✅ Yes             | ✅ Yes                    |
+| `maxDepth`                  | Maximum directory depth to display                          | ✅ Yes             | ✅ Yes                    |
+| `lineExtensions`            | Append custom strings/comments after matching paths         | ✅ Yes             | ✅ Yes                    |
+| `treeFormat`                | Custom symbols for branches and indentation                 | ❌ No              | ✅ Yes                    |
+| `external options file`     | Use options defined in an external file                     | ✅ Yes             | ❌ No                     |
+| `debug`                     | Print debug information to console                          | ✅ Yes (`--debug`) | ❌ No                     |
+
+
+# Why use JFileTreePrettyPrinter?
+Unlike a plain recursive `Files.walk()`, this library:
+- 📂 Prints **visually appealing** directory trees.
+- 🎨 Allows **rich customization** (filters, sorts, emojis, compacting, tree style).
+- 🙅 Is **dependency-free** (on runtime) and compatible with **Java 21+**.
+- ⚙️ Choose between **Java lib** or **Native CLI** implementation.
+
+
+# Project Information
+* See [🆕CHANGELOG.md](CHANGELOG.md) for a list of released versions and detailed changes.
+* See [🗺️ROADMAP.md](ROADMAP.md) to discover planned features and upcoming improvements.
+* This project is licensed under the Apache License 2.0. See [⚖️LICENSE](LICENSE) for details.
+* For any questions or feedback please open an issue on this repository, as detailed in [🤝CONTRIBUTING.md](CONTRIBUTING.md).
+	
+	
+# Table of content
 * [Java lib](#java-lib)
   * [Requirements](#requirements)
   * [Import dependency](#import-dependency)
@@ -36,15 +58,7 @@ Supports various [options](#customization-options) to customize the directories 
 * [Native CLI](#native-cli)
   * [Download and install](#download-and-install)
   * [Usage](#cli-usage)
-  * [Options](#cli-options)  
-* [Project Information](#project-information) 
-
-# Why use JFileTreePrettyPrinter?
-Unlike a plain recursive `Files.walk()`, this library:
-- Prints **visually appealing** directory trees.
-- Allows **rich customization** (filters, sorts, emojis, compacting, tree style).
-- Supports **dynamic child limits** and **custom extensions** per line.
-- Is **dependency-free** (on runtime) and compatible with **Java 21+**.
+  * [Options](#cli-options)
 
 # Java lib
 
@@ -95,12 +109,9 @@ base/
    └─ landscape.jpeg
 ```
 
-> [!NOTE]
-> In case of error while reading directories or files, an [UncheckedIOException](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/UncheckedIOException.html) is thrown. 
-
 ## Customization options
-> [!NOTE]
-> All code below is availabe in [jfiletreeprettyprinter-examples] submodule.(jfiletreeprettyprinter-examples\src\main\java\io\github\computerdaddyguy\jfiletreeprettyprinter\example)
+> [!TIP]
+> All code below is availabe in [jfiletreeprettyprinter-examples](jfiletreeprettyprinter-examples\src\main\java\io\github\computerdaddyguy\jfiletreeprettyprinter\example) submodule.
 
 * [Filtering](#filtering)
 * [Sorting](#sorting)
@@ -404,7 +415,7 @@ Pretty-prints directory structure
 ```
 
 ### UTF-8 console
-If the tree symbols appear as garbled characters (e.g., Ôöé instead of ├─), your console is likely not using UTF-8 encoding.
+If the tree symbols appear as garbled characters (e.g., `Ôöé` instead of `├─`), your console is likely not using UTF-8 encoding.
 
 **Set UTF-8 Encoding**
 ```
@@ -419,16 +430,18 @@ $ export LC_CTYPE=UTF-8
 ```
 
 ## CLI options
-The native CLI supports (almost all) pretty print options through an external JSON or YAML configuration file provided as an argument.
- 
-This configuration file must comply with the [CLI options file schema](jfiletreeprettyprinter-cli/src/main/resources/schemas/jfiletreeprettyprinter-options.schema.json).
+
+The native CLI supports **custom options** through an external JSON or YAML file provided with the `--options` (or `-o`) argument. 
+This options file must comply with the [CLI options file schema](jfiletreeprettyprinter-cli/src/main/resources/schemas/jfiletreeprettyprinter-options.schema.json).
+
+> [!TIP]
+> YAML is fully supported since it’s a superset of JSON, offering a more readable syntax.
+
 ```bash
 $ jfiletreeprettyprinter myFolder --options myOptions.json
 ```
 
-See an [example file](jfiletreeprettyprinter-examples/src/main/resources/cli/options/full-options.yaml).
-
-### Options lookup order
+### 📋 Options lookup order
 If no options file is explicitly provided as argument, the CLI automatically searches for one in the following order:
 1. **Inside the target path:**  
 A `.prettyprint` file located within the directory being printed.
@@ -443,12 +456,44 @@ equivalent to `PrettyPrintOptions.createDefault()`.
 > [!TIP]
 > Using a `.prettyprint` file allows each project or directory to define its own display style — no need to pass extra parameters each time.
 
-# Project Information
+### 🧩 Example options file
+Below is an example configuration file that demonstrates commonly used options.
+It should be mostly self-explanatory:
+```yaml
+emojis: true
+maxDepth: 2
+compactDirectories: true
+childLimit:
+  type: static
+  limit: 3
+lineExtensions:
+  - extension: " // Main entry point"
+    matcher:
+      type: name
+      glob: "FileTreePrettyPrinter.java"
+filter:
+  dir:
+    type: name
+    glob: "src/main/**"
+  file:
+    type: name
+    glob: "*.java"
+```
 
-* See [🆕CHANGELOG.md](CHANGELOG.md) for a list of released versions and detailed changes.
-* See [🗺️ROADMAP.md](ROADMAP.md) to discover planned features and upcoming improvements.
-* This project is licensed under the Apache License 2.0. See [⚖️LICENSE](LICENSE) for details.
-* For any questions or feedback please open an issue on this repository, as detailed in [🤝CONTRIBUTING.md](CONTRIBUTING.md).
-	
+### ⚠️ CLI Options limitations
+While the CLI offers broad configuration flexibility, not all features from the Java API are currently available.  
+Refer to the [⚙️ Options Compatibility Matrix](#%EF%B8%8F-options-compatibility-matrix) at the top of this README for a complete overview.
+
+**Path Matcher Support**  
+The external options file supports a limited subset of matchers for defining filtering and selection logic:
+| Matcher type              | Description                                                        | Example            | Equivalent in `PathMatchers` Library API               |
+|---------------------------|--------------------------------------------------------------------|--------------------|----------------------------------------------|
+| `name`                    | Matches folder or file name using a glob pattern                         | `*.java`           | `hasNameMatchingGlob(String glob)`                     |
+| `path`                    | Matches a relative path (from the printed root) using a glob pattern| `src/main/java/**` | `hasRelativePathMatchingGlob(Path ref, String glob)`   |
+| `allOf`, `anyOf`, `noneOf`| Composite matchers combining multiple matchers                           | n/a                | `allOf(...)`, `anyOf(...)`, `noneOf(...)`              |
+
+ > [!NOTE]
+ > The term `glob` refers to the pattern syntax supported by [FileSystem.getPathMatcher(String)](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/FileSystem.html#getPathMatcher(java.lang.String)).
+
 ---
 Made with ❤️ by [ComputerDaddyGuy](https://github.com/ComputerDaddyGuy)

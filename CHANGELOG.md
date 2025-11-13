@@ -6,16 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [0.2.0] - 2025-11-12 - Native executable
+## [0.2.0] - 2025-11-13 - Native executable 🎉
 
 > [!IMPORTANT]
 > Maven artifactId of Java lib changed from `jfiletreeprettyprinter` to `jfiletreeprettyprinter-core`
 
 ### Added
 - Run JFileTreePrettyPrinter in command line, using native executable on Windows, Linux, MacOS (see Github release attachments):  
-`$ jfiletreeprettyprinter myFolder`
-- Scanning and rendering options in external file:  
-`$ jfiletreeprettyprinter myFolder --options myOptions.json`
+```bash
+$ jfiletreeprettyprinter myFolder
+```
+- Supports options declared in external file:  
+```bash
+$ jfiletreeprettyprinter myFolder --options myOptions.json
+```
+- 👉 More docs in [README](https://github.com/ComputerDaddyGuy/JFileTreePrettyPrinter#native-cli)
 
 ### Changed
 - Split code into 3 sub-modules: cli, core and examples

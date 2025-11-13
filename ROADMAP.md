@@ -37,9 +37,13 @@
 ## To do
 - [ ] Gather feedback
 - [ ] CLI: custom emojis mapping
+- [ ] CLI: more matchers
+- [ ] CLI: tree format
+- [ ] CLI: More documentation
+- [ ] CLI: optimize executable file size
 
 ## Backlog / To analyze / To implement if requested
-- [ ] Rework/fix Github wiki to be up to date
+- [ ] Complete documentation (Github pages? Github wiki?)
 - [ ] Refactor unit tests (custom assert?)
 - [ ] Option: Follow symlink
-- [ ] Automate image creation? Which API/service? (https://www.ray.so/)
+- [ ] Automate picture creation? Which API/service? (https://www.ray.so/)
