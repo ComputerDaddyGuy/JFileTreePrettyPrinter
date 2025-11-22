@@ -120,6 +120,9 @@
 						<configuration>
 							<mainClass>io.github.computerdaddyguy.jfiletreeprettyprinter.cli.FileTreePrettyPrinterCommandLine</mainClass>
 							<imageName>jfiletreeprettyprinter</imageName>
+							<buildArgs>
+								<arg>-march=compatibility</arg>
+							</buildArgs>
 						</configuration>
 					</plugin>
 				</plugins>
