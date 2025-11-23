@@ -36,6 +36,7 @@
 
 ## To do
 - [ ] Gather feedback
+- [ ] Github action flow to build executable in PRs
 - [ ] CLI: custom emojis mapping
 - [ ] CLI: more matchers
 - [ ] CLI: tree format
