@@ -73,13 +73,13 @@ For Maven, import this dependency to your `pom.xml`:
 <dependency>
   <groupId>io.github.computerdaddyguy</groupId>
   <artifactId>jfiletreeprettyprinter-core</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
 </dependency>
 ```
 
 For Gradle:
 ```groovy
-implementation "io.github.computerdaddyguy:jfiletreeprettyprinter-core:0.2.0"
+implementation "io.github.computerdaddyguy:jfiletreeprettyprinter-core:0.2.1"
 ```
 
 ## Basic usage
