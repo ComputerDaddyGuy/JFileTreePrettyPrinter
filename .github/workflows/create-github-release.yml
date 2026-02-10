@@ -1,8 +1,5 @@
 name: Create Github release
 
-permissions:
-  contents: read
-
 on:
   push:
     tags:
@@ -13,6 +10,8 @@ jobs:
   run-only-on-main-branch:
     name: Verify main branch
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -35,6 +34,8 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
