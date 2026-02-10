@@ -24,7 +24,8 @@ class ProjectStructureTest {
 			│  └─ 🖼️ project-structure.png	// This image
 			├─ 📂 docs/
 			│  ├─ 📝 How-to-build-a-native-executable-locally.md
-			│  └─ 📝 Release-process.md
+			│  ├─ 📝 Release-process.md
+			│  └─ 📝 Renew-sonar-token.md
 			├─ 🆕 CHANGELOG.md
 			├─ 🤝 CONTRIBUTING.md
 			├─ ⚖️ LICENSE
