@@ -29,7 +29,7 @@
 		<picocli.version>4.7.7</picocli.version>
 		<jspecify.version>1.0.0</jspecify.version>
 		<junit.version>5.13.4</junit.version>
-		<assertj.version>3.27.4</assertj.version>
+		<assertj.version>3.27.7</assertj.version>
 
 		<!-- Plugins versions -->
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
