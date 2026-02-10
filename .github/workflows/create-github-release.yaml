@@ -1,5 +1,8 @@
 name: Create Github release
 
+permissions:
+  contents: read
+
 on:
   push:
     tags:
