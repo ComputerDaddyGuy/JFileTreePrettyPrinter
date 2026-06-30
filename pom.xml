@@ -24,7 +24,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Dependencies versions -->
-		<jackson.version>3.0.0</jackson.version>
+		<jackson.version>3.1.4</jackson.version>
 		<hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
 		<picocli.version>4.7.7</picocli.version>
 		<jspecify.version>1.0.0</jspecify.version>
