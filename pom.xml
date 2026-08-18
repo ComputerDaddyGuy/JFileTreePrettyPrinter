@@ -24,27 +24,27 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Dependencies versions -->
-		<jackson.version>3.0.0</jackson.version>
-		<hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
+		<jackson.version>3.2.2</jackson.version>
+		<hibernate-validator.version>9.1.3.Final</hibernate-validator.version>
 		<picocli.version>4.7.7</picocli.version>
-		<jspecify.version>1.0.0</jspecify.version>
-		<junit.version>5.13.4</junit.version>
+		<jspecify.version>1.0.1</jspecify.version>
+		<junit.version>6.1.3</junit.version>
 		<assertj.version>3.27.7</assertj.version>
 
 		<!-- Plugins versions -->
-		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
-		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-		<pitest-maven.version>1.20.2</pitest-maven.version>
+		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
+		<maven-jar-plugin.version>4.0.0-beta-1</maven-jar-plugin.version>
+		<jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+		<pitest-maven.version>1.25.9</pitest-maven.version>
 		<pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
 		<central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
 		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
 		<maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
 		<native.maven.plugin.version>0.11.1</native.maven.plugin.version>
-		<git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
-		<flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
+		<git-commit-id-maven-plugin.version>10.0.0</git-commit-id-maven-plugin.version>
+		<flatten-maven-plugin.version>1.8.0</flatten-maven-plugin.version>
 
 		<!-- Sonar -->
 		<sonar.organization>computerdaddyguy</sonar.organization>
